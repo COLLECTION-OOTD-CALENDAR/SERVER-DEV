@@ -16,7 +16,7 @@ async function PreSignUrl() {
     const image = rawBytes.toString('hex')
   
     const params = ({
-      Bucket: 'collection8bucket',
+      Bucket: 'collection8dev',
       Key: image,
       Expires: 60
     })
