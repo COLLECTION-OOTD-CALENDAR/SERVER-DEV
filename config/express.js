@@ -22,7 +22,7 @@ module.exports = function () {
 
     /* App (Android, iOS) */
     // TODO: 도메인을 추가할 경우 이곳에 Route를 추가하세요.
-        require('../src/app/User/userRoute')(app);
+    require('../src/app/User/userRoute')(app);
     require('../src/app/OOTD/ootdRoute')(app);
     require('../src/app/Calendar/calendarRoute')(app);
     require('../src/app/MyLook/mylookRoute')(app);
@@ -30,6 +30,7 @@ module.exports = function () {
     require('../src/app/Search3/searchRoute')(app);
     require('../src/app/Search2/searchRoute')(app);
     require('../src/app/Search/searchRoute')(app);
+    require('../src/app/User3/userRoute')(app);
 
     //require('../src/app/Search/searchRoute')(app);
 
