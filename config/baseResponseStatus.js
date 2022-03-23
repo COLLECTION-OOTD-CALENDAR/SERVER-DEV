@@ -175,13 +175,19 @@ module.exports = {
     COLOR2_EMPTY : {"isSuccess" : false, "code" : 3113, "message" : "keyword2에 해당하는 color2 값이 입력되어야 합니다."},
     KEYWORD2_EMPTY : {"isSuccess" : false, "code" : 3114, "message" : "color2에 해당하는 keyword2값이 입력되어야 합니다."},
     COLOR2_INVALID_VALUE : {"isSuccess" : false, "code" : 3115, "message" : "color2에 유효하지 않은 COLOR값이 입력되었습니다."},
-    REGISTER_NEW_PW_LENGTH : { "isSuccess": false, "code": 3116, "message":"새비밀번호는 6~15자리를 입력해주세요" },
-    REGISTER_CHECK_PW_LENGTH : { "isSuccess": false, "code": 3117, "message":"새비밀번호확인은 6~15자리를 입력해주세요" },
-    UNNECESSARY_COLOR : { "isSuccess": false, "code": 3118, "message":"color는 Place/Weather/Who 검색에 알맞지 않은 조건입니다." },
+    REGISTER_NEW_PW_LENGTH : { "isSuccess" : false, "code" : 3116, "message" : "새비밀번호는 6~15자리를 입력해주세요" },
+    REGISTER_CHECK_PW_LENGTH : { "isSuccess" : false, "code" : 3117, "message" : "새비밀번호확인은 6~15자리를 입력해주세요" },
+    UNNECESSARY_COLOR : { "isSuccess" : false, "code" : 3118, "message" : "color는 Place/Weather/Who 검색에 알맞지 않은 조건입니다." },
+    REGISTER_BIRTHDAY_EMPTY : { "isSuccess" : false, "code" : 3119, "message" : "생년월일을 입력해주세요." },
+    REGISTER_BIRTHDAY_ERROR_TYPE : { "isSuccess" : false, "code" : 3120, "message" : "올바르지 않은 생년월일 형식입니다." },
+    REGISTER_BIRTHDAY_INVALID_VALUE : { "isSuccess" : false, "code" : 3121, "message": "유효하지 않은 생년월일입니다." },
+    REGISTER_GENDER_EMPTY : { "isSuccess" : false, "code" : 3122, "message" : "성별을 입력해주세요." },
+    REGISTER_GENDER_ERROR_TYPE : { "isSuccess" : false, "code" : 3123, "message" : "올바르지 않은 성별 형식입니다." },
+    REGISTER_GENDER_INVALID_VALUE : { "isSuccess" : false, "code" : 3124, "message": "유효하지 않은 성별입니다." },
+    
+    
 
-
-
-
+    
 
     //Response Error
     LOOKPOINT_RESPONSE_ERROR : { "isSuccess": false, "code": 4000, "message": "LOOKPOINT 값 추출에 실패했습니다."},
