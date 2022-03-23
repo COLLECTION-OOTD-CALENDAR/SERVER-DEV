@@ -123,7 +123,7 @@ async function unregisterUser(connection, userIdx) {
 
 
 module.exports = {
-  insertUserInfo,
+  //insertUserInfo,
   selectUserPassword,
   selectUserAccount,
   updateNicknameInfo,
