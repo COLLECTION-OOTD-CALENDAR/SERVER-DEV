@@ -82,7 +82,7 @@ exports.postUsers = async function (req, res) {
     const n_birthday = new Date(birthday);
 
     // date 형식 체크 
-    if(!datePattern.test(n_birthday)){
+    if(!datePattern.test(birthday)){
         return res.send(errResponse(baseResponse.REGISTER_BIRTHDAY_ERROR_TYPE));
     }
 
