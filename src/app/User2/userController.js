@@ -165,6 +165,66 @@ exports.getDuplicateID = async function (req, res) {
 
 
 /**
+ * API No. 9
+ * API Name : 아이디 찾기 
+ * [GET] /app/user/find-id
+ */
+
+exports.getFindID = async function(req, res) {
+
+    const name = req.query.name;
+    const birthDay = req.query.birthDay;
+    const phoneNumber = req.query.phoneNumber;
+
+    try{
+        //빈 값 체크
+        if (!name){
+            return res.send(response(baseResponse.REGISTER_NAME_EMPTY));
+        }
+        if (!birthDay){
+            return res.send(response(baseResponse.REGISTER_BIRTHDAY_EMPTY));
+        }
+        if (!phoneNumber){
+            return res.send(response(baseResponse.REGISTER_PHONE_EMPTY));
+        }
+
+        // 형식 체크 (by 정규표현식)
+        if(!regExpName.test(name)){
+            return res.send(response(baseResponse.REGISTER_NAME_REGEXP)); 
+        }
+
+        else if (regExp.test(phoneNumber)){
+            return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN));
+        }
+        else if (!regExpcheck.test(phoneNumber)){
+            return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE));
+        }
+
+
+   
+        //공백문자만 입력됐는지 체크
+        if(name.replace(blank_pattern, '' ) == "" || birthDay.replace(blank_pattern, '' ) == ""|| phoneNumber.replace(blank_pattern, '' ) == "" ){
+            return res.send(response(baseResponse.REGISTER_BLANK_ALL));
+        }
+
+        //문자열에 공백이 있는 경우
+        if(blank_all.test(name) == true || blank_all.test(birthDay) == true|| blank_all.test(phoneNumber) == true){
+            return res.send(response(baseResponse.REGISTER_BLANK_TEXT)); 
+        }
+
+  
+    } catch (err) {
+        logger.error(`App - getFindID Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        return res.send(response(baseResponse.DB_ERROR));
+    }
+
+};
+
+
+
+
+
+/**
  * API No. 3
  * API Name : 닉네임 확인
  * [GET] /app/user/check-nickname
@@ -410,6 +470,7 @@ exports.deleteUnregister = async function (req, res) {
     return res.send(unregister);
 
 }
+
 
 
 
