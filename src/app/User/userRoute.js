@@ -3,7 +3,7 @@ module.exports = function(app){
     const jwtMiddleware = require('../../../config/jwtMiddleware');
 
     // 1. 회원가입API
-    app.post('/app/user/register', user.postUsers);
+    //app.post('/app/user/register', user.postUsers);
 
     // 2. 중복 ID 확인 
     app.get('/app/user/duplicate-id',user.getDuplicateID);

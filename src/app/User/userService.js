@@ -15,6 +15,7 @@ const crypto = require("crypto");
 
 // Service: Create, Update, Delete 비즈니스 로직 처리 
 // 회원가입 API
+/*
 exports.register = async function (name,nickname,ID,password,phoneNumber) {
     try {
         // ID 중복 확인
@@ -52,14 +53,14 @@ exports.register = async function (name,nickname,ID,password,phoneNumber) {
         return errResponse(baseResponse.DB_ERROR);
     }
 };
-
+*/
 
 // 로그인 API
 exports.postLogIn = async function (ID, password) {
     try {
         // ID 여부 확인
         const IDRows = await userProvider.IDCheck(ID);
-         if (IDRows.length < 1) return errResponse(baseResponse.LOGIN_ID_WRONG);
+        if (IDRows.length < 1) return errResponse(baseResponse.LOGIN_ID_WRONG);
 
         const selectID = IDRows[0].ID
 

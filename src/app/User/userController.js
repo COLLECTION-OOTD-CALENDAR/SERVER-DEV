@@ -19,11 +19,12 @@ var regExpSpecial = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;//�
  * API Name : 회원가입 API
  * [POST] /app/user/register
  */
+/*
 exports.postUsers = async function (req, res) {
 
-    /**
-     * Body: name,nickname,ID,password,phoneNumber
-     */
+    
+    // Body: name,nickname,ID,password,phoneNumber
+    
     const {name,nickname,ID,password,phoneNumber} = req.body;
 
     // 빈 값 체크
@@ -117,6 +118,7 @@ exports.postUsers = async function (req, res) {
     // registerResponse 값을 json으로 전달
     return res.send(registerResponse);
 };
+*/
 
 /**
  * API No. 2

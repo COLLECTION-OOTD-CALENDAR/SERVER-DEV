@@ -4,6 +4,7 @@
 //if가 만드는 로직~
 
 // 유저 생성
+/*
 async function insertUserInfo(connection, insertUserInfoParams) {
   const insertUserInfoQuery = `
         INSERT INTO User(name,nickname,ID,password,phoneNumber)
@@ -16,6 +17,7 @@ async function insertUserInfo(connection, insertUserInfoParams) {
 
   return insertUserInfoRow;
 }
+*/
 
 //ID만 가져오는 함수
 async function selectUserID(connection,ID) {
