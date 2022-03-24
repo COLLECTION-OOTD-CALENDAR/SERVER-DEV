@@ -67,7 +67,7 @@ exports.findID = async function (name, phoneNumber) {
 };
 
 //비밀번호 찾기 함수
-exports.findID = async function (name, ID, phoneNumber) {
+exports.findPW = async function (name, ID, phoneNumber) {
   const connection = await pool.getConnection(async (conn) => conn);
 
   const findPWResultParams = [name, ID, phoneNumber]
