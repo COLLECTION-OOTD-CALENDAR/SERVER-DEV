@@ -130,12 +130,12 @@ async function selectUserfindID(connection, findIDResultParams) {
 }
 
 //비밀번호 찾기 함수
-async function selectUserfindPW(connection, findPWResultParams) {
+async function selectUserfindPW(connection, name, ID, phoneNumber) {
   const selectUserfindIDQuery = `
         SELECT password
         FROM User 
         WHERE name = ? and ID = ? and phoneNumber = ?`;
-  const selectUserPasswordRow = await connection.query(selectUserfindIDQuery,findPWResultParams);
+  const selectUserPasswordRow = await connection.query(selectUserfindIDQuery,[name, ID, phoneNumber]);
   return selectUserPasswordRow[0];
 }
 
