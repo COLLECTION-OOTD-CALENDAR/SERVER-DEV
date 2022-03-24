@@ -70,9 +70,8 @@ exports.findID = async function (name, phoneNumber) {
 exports.findPW = async function (name, ID, phoneNumber) {
   const connection = await pool.getConnection(async (conn) => conn);
 
-  const findPWResultParams = [name, ID, phoneNumber]
 
-  const findPWResult = await userDao.selectUserfindPW(connection, [name, ID, phoneNumber]);
+  const findPWResult = await userDao.selectUserfindPW(connection, name, ID, phoneNumber);
 
   connection.release();
 
