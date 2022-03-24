@@ -173,16 +173,12 @@ exports.getDuplicateID = async function (req, res) {
 exports.getFindID = async function(req, res) {
 
     const name = req.query.name;
-    const birthDay = req.query.birthDay;
     const phoneNumber = req.query.phoneNumber;
 
     try{
         //빈 값 체크
         if (!name){
             return res.send(response(baseResponse.REGISTER_NAME_EMPTY));
-        }
-        if (!birthDay){
-            return res.send(response(baseResponse.REGISTER_BIRTHDAY_EMPTY));
         }
         if (!phoneNumber){
             return res.send(response(baseResponse.REGISTER_PHONE_EMPTY));
@@ -193,25 +189,31 @@ exports.getFindID = async function(req, res) {
             return res.send(response(baseResponse.REGISTER_NAME_REGEXP)); 
         }
 
-        else if (regExp.test(phoneNumber)){
+        if (regExp.test(phoneNumber)){
             return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN));
         }
-        else if (!regExpcheck.test(phoneNumber)){
+        if (!regExpcheck.test(phoneNumber)){
             return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE));
         }
 
-
-   
         //공백문자만 입력됐는지 체크
-        if(name.replace(blank_pattern, '' ) == "" || birthDay.replace(blank_pattern, '' ) == ""|| phoneNumber.replace(blank_pattern, '' ) == "" ){
+        if(name.replace(blank_pattern, '' ) == "" || phoneNumber.replace(blank_pattern, '' ) == "" ){
             return res.send(response(baseResponse.REGISTER_BLANK_ALL));
         }
 
         //문자열에 공백이 있는 경우
-        if(blank_all.test(name) == true || blank_all.test(birthDay) == true|| blank_all.test(phoneNumber) == true){
+        if(blank_all.test(name) == true || blank_all.test(phoneNumber) == true){
             return res.send(response(baseResponse.REGISTER_BLANK_TEXT)); 
         }
 
+        //이름, 전화번호를 동일하게 갖고 있는 USER가 없는 경우 
+        const findIDResponse = await userProvider.findID(name, phoneNumber);
+        
+        if(findIDResponse.length < 1)
+            return res.send(response(baseResponse.USER_NOT_EXIST))
+
+
+        return response(baseResponse.SUCCESS_FIND_ID, {'userId' : findIDResponse[0].ID})
   
     } catch (err) {
         logger.error(`App - getFindID Service error\n: ${err.message} \n${JSON.stringify(err)}`);

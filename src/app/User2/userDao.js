@@ -119,6 +119,16 @@ async function unregisterUser(connection, userIdx) {
   return unregisterUserRow;
 }
 
+//ID찾기 함수
+async function selectUserfindID(connection, findIDResultParams) {
+  const selectUserfindIDQuery = `
+        SELECT ID
+        FROM User 
+        WHERE name = ? and phoneNumber = ?`;
+  const selectUserPasswordRow = await connection.query(selectUserfindIDQuery,findIDResultParams);
+  return selectUserPasswordRow[0];
+}
+
 
 module.exports = {
   insertUserInfo,
@@ -130,6 +140,7 @@ module.exports = {
   selectUserID,
   selectUsernickname,
   selectUserPW,
-  unregisterUser
+  unregisterUser,
+  selectUserfindID,
 
 };
