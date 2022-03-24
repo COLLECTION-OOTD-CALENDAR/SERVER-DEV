@@ -125,9 +125,20 @@ async function selectUserfindID(connection, findIDResultParams) {
         SELECT ID
         FROM User 
         WHERE name = ? and phoneNumber = ?`;
-  const selectUserPasswordRow = await connection.query(selectUserfindIDQuery,findIDResultParams);
+  const selectUserIDRow = await connection.query(selectUserfindIDQuery,findIDResultParams);
+  return selectUserIDRow[0];
+}
+
+//비밀번호 찾기 함수
+async function selectUserfindPW(connection, findPWResultParams) {
+  const selectUserfindIDQuery = `
+        SELECT password
+        FROM User 
+        WHERE name = ? and ID = ? and phoneNumber = ?`;
+  const selectUserPasswordRow = await connection.query(selectUserfindIDQuery,findPWResultParams);
   return selectUserPasswordRow[0];
 }
+
 
 
 module.exports = {
@@ -142,5 +153,6 @@ module.exports = {
   selectUserPW,
   unregisterUser,
   selectUserfindID,
+  selectUserfindPW,
 
 };

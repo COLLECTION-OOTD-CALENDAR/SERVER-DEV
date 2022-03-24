@@ -29,7 +29,7 @@ module.exports = {
     SUCCESS_S3_PRESIGNEDURL : { "isSuccess": true, "code": 1027, "message":"s3 presignedURL 발급 성공" },
     SUCCESS_OOTD_DEFAULT : { "isSuccess": true, "code": 1028, "message":"추가한 블럭 불러오기 성공" },
     SUCCESS_FIND_ID : { "isSuccess": true, "code": 1029, "message":"아이디 찾기 성공" },
- 
+    SUCCESS_FIND_PW : { "isSuccess": true, "code": 1030, "message":"비밀번호 찾기 성공" },
 
     // Common
     TOKEN_VERIFICATION_SUCCESS : { "isSuccess": true, "code": 2000, "message":"JWT 토큰 검증 성공" },  

@@ -1,4 +1,5 @@
 const { pool } = require("../../../config/database");
+const { errResponse } = require("../../../config/response");
 const { logger } = require("../../../config/winston");
 
 const userDao = require("./userDao");
@@ -53,7 +54,7 @@ exports.accountCheck = async function (ID) {
 };
 
 //아이디 찾기 함수
-exports.findID = async function (name,phoneNumber) {
+exports.findID = async function (name, phoneNumber) {
   const connection = await pool.getConnection(async (conn) => conn);
 
   const findIDResultParams = [name, phoneNumber]
@@ -63,4 +64,17 @@ exports.findID = async function (name,phoneNumber) {
   connection.release();
 
   return findIDResult;
+};
+
+//비밀번호 찾기 함수
+exports.findID = async function (name, ID, phoneNumber) {
+  const connection = await pool.getConnection(async (conn) => conn);
+
+  const findPWResultParams = [name, ID, phoneNumber]
+
+  const findPWResult = await userDao.selectUserfindID(connection, findPWResultParams);
+
+  connection.release();
+
+  return findPWResult;
 };
