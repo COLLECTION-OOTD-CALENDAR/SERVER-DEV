@@ -211,9 +211,10 @@ exports.getFindID = async function(req, res) {
         
         if(findIDResponse.length < 1)
             return res.send(response(baseResponse.USER_NOT_EXIST))
-
-
-        return response(baseResponse.SUCCESS_FIND_ID, {'userId' : findIDResponse[0].ID})
+        else{
+            return response(baseResponse.SUCCESS_FIND_ID, {'userId' : findIDResponse[0].ID})
+        }
+            
   
     } catch (err) {
         logger.error(`App - getFindID Service error\n: ${err.message} \n${JSON.stringify(err)}`);
