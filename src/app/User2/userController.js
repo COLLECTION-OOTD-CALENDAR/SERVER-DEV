@@ -284,7 +284,7 @@ exports.getFindID = async function(req, res) {
             
   
     } catch (err) {
-        logger.error(`App - getFindID Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        logger.error(`App - getFindPW Service error\n: ${err.message} \n${JSON.stringify(err)}`);
         return res.send(response(baseResponse.DB_ERROR));
     }
 
