@@ -72,7 +72,7 @@ exports.findPW = async function (name, ID, phoneNumber) {
 
   const findPWResultParams = [name, ID, phoneNumber]
 
-  const findPWResult = await userDao.selectUserfindID(connection, [name, ID, phoneNumber]);
+  const findPWResult = await userDao.selectUserfindPW(connection, [name, ID, phoneNumber]);
 
   connection.release();
 
