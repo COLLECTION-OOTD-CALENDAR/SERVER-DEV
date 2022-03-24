@@ -30,6 +30,7 @@ module.exports = function () {
     require('../src/app/Search3/searchRoute')(app);
     require('../src/app/Search2/searchRoute')(app);
     require('../src/app/Search/searchRoute')(app);
+    require('../src/app/User2/userRoute')(app);
     require('../src/app/User3/userRoute')(app);
 
     //require('../src/app/Search/searchRoute')(app);
