@@ -226,7 +226,7 @@ exports.getFindID = async function(req, res) {
 /**
  * API No. 11
  * API Name : 비밀번호 찾기
- * [GET] /app/user/find-id
+ * [GET] /app/user/find-password
  */
 
  exports.getFindPW = async function(req, res) {
