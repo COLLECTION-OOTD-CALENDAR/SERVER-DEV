@@ -165,7 +165,7 @@ exports.getDuplicateID = async function (req, res) {
 
 
 /**
- * API No. 9
+ * API No. 10
  * API Name : 아이디 찾기 
  * [GET] /app/user/find-id
  */
@@ -222,6 +222,12 @@ exports.getFindID = async function(req, res) {
     }
 
 };
+
+/**
+ * API No. 11
+ * API Name : 비밀번호 확인
+ * [GET] /app/user/find-id
+ */
 
 
 

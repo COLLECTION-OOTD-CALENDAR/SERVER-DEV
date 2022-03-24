@@ -32,6 +32,9 @@ module.exports = function(app){
     //10.아이디찾기
     app.get('/app/user/find-id',user.getFindID);
 
+    //11.비밀번호찾기
+    app.get('/app/user/find-password',user.getFindPW);
+
 };
 
 
