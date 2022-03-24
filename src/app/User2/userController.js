@@ -225,11 +225,70 @@ exports.getFindID = async function(req, res) {
 
 /**
  * API No. 11
- * API Name : 비밀번호 확인
+ * API Name : 비밀번호 찾기
  * [GET] /app/user/find-id
  */
 
+ exports.getFindPW = async function(req, res) {
 
+    const name = req.query.name;
+    const phoneNumber = req.query.phoneNumber;
+    const ID = req.query.ID;
+
+    try{
+        //빈 값 체크
+        if (!name){
+            return res.send(response(baseResponse.REGISTER_NAME_EMPTY));
+        }
+        if (!ID){
+            return res.send(response(baseResponse.REGISTER_ID_EMPTY));
+        }
+        if (!phoneNumber){
+            return res.send(response(baseResponse.REGISTER_PHONE_EMPTY));
+        }
+
+        // 형식 체크 (by 정규표현식)
+        if(!regExpName.test(name)){
+            return res.send(response(baseResponse.REGISTER_NAME_REGEXP)); 
+        }
+
+        if (regExp.test(phoneNumber)){
+            return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN));
+        }
+        if (!regExpcheck.test(phoneNumber)){
+            return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE));
+        }
+
+        //길이 체크
+        if (ID.length < 6 || ID.length > 15 )  
+            return res.send(response(baseResponse.REGISTER_ID_LENGTH));
+
+        //공백문자만 입력됐는지 체크
+        if(name.replace(blank_pattern, '' ) == "" || ID.replace(blank_pattern, '' ) == ""  || phoneNumber.replace(blank_pattern, '' ) == "" ){
+            return res.send(response(baseResponse.REGISTER_BLANK_ALL));
+        }
+
+        //문자열에 공백이 있는 경우
+        if(blank_all.test(name) == true || blank_all.test(ID) == true || blank_all.test(phoneNumber) == true){
+            return res.send(response(baseResponse.REGISTER_BLANK_TEXT)); 
+        }
+
+        //이름, 전화번호를 동일하게 갖고 있는 USER가 없는 경우 
+        const findPWResponse = await userProvider.findPW(name, ID, phoneNumber);
+        
+        if(findPWResponse.length < 1)
+            return res.send(response(baseResponse.USER_NOT_EXIST))
+        else{
+            return res.send(response(baseResponse.SUCCESS_FIND_PW))
+        }
+            
+  
+    } catch (err) {
+        logger.error(`App - getFindID Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        return res.send(response(baseResponse.DB_ERROR));
+    }
+
+};
 
 
 
