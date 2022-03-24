@@ -275,6 +275,8 @@ exports.getFindID = async function(req, res) {
 
         //이름, 전화번호를 동일하게 갖고 있는 USER가 없는 경우 
         const findPWResponse = await userProvider.findPW(name, ID, phoneNumber);
+
+        console.log(findPWResponse);
         
         if(findPWResponse.length < 1)
             return res.send(response(baseResponse.USER_NOT_EXIST))
