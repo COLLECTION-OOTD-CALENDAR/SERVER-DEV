@@ -52,3 +52,15 @@ exports.accountCheck = async function (ID) {
   return userAccountResult;
 };
 
+//아이디 찾기 함수
+exports.findID = async function (name,phoneNumber) {
+  const connection = await pool.getConnection(async (conn) => conn);
+
+  const findIDResultParams = [name, phoneNumber]
+
+  const findIDResult = await userDao.selectUserfindID(connection, findIDResultParams);
+
+  connection.release();
+
+  return findIDResult;
+};
