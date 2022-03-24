@@ -136,8 +136,6 @@ async function selectUserfindPW(connection, name, ID, phoneNumber) {
         FROM User 
         WHERE name = ? and ID = ? and phoneNumber = ?`;
   const selectUserPasswordRow = await connection.query(selectUserfindPWQuery,[name, ID, phoneNumber]);
-  console.log("userDao에서의 문제: ",selectUserPasswordRow)
-  console.log("userDao에서의 문제: ",selectUserPasswordRow[0])
   return selectUserPasswordRow[0];
 }
 
