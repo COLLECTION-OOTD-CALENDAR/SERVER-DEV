@@ -31,7 +31,7 @@ exports.updatePw = async function (userIdx,newPassword) {
         const updatePwdResult = await userDao.updatePwdReset(connection, updatePWParams)
         connection.release();
 
-        return response(baseResponse.SUCCESS_RESET_PW,{'password': updatePwdResult});
+        return response(baseResponse.SUCCESS_RESET_PW);
 
     } catch (err) {
         logger.error(`App - updatePw Service error\n: ${err.message}`);
