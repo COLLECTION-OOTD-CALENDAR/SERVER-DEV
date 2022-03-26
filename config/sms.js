@@ -62,7 +62,7 @@ const send_message = async function (req, res) {
                 countryCode : "82",
                 from : sens_call_number,
                 content : `[COLLECTION] 인증번호 [${verificationCode}]를 입력해주세요.`,
-                message : [{
+                messages : [{
                     to : `${phoneNumber}`
                 }],
 
