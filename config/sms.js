@@ -1,7 +1,7 @@
 const CryptoJS = require("crypto-js")
 const axios = require("axios")
 const secret_config = require('./secret');
-const baseResponseStatus = require("./baseResponseStatus");
+const baseResponse = require("./baseResponseStatus");
 const { errResponse } = require("./response");
 
 const send_message = async function (req, res) {
@@ -69,10 +69,10 @@ const send_message = async function (req, res) {
             },
         });
         console.log("response", smsRes.data);
-        return res.send(response(baseResponseStatus.SUCCESS_SEND_SMS, {'verificationCode' : verificationCode}));
+        return res.send(response(baseResponse.SUCCESS_SEND_SMS, {'verificationCode' : verificationCode}));
     } catch (err) {
         console.log(err);
-        return res.send(errResponse(baseResponseStatus.SERVER_ERROR));
+        return res.send(errResponse(baseResponse.SERVER_ERROR));
     }
 
 };
