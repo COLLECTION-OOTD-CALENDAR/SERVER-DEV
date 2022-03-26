@@ -31,6 +31,7 @@ module.exports = {
     SUCCESS_FIND_ID : { "isSuccess": true, "code": 1029, "message":"아이디 찾기 성공" },
     SUCCESS_FIND_PW : { "isSuccess": true, "code": 1030, "message":"비밀번호 찾기 성공" },
     SUCCESS_RESET_PW : { "isSuccess": true, "code": 1031, "message":"비밀번호 재설정 성공" },
+    SUCCESS_SEND_SMS : { "isSuccess": true, "code": 1032, "message": "인증번호 발송 성공" },
 
     // Common
     TOKEN_VERIFICATION_SUCCESS : { "isSuccess": true, "code": 2000, "message":"JWT 토큰 검증 성공" },  
