@@ -2,7 +2,7 @@ const CryptoJS = require("crypto-js")
 const axios = require("axios")
 const secret_config = require('./secret');
 const baseResponse = require("./baseResponseStatus");
-const { errResponse } = require("./response");
+const { response, errResponse } = require("./response");
 
 const send_message = async function (req, res) {
     try {
