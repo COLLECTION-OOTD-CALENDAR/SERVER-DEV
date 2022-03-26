@@ -16,11 +16,9 @@ var regExpSpecial = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;//�
 
 
 /**
- * API NO.6
  * API Name : 비밀번호 재설정 
- * [PATCH] /app/user/modi-password/:userIdx
- * path variable : userIdx
- * body : password
+ * [PATCH] /app/user/reset-password/:userIdx
+ * body : newPassword, checkPassword
  */
 
 exports.patchPassword = async function (req, res) {

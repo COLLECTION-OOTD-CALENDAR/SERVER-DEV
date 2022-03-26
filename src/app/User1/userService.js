@@ -34,7 +34,7 @@ exports.updatePw = async function (userIdx,newPassword) {
         return response(baseResponse.SUCCESS_RESET_PW,{'password': updatePwdResult});
 
     } catch (err) {
-        logger.error(`App - editPW Service error\n: ${err.message}`);
+        logger.error(`App - updatePw Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 }
