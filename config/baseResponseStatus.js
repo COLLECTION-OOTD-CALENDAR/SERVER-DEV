@@ -197,7 +197,7 @@ module.exports = {
     LOOKPOINT_RESPONSE_ERROR : { "isSuccess": false, "code": 4000, "message": "LOOKPOINT 값 추출에 실패했습니다."},
     SEARCH_DATE_OOTD_EMPTY : { "isSuccess": false, "code": 4001, "message": "선택하신 날짜에 해당하는 OOTD가 존재하지 않습니다." },
     LOGIN_UNREGISTER_USER : { "isSuccess": false, "code": 4002, "message": "탈퇴된 계정입니다. 문의해주세요." },
-    TAG_OVERFLOW : { "isSuccess": false, "code": 4003, "message": "태그는 최대 20개까지 추가할 수 있습니다. 새로운 태그를 추가하기 위해 기존의 태그를 삭제해주세요." },
+    TAG_OVERFLOW : { "isSuccess": false, "code": 4003, "message": "태그는 최대 20개까지 추가할 수 있습니다." },
     TAG_REDUNDANT : { "isSuccess": false, "code": 4004, "message": "이미 존재하는 태그입니다." }, 
     DATE_RESPONSE_ERROR : { "isSuccess":false, "code":4005, "message": "DATE 값 추출에 실패했습니다."},    
     TAG_ALREADY_DELETED : { "isSuccess":false, "code":4006, "message": "이미 삭제된 태그입니다."},
