@@ -17,7 +17,7 @@ exports.IDCheck = async function (ID) {
 };
  
 //닉네임중복검사 함수
-/*
+
 exports.nicknameCheck = async function (nickname) {
   const connection = await pool.getConnection(async (conn) => conn);
   const nicknameCheckResult = await userDao.selectUsernickname(connection, nickname);
@@ -25,7 +25,7 @@ exports.nicknameCheck = async function (nickname) {
 
   return nicknameCheckResult;
 };
-*/
+
 
 //PW확인 함수(WITH ID)
 exports.passwordCheck = async function (selectID) {
