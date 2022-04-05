@@ -151,4 +151,3 @@ exports.postUsers = async function (req, res) {
     // registerResponse 값을 json으로 전달
     return res.send(registerResponse);
 };
-
