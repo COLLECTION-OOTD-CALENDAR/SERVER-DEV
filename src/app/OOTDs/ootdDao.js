@@ -220,6 +220,21 @@ async function registerOotdAClothes(connection, ootdIdx, ootdAddedClothes) {
 };
 
 
+// API 8 : OOTD 최종 등록하기 - AddedClothes 테이블 내 cond 변경하기
+async function patchAClothesCond(connection, AClothesIdxList){
+  const updateAClothesCondQuery =  `
+        UPDATE AddedClothes
+        SET cond = 'selected'
+        WHERE index = ?
+  `;
+
+  for (item of AClothesIdxList){
+    var updateAClothesCondEach = await connection.query(
+      updateAClothesCondQuery, item);
+  }
+  return updateAClothesCondEach[0];
+}
+
 // API 8 : OOTD 최종 등록하기 - AddedPlace 테이블 내 일치하는 index 찾기
 async function getAddedPlaceIdx(connection, userIdx, aPlace) {
   const getAddedPlaceIdxQuery = `
@@ -284,6 +299,20 @@ async function registerOotdAPlace (connection, ootdIdx, APlaceIdxList) {
   return registerOotdPlaceRows;
 };
 
+// API 8 : OOTD 최종 등록하기 - AddedPlace 테이블 내 cond 변경하기
+async function patchAPlaceCond(connection, APlaceIdxList){
+  const updateAPlaceCondQuery =  `
+        UPDATE AddedPlace
+        SET cond = 'selected'
+        WHERE index = ?
+  `;
+
+  for (item of APlaceIdxList){
+    var updateAPlaceCondEach = await connection.query(
+      updateAPlaceCondQuery, item);
+  }
+  return updateAPlaceCondEach[0];
+}
 
 // API 8 : OOTD 최종 등록하기 - AddedWeather 테이블 내 일치하는 index 찾기
 async function getAddedWeatherIdx(connection, userIdx, aWeather) {
@@ -346,6 +375,21 @@ async function registerOotdAWeather(connection, ootdIdx, AWeatherIdxList) {
   }
   return registerOotdWeatherRows;
 };
+
+// API 8 : OOTD 최종 등록하기 - AddedWeather 테이블 내 cond 변경하기
+async function patchAWeatherCond(connection, AWeatherIdxList){
+  const updateAWeatherCondQuery =  `
+        UPDATE AddedWeather
+        SET cond = 'selected'
+        WHERE index = ?
+  `;
+
+  for (item of AWeatherIdxList){
+    var updateAWeatherCondEach = await connection.query(
+      updateAWeatherCondQuery, item);
+  }
+  return updateAWeatherCondEach[0];
+}
 
 // API 8 : OOTD 최종 등록하기 = AddedWho 테이블 내 일치하는 index 찾기
 async function getAddedWhoIdx(connection, userIdx, aWho) {
@@ -411,6 +455,21 @@ async function registerOotdAWho(connection, ootdIdx, AWhoIdxList) {
   return registerOotdWhoRows;
 };
 
+// API 8 : OOTD 최종 등록하기 - AddedWho 테이블 내 cond 변경하기
+async function patchAWhoCond(connection, AWhoIdxList){
+  const updateAWhoCondQuery =  `
+        UPDATE AddedWho
+        SET cond = 'selected'
+        WHERE index = ?
+  `;
+
+  for (item of AWhoIdxList){
+    var updateAWhoCondEach = await connection.query(
+      updateAWhoCondQuery, item);
+  }
+  return updateAWhoCondEach[0];
+}
+
 // API 10 : OOTD 수정하기 - 지난 작성 화면 불러오기
 async function selectModiDateOotd(connection, userIdx){
   const selectModiDateOotdQuery = `
@@ -460,30 +519,38 @@ async function selectDateOotd(connection, userIdx, date) {
                 LEFT JOIN FixedPlace AS FP
                   ON PL.fixedPlace = FP.index
                 LEFT JOIN AddedPlace AS AP
-                  ON PL.addedPlace = AP.index ) AS TMPL
+                  ON PL.addedPlace = AP.index AND (cond = 'selected' OR
+                                                  (cond = 'unselected' AND AP.status = 'active'))
+                ) AS TMPL
               ON O.ootdIdx = TMPL.ootdIdx
             LEFT JOIN ( SELECT WE.ootdIdx, WE.fixedWeather, WE.addedWeather, FW.weather AS fwName, AW.weather AS awName
               FROM Weather as WE
                 LEFT JOIN FixedWeather AS FW
                   ON WE.fixedWeather = FW.index
                 LEFT JOIN AddedWeather AS AW
-                  ON WE.addedWeather = AW.index ) AS TMWE
+                  ON WE.addedWeather = AW.index AND (cond = 'selected' OR
+                                                  (cond = 'unselected' AND AW.status = 'active'))
+              ) AS TMWE
               ON O.ootdIdx = TMWE.ootdIdx
             LEFT JOIN ( SELECT WH.ootdIdx, WH.fixedWho, WH.addedWho, FWH.who AS fwhName, AWH.who AS awhName
               FROM Who as WH
                 LEFT JOIN FixedWho AS FWH
                     ON WH.fixedWho = FWH.index
                 LEFT JOIN AddedWho AS AWH
-                    ON WH.addedWho = AWH.index ) AS TMWH
+                    ON WH.addedWho = AWH.index AND (cond = 'selected' OR
+                                                  (cond = 'unselected' AND AWH.status = 'active'))
+              ) AS TMWH
               ON O.ootdIdx = TMWH.ootdIdx
             LEFT JOIN ( SELECT CL.ootdIdx, CL.fixedType, CL.addedType, CL.color, FC.bigClass AS fixedBig, FC.smallClass AS fixedSmall, AC.bigClass AS addedBig, AC.smallClass AS addedSmall
               FROM Clothes AS CL
                 LEFT JOIN FixedClothes AS FC
                   ON CL.fixedType = FC.index
                 LEFT JOIN AddedClothes AS AC
-                  ON CL.addedType = AC.index ) AS TMCL
+                  ON CL.addedType = AC.index  AND (cond = 'selected' OR
+                                                  (cond = 'unselected' AND AC.status = 'active'))
+                ) AS TMCL
               ON O.ootdIdx = TMCL.ootdIdx
-            WHERE O.userIdx = ? AND O.date = ? AND status = 'active';
+            WHERE O.userIdx = ? AND O.date = ?;
             `;
   const [completeDateOotd] = await connection.query(selectDateOotdQuery, [userIdx, date]);
   return completeDateOotd;
@@ -506,18 +573,22 @@ module.exports = {
   getAddedClothesIdx,
   registerOotdFClothes,
   registerOotdAClothes,
+  patchAClothesCond,
   getAddedPlaceIdx,
   registerOotdPlace,
   registerOotdFPlace,
   registerOotdAPlace,
+  patchAPlaceCond,
   getAddedWeatherIdx,
   registerOotdWeather,
   registerOotdFWeather,
   registerOotdAWeather,
+  patchAWeatherCond,
   getAddedWhoIdx,
   registerOotdWho,
   registerOotdFWho,
   registerOotdAWho,
+  patchAWhoCond,
   selectDateOotd,
   selectModiDateOotd
 };
