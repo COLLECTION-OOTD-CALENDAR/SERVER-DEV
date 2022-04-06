@@ -105,6 +105,9 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
         // Clothes 테이블 - addedType 등록
         const ootdAClothesResult = await ootdDao.registerOotdAClothes(connection, ootdIdxParam, ootdAddedClothes);
 
+        // AddedClothes 테이블 - unselected -> selected로 변경
+        const aClothesCondResult = await ootdDao.patchAClothesCond(connection, AClothesIdxList);
+
 
         /*********************************************** */
         /****************Place 테이블 등록*************** */
@@ -122,6 +125,9 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
 
             // Place 테이블 등록 - addedPlace 등록
             const ootdAPlaceResult = await ootdDao.registerOotdAPlace(connection, ootdIdxParam, APlaceIdxList);
+        
+            // AddedPlace 테이블 - unselected -> selected로 변경
+            const aPlaceCondResult = await ootdDao.patchAPlaceCond(connection, APlaceIdxList);
         }
 
         /*********************************************** */
@@ -141,6 +147,10 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
 
             // Weather 테이블 등록 - addedWeather 등록
             const ootdAWeatherResult = await ootdDao.registerOotdAWeather(connection, ootdIdxParam, AWeatherIdxList);
+        
+            // AddedWeather 테이블 - unselected -> selected로 변경
+            const aWeatherCondResult = await ootdDao.patchAWeatherCond(connection, AWeatherIdxList);
+
         }
 
         /*********************************************** */
@@ -159,6 +169,11 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
 
             // Who 테이블 등록 - addedWho 등록
             const ootdAWhoResult = await ootdDao.registerOotdAWho(connection, ootdIdxParam, AWhoIdxList);
+        
+            // AddedWho 테이블 - unselected -> selected로 변경
+            const aWhoCondResult = await ootdDao.patchAWhoCond(connection, AWhoIdxList);
+
+        
         }
 
         connection.release();
