@@ -1,4 +1,3 @@
-const jwtMiddleware = require("../../../config/jwtMiddleware");
 const userProvider = require("./userProvider");
 const userService = require("./userService");
 const baseResponse = require("../../../config/baseResponseStatus");
@@ -19,7 +18,7 @@ var regExpSpecial = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;//�
  * API Name : 회원가입 API
  * [POST] /app/user/register
  */
-exports.postUsers = async function (req, res) {
+exports.userRegister = async function (req, res) {
 
     /**
      * Body: name,nickname,ID,password,phoneNumber
@@ -124,11 +123,10 @@ exports.postUsers = async function (req, res) {
  * [GET] /app/user/duplicate-id
  */
 
-exports.getDuplicateID = async function (req, res) {
+exports.userDuplicateID = async function (req, res) {
 
     const ID = req.query.ID;
     var id = ID.toString();
-
 
     try{
 
@@ -156,7 +154,7 @@ exports.getDuplicateID = async function (req, res) {
             return res.send(response(baseResponse.SUCCESS_DUPLICATE_ID));
         }
     } catch (err) {
-        logger.error(`App - getDuplicateID Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        logger.error(`App - userDuplicateID Service error\n: ${err.message} \n${JSON.stringify(err)}`);
         return res.send(response(baseResponse.DB_ERROR));
     }
 
@@ -170,7 +168,7 @@ exports.getDuplicateID = async function (req, res) {
  * [GET] /app/user/find-id
  */
 
-exports.getFindID = async function(req, res) {
+exports.userFindID = async function(req, res) {
 
     const name = req.query.name;
     const phoneNumber = req.query.phoneNumber;
@@ -217,7 +215,7 @@ exports.getFindID = async function(req, res) {
             
   
     } catch (err) {
-        logger.error(`App - getFindID Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        logger.error(`App - userFindID Service error\n: ${err.message} \n${JSON.stringify(err)}`);
         return res.send(response(baseResponse.DB_ERROR));
     }
 
@@ -229,7 +227,7 @@ exports.getFindID = async function(req, res) {
  * [GET] /app/user/find-password
  */
 
- exports.getFindPW = async function(req, res) {
+ exports.userFindPW = async function(req, res) {
 
     const name = req.query.name;
     const phoneNumber = req.query.phoneNumber;
@@ -284,7 +282,7 @@ exports.getFindID = async function(req, res) {
             
   
     } catch (err) {
-        logger.error(`App - getFindPW Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        logger.error(`App - userFindPW Service error\n: ${err.message} \n${JSON.stringify(err)}`);
         return res.send(response(baseResponse.DB_ERROR));
     }
 
@@ -298,7 +296,7 @@ exports.getFindID = async function(req, res) {
  * [GET] /app/user/check-nickname
  */
 
-exports.getNickname = async function(req, res) {
+exports.userNickname = async function(req, res) {
 
     const nickname = req.query.nickname;
     var Nickname = nickname.toString();
@@ -335,7 +333,7 @@ exports.getNickname = async function(req, res) {
             return res.send(response(baseResponse.SUCCESS_DUPLICATE_NICKNAME));
         }
     } catch (err) {
-        logger.error(`App - getNickname Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        logger.error(`App - userNickname Service error\n: ${err.message} \n${JSON.stringify(err)}`);
         return res.send(response(baseResponse.DB_ERROR));
     }
 
