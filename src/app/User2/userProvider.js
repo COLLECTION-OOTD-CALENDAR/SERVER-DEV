@@ -7,7 +7,7 @@ const userDao = require("./userDao");
 
 //if가만드는 로직~
 
-//ID중복검사 함수 
+//1. 중복ID 확인 - (ID중복검사 함수)
 exports.IDCheck = async function (ID) {
   const connection = await pool.getConnection(async (conn) => conn);
   const IDCheckResult = await userDao.selectUserID(connection, ID);
@@ -16,7 +16,7 @@ exports.IDCheck = async function (ID) {
   return IDCheckResult;
 };
  
-//닉네임중복검사 함수
+//2. 닉네임 확인 - (닉네임중복검사 함수)
 exports.nicknameCheck = async function (nickname) {
   const connection = await pool.getConnection(async (conn) => conn);
   const nicknameCheckResult = await userDao.selectUsernickname(connection, nickname);
@@ -25,7 +25,7 @@ exports.nicknameCheck = async function (nickname) {
   return nicknameCheckResult;
 };
 
-//PW확인 함수(WITH ID)
+//3. 로그인 - (PW확인 함수(WITH ID))
 exports.passwordCheck = async function (selectID) {
   const connection = await pool.getConnection(async (conn) => conn);
   // 쿼리문에 여러개의 인자를 전달할 때 selectUserPasswordParams와 같이 사용합니다.
@@ -34,7 +34,7 @@ exports.passwordCheck = async function (selectID) {
   return passwordCheckResult;
 };
 
-//PW확인 함수(WITH USERIDX)
+//4-2. 회원정보 수정(비밀번호) - PW확인 함수(WITH USERIDX)
 exports.passwordCheckUserIdx = async function(userIdx) {
   const connection = await pool.getConnection(async (conn) => conn); 
   const passwordCheckResult = await userDao.selectUserPW(connection, userIdx);
@@ -43,7 +43,7 @@ exports.passwordCheckUserIdx = async function(userIdx) {
 }
 
 
-//계정확인 함수
+//3. 로그인 - (계정확인 함수)
 exports.accountCheck = async function (ID) {
   const connection = await pool.getConnection(async (conn) => conn);
   const userAccountResult = await userDao.selectUserAccount(connection, ID);
@@ -52,7 +52,7 @@ exports.accountCheck = async function (ID) {
   return userAccountResult;
 };
 
-//아이디 찾기 함수
+//20. 아이디 찾기 - (아이디 찾기 함수)
 exports.findID = async function (name, phoneNumber) {
   const connection = await pool.getConnection(async (conn) => conn);
 
@@ -65,10 +65,9 @@ exports.findID = async function (name, phoneNumber) {
   return findIDResult;
 };
 
-//비밀번호 찾기 함수
+//21.비밀번호 찾기 - (비밀번호 찾기 함수)
 exports.findPW = async function (name, ID, phoneNumber) {
   const connection = await pool.getConnection(async (conn) => conn);
-
 
   const findPWResult = await userDao.selectUserfindPW(connection, name, ID, phoneNumber);
 

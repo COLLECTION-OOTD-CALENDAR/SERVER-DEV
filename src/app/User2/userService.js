@@ -14,8 +14,9 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
 // Service: Create, Update, Delete 비즈니스 로직 처리 
-// 회원가입 API
-exports.register = async function (name,nickname,ID,password,phoneNumber) {
+
+// 0. 회원가입 - (ID 중복 확인, 닉네임 중복 확인, 비밀번호 암호화)
+exports.postRegister = async function (name,nickname,ID,password,phoneNumber) {
     try {
         // ID 중복 확인
         // UserProvider에서 해당 ID와 같은 User 목록을 받아서 IDRows에 저장한 후, 배열의 길이를 검사한다.
@@ -54,7 +55,7 @@ exports.register = async function (name,nickname,ID,password,phoneNumber) {
 };
 
 
-// 로그인 API
+// 3. 로그인 - (ID 여부 확인, 비밀번호 확인, 토큰 생성 Service)
 exports.postLogIn = async function (ID, password) {
     try {
         // ID 여부 확인
@@ -107,9 +108,9 @@ exports.postLogIn = async function (ID, password) {
 
 
 
-//회원정보 수정(닉네임) API
+//4-1. 회원정보 수정 (닉네임) - (닉네임 변경) 
 
-exports.editNickname = async function (nickname, userIdx) {
+exports.patchNickname = async function (nickname, userIdx) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
         const editUserResult = await userDao.updateNicknameInfo(connection, nickname, userIdx)
@@ -122,9 +123,9 @@ exports.editNickname = async function (nickname, userIdx) {
     }
 }
 
-//회원정보 수정(비밀번호) API
+//4-2 . 회원정보 수정(비밀번호) - (비밀번호 HASHED 처리 -> 변경)
 
-exports.editPW = async function (userIdx,originPassword,newPassword) {
+exports.patchPW = async function (userIdx,originPassword,newPassword) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
         
@@ -157,9 +158,9 @@ exports.editPW = async function (userIdx,originPassword,newPassword) {
     }
 }
 
-//회원정보 수정(전화번호) API
+//4-3. 회원정보 수정(전화번호) - (전화번호 변경)
 
-exports.editPhone = async function (phoneNumber, userIdx) {
+exports.patchPhone = async function (phoneNumber, userIdx) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
         
@@ -177,9 +178,9 @@ exports.editPhone = async function (phoneNumber, userIdx) {
     }
 }
 
-//회원탈퇴 API
+//5. 회원탈퇴 - (비밀번호 확인 이후 탈퇴)
 
-exports.unregister = async function (password, userIdx) {
+exports.patchUnregister = async function (password, userIdx) {
     try{
         const connection = await pool.getConnection(async (conn) => conn);
 
