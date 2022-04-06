@@ -2,38 +2,38 @@ module.exports = function(app){
     const user = require('./userController');
     const jwtMiddleware = require('../../../config/jwtMiddleware');
 
-    // 1. 회원가입API
-    app.post('/app/user/register', user.postUsers);
+    // 0. 회원가입
+    app.post('/app/user/register', user.userRegister);
 
-    // 2. 중복 ID 확인 
-    app.get('/app/user/duplicate-id',user.getDuplicateID);
+    // 1. 중복 ID 확인 
+    app.get('/app/user/duplicate-id',user.userDuplicateID);
 
-    // 3. 닉네임 확인
-    app.get('/app/user/check-nickname',user.getNickname);
+    // 2. 닉네임 확인
+    app.get('/app/user/check-nickname',user.userNickname);
 
-    //4. 로그인 
-    app.post('/app/user/login',user.postLogin);
+    //3. 로그인 
+    app.post('/app/user/login',user.userLogin);
 
-    //5. 회원정보 수정 (닉네임)
-    app.patch('/app/user/modi-nickname', jwtMiddleware, user.patchModiNickname);
+    //3-1.자동로그인
+    app.get('/app/user/autologin',jwtMiddleware, user.userAutoLogin);
 
-    //6. 회원정보 수정 (비밀번호)
-    app.patch('/app/user/modi-password',jwtMiddleware, user.patchModiPW);
+    //4-1. 회원정보 수정 (닉네임)
+    app.patch('/app/user/modi-nickname', jwtMiddleware, user.userModiNickname);
 
-    //7. 회원정보 수정 (전화번호)
-    app.patch('/app/user/modi-phone',jwtMiddleware, user.patchModiPhone);
+    //4-2. 회원정보 수정 (비밀번호)
+    app.patch('/app/user/modi-password',jwtMiddleware, user.userModiPW);
 
-    //8. 회원탈퇴
-    app.patch('/app/user/unregister',jwtMiddleware, user.deleteUnregister);
+    //4-3. 회원정보 수정 (전화번호)
+    app.patch('/app/user/modi-phone',jwtMiddleware, user.userModiPhone);
 
-    //9.자동로그인
-    app.get('/app/user/autologin',jwtMiddleware, user.autoLogin);
+    //5. 회원탈퇴
+    app.patch('/app/user/unregister',jwtMiddleware, user.userUnregister);
 
-    //10.아이디찾기
-    app.get('/app/user/find-id',user.getFindID);
+    //20.아이디찾기
+    app.get('/app/user/find-id',user.userFindID);
 
-    //11.비밀번호찾기
-    app.get('/app/user/find-password',user.getFindPW);
+    //21.비밀번호찾기
+    app.get('/app/user/find-password',user.userFindPW);
 
 };
 

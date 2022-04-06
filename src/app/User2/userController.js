@@ -14,15 +14,15 @@ var regExpSpecial = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;//�
 
 
 /**
- * API No. 1
+ * API No. 0
  * API Name : 회원가입 API
  * [POST] /app/user/register
+ * body: name,nickname,ID,password,phoneNumber
  */
+
 exports.userRegister = async function (req, res) {
 
-    /**
-     * Body: name,nickname,ID,password,phoneNumber
-     */
+
     const {name,nickname,ID,password,phoneNumber} = req.body;
 
     // 빈 값 체크
@@ -105,7 +105,7 @@ exports.userRegister = async function (req, res) {
 
 
     // register 함수 실행을 통한 결과 값을 registerResponse에 저장
-    const registerResponse = await userService.register(
+    const registerResponse = await userService.postRegister(
         name,
         nickname,
         ID,
@@ -118,9 +118,10 @@ exports.userRegister = async function (req, res) {
 };
 
 /**
- * API No. 2
+ * API No. 1
  * API Name : 중복 ID 확인 
  * [GET] /app/user/duplicate-id
+ * query string : ID
  */
 
 exports.userDuplicateID = async function (req, res) {
@@ -163,9 +164,10 @@ exports.userDuplicateID = async function (req, res) {
 
 
 /**
- * API No. 10
+ * API No. 20
  * API Name : 아이디 찾기 
  * [GET] /app/user/find-id
+ * query string : name
  */
 
 exports.userFindID = async function(req, res) {
@@ -222,9 +224,10 @@ exports.userFindID = async function(req, res) {
 };
 
 /**
- * API No. 11
+ * API No. 21
  * API Name : 비밀번호 찾기
  * [GET] /app/user/find-password
+ * query string : name, phoneNumber, ID
  */
 
  exports.userFindPW = async function(req, res) {
@@ -291,9 +294,10 @@ exports.userFindID = async function(req, res) {
 
 
 /**
- * API No. 3
+ * API No. 2
  * API Name : 닉네임 확인
  * [GET] /app/user/check-nickname
+ * query string : nickname
  */
 
 exports.userNickname = async function(req, res) {
@@ -342,12 +346,13 @@ exports.userNickname = async function(req, res) {
 
 
 /**
- * API NO. 4
+ * API NO. 3
  * API Name : 로그인
  * [POST] /app/user/login
+ * body: ID, password
  */
 
-exports.postLogin = async function (req, res) {
+exports.userLogin = async function (req, res) {
 
     const ID = req.body.ID;
     const password = req.body.password;
@@ -366,12 +371,13 @@ exports.postLogin = async function (req, res) {
 }
 
 /**
- * API No. 9
+ * API No. 3-1
  * API Name : 자동로그인
  * [GET] /app/user/autologin
+ * path variable : userIdx
  */
 
-exports.autoLogin = async function (req, res) {
+exports.userAutoLogin = async function (req, res) {
     const userIdx = req.verifiedToken.userIdx;
     console.log(userIdx);
     return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
@@ -380,14 +386,14 @@ exports.autoLogin = async function (req, res) {
 
 
 /**
- * API NO.5
+ * API NO.4-1
  * API Name : 회원정보 수정 (닉네임)
  * [PATCH] /app/user/modi-nickname/:userIdx
  * path variable : userIdx
  * body : nickname
  */
 
-exports.patchModiNickname = async function (req, res) {
+exports.userModiNickname = async function (req, res) {
 
     const userIdx = req.verifiedToken.userIdx;
     
@@ -417,22 +423,22 @@ exports.patchModiNickname = async function (req, res) {
     }  
 
 
-    const editNickname = await userService.editNickname(nickname, userIdx);
-    return res.send(editNickname);
+    const patchNickname = await userService.patchNickname(nickname, userIdx);
+    return res.send(patchNickname);
 
     
 
 }
 
 /**
- * API NO.6
+ * API NO.4-2
  * API Name : 회원정보 수정(비밀번호)
  * [PATCH] /app/user/modi-password/:userIdx
  * path variable : userIdx
  * body : password
  */
 
-exports.patchModiPW = async function (req, res) {
+exports.userModiPW = async function (req, res) {
 
     const userIdx = req.verifiedToken.userIdx;
     
@@ -468,14 +474,14 @@ exports.patchModiPW = async function (req, res) {
 
 
         
-    const editPW = await userService.editPW(
+    const patchPW = await userService.patchPW(
         userIdx, 
         originPassword,
         newPassword,
         checkPassword,
     );
 
-    return res.send(editPW)
+    return res.send(patchPW)
 
 }
 
@@ -483,14 +489,14 @@ exports.patchModiPW = async function (req, res) {
 
 
 /**
- * API NO. 7
+ * API NO. 4-3
  * API Name : 회원정보 수정 (전화번호)
  * [PATCH] /app/user/modi-phone/:userIdx
  * path variable : userIdx
  * body : phoneNumber
  */
 
-exports.patchModiPhone = async function (req, res) {
+exports.userModiPhone = async function (req, res) {
 
     const userIdx = req.verifiedToken.userIdx;
 
@@ -509,21 +515,21 @@ exports.patchModiPhone = async function (req, res) {
     else if (!regExpcheck.test(phoneNumber))
         return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE));
         
-    const editPhone = await userService.editPhone(phoneNumber, userIdx);
-    return res.send(editPhone);
+    const patchPhone = await userService.patchPhone(phoneNumber, userIdx);
+    return res.send(patchPhone);
 }
 
 
 
 /**
- * API No. 8
+ * API No. 5
  * API Name : 회원탈퇴 
- * [DELETE] /app/user/unregister:userIdx
+ * [PATCH] /app/user/unregister:userIdx
  * path variable : userIdx
  * body : password
  */
 
-exports.deleteUnregister = async function (req, res) {
+exports.userUnregister = async function (req, res) {
 
     const userIdx = req.verifiedToken.userIdx;
 
@@ -532,8 +538,8 @@ exports.deleteUnregister = async function (req, res) {
     if (!password)
             res.send(errResponse(baseResponse.UNREGISTER_PW_EMPTY));
 
-    const unregister = await userService.unregister(password, userIdx);
-    return res.send(unregister);
+    const patchUnregister = await userService.patchUnregister(password, userIdx);
+    return res.send(patchUnregister);
 
 }
 
