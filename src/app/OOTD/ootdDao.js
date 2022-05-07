@@ -1,7 +1,6 @@
 
-// 새롭게 추가한 함수를 아래 부분에서 export 해줘야 외부의 Provider, Service 등에서 사용가능합니다.
 
-// AddedClothes 중복 체크
+// 입력한 content와의 중복 블럭 여부 체크 (content의 idx 반환) - AddedClothes
 async function selectClothesTag(connection, userIdx, Content) {
   const selectTagParams = [userIdx, Content, "active"];// (userAdded)
 
@@ -17,7 +16,8 @@ async function selectClothesTag(connection, userIdx, Content) {
   return tagRows;
 };
 
-// PWW 중복 체크
+
+// 입력한 content와의 중복 블럭 여부 체크 (content의 idx 반환) - PWW 중복 체크
 async function selectPwwTag(connection, userIdx, flag, Content) {
   var selectPwwTagListQuery =``;
   if(flag == "Place"){
@@ -53,7 +53,7 @@ async function selectPwwTag(connection, userIdx, flag, Content) {
 };
 
 
-
+// 새로운 블럭 추가 전 개수 체크 (총 개수 반환) - clothes
 async function selectClothesNumber(connection, userIdx, flag) {  
 
   const selectTagNumParams = [userIdx, flag, "active"];// (userAdded)
@@ -72,6 +72,7 @@ async function selectClothesNumber(connection, userIdx, flag) {
 
 
 
+// 새로운 블럭 추가 전 개수 체크 (총 개수 반환) - PWW
 async function selectPwwNumber(connection, userIdx, flag) {
   var selectPwwTagListQuery =``;
   if(flag == "Place"){
@@ -106,6 +107,8 @@ async function selectPwwNumber(connection, userIdx, flag) {
   return tagNumRows;
 };
 
+
+// API 9 : 사용자 추가 블럭 등록 API - Clothes 블럭 추가
 async function insertAddedClothes(connection, insertNewBlockParams) {
   const insertClothesQuery = `
       INSERT INTO AddedClothes(userIdx, bigClass, smallClass)
@@ -119,6 +122,7 @@ async function insertAddedClothes(connection, insertNewBlockParams) {
   return insertClothesQueryRow[0];
 }
 
+// API 9 : 사용자 추가 블럭 등록 API - Place 블럭 추가
 async function insertAddedPlace(connection, insertNewBlockParams) {
   const insertPlaceQuery = `
       INSERT INTO AddedPlace(userIdx, place)
@@ -132,6 +136,7 @@ async function insertAddedPlace(connection, insertNewBlockParams) {
   return insertPlaceQueryRow[0];
 }
 
+// API 9 : 사용자 추가 블럭 등록 API - Weather 블럭 추가
 async function insertAddedWeather(connection, insertNewBlockParams) {
   const insertWeatherQuery = `
       INSERT INTO AddedWeather(userIdx, weather)
@@ -145,6 +150,7 @@ async function insertAddedWeather(connection, insertNewBlockParams) {
   return insertWeatherQueryRow[0];
 }
 
+// API 9 : 사용자 추가 블럭 등록 API - Who 블럭 추가
 async function insertAddedWho(connection, insertNewBlockParams) {
   const insertWhoQuery = `
       INSERT INTO AddedWho(userIdx, who)
@@ -211,8 +217,9 @@ async function selectPwwExist(connection, userIdx, flag, Content) {
   return tagRows;
 }
 
-//
 
+
+// API 9-1 : 사용자 추가 블럭 삭제 API - Clothes 블럭 삭제
 async function deleteAddedClothes(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, flag, Content];
     const updateBlockQuery = `
         UPDATE AddedClothes 
@@ -223,6 +230,7 @@ async function deleteAddedClothes(connection, deleteNewBlockParams){  //deleteNe
     return updateBlockRow[0];
 }
 
+// API 9-1 : 사용자 추가 블럭 삭제 API - Place 블럭 삭제
 async function deleteAddedPlace(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, Content];
   const updateBlockQuery = `
       UPDATE AddedPlace
@@ -233,6 +241,7 @@ async function deleteAddedPlace(connection, deleteNewBlockParams){  //deleteNewB
   return updateBlockRow[0];
 }
 
+// API 9-1 : 사용자 추가 블럭 삭제 API - Weather 블럭 삭제
 async function deleteAddedWeather(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, Content];
   const updateBlockQuery = `
       UPDATE AddedWeather 
@@ -243,6 +252,7 @@ async function deleteAddedWeather(connection, deleteNewBlockParams){  //deleteNe
   return updateBlockRow[0];
 }
 
+// API 9-1 : 사용자 추가 블럭 삭제 API - Who 블럭 삭제
 async function deleteAddedWho(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, Content];
   const updateBlockQuery = `
       UPDATE AddedWho
@@ -255,7 +265,7 @@ async function deleteAddedWho(connection, deleteNewBlockParams){  //deleteNewBlo
 
 
 
-//OOTD 존재 체크 
+// OOTD 삭제하기 전 존재하는 OOTD인지 체크 (ootd의 idx반환)
 async function selectOotdExist(connection, selectOotdExistParams) {
   const selectOotdExistQuery = `
         SELECT ootdIdx 
@@ -270,6 +280,7 @@ async function selectOotdExist(connection, selectOotdExistParams) {
 }
 
 
+// API 11 :  OOTD 삭제하기 API - ootd 삭제
 async function deleteOotdData(connection, userIdx, ootdIdx){  //
   
   const deleteOotdParams = [userIdx, ootdIdx];
@@ -283,6 +294,8 @@ async function deleteOotdData(connection, userIdx, ootdIdx){  //
 
     return updateOotdRow[0];
 }
+
+// API 11 :  OOTD 삭제하기 API - Clothes 삭제
 async function deleteClothesData(connection, ootdIdx){  //
   const updateClothesQuery= `
       UPDATE Clothes
@@ -295,6 +308,7 @@ async function deleteClothesData(connection, ootdIdx){  //
   
 }
 
+// API 11 :  OOTD 삭제하기 API - photo 삭제
 async function deletePhotoData(connection, ootdIdx){  //
   const updatePhotoQuery= `
       UPDATE Photo, OOTD
@@ -309,6 +323,7 @@ async function deletePhotoData(connection, ootdIdx){  //
 }
 
 
+// API 11 :  OOTD 삭제하기 API - Place 삭제
 async function deletePlaceData(connection, ootdIdx){  //
   const updatePlaceQuery= `
       UPDATE Place
@@ -320,6 +335,7 @@ async function deletePlaceData(connection, ootdIdx){  //
   return updatePlaceRow[0];  
 }
 
+// API 11 :  OOTD 삭제하기 API - Weather 삭제
 async function deleteWeatherData(connection, ootdIdx){  //
   const updateWeatherQuery= `
       UPDATE Weather
@@ -331,6 +347,7 @@ async function deleteWeatherData(connection, ootdIdx){  //
   return updateWeatherRow[0];  
 }
 
+// API 11 :  OOTD 삭제하기 API - Who 삭제
 async function deleteWhoData(connection, ootdIdx){  //
   const updateWhoQuery= `
       UPDATE Who
@@ -348,6 +365,7 @@ async function deleteWhoData(connection, ootdIdx){  //
 
 
 
+// 새로운 블럭 추가 전 기본 블럭에 존재하는 블럭인지 체크 (idx 반환)
 async function selectFixedClothesTag(connection, Content) {
 
   const selectFixedClothesTagListQuery = `
@@ -362,7 +380,7 @@ async function selectFixedClothesTag(connection, Content) {
   return tagRows;
 };
 
-// PWW 중복 체크
+// 새로운 블럭 추가 전 기본 블럭에 존재하는 블럭인지 체크 (idx 반환)
 async function selectFixedPwwTag(connection, pwwflag, Content) {
   var selectFixedPwwTagListQuery =``;
   if(pwwflag == "Place"){

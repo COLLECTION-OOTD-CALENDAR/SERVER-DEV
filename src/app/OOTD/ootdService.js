@@ -17,7 +17,10 @@ const crypto = require("crypto");
 
 
 
-
+/**
+ * API No. 9
+ * API Name : 사용자 추가 블럭 등록 API
+ */
 
 exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
     try {    
@@ -102,6 +105,12 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
 };
 
 
+
+
+/**
+ * API No. 9-1
+ * API Name : 사용자 추가 블럭 삭제 API 
+ */
 exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
     try {    
         // 1. 블럭 Content 존재 확인  
@@ -177,7 +186,10 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
 
 };
 
-
+/**
+ * API No. 11
+ * API Name : OOTD 삭제하기 API
+ */
 exports.deleteOotd = async function (userIdx, date) {
     try {    
         

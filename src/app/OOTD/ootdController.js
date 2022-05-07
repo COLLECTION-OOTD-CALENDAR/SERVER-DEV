@@ -13,9 +13,11 @@ var blank_pattern = /^\s+|\s+$/g;
 
 
 /**
- * API No. 1
- * API Name : 사용자 추가 블럭 API
- * [POST] /app/ootd/new-block/:userIdx?Clothes=?&PWW=?
+ * API No. 9
+ * API Name : 사용자 추가 블럭 등록 API
+ * [POST] /app/ootd/new-block
+ * query string : Clothes, PWW
+ * body : content
  */
 exports.postNewBlock = async function (req, res) {
     // 1. jwt token 검증 
@@ -125,7 +127,13 @@ exports.postNewBlock = async function (req, res) {
 };
 
 
-
+/**
+ * API No. 9-1
+ * API Name : 사용자 추가 블럭 삭제 API 
+ * [PATCH] /app/ootd/new-block
+ * query string : Clothes, PWW
+ * body : content
+ */
 exports.patchBlock = async function (req, res) {
 
     // 1. jwt token 검증 
@@ -202,7 +210,12 @@ exports.patchBlock = async function (req, res) {
 
 };
 
-
+/**
+ * API No. 11
+ * API Name : OOTD 삭제하기 API
+ * [PATCH] /app/ootd/deletion
+ * query string : date
+ */
 exports.patchOotd = async function (req, res) {
 
     // 1. jwt token 검증 
@@ -236,6 +249,12 @@ exports.patchOotd = async function (req, res) {
 
 };
 
+
+/**
+ * API No : ARCHIVED
+ * API Name : s3 업로드 presignedURL 부여 API
+ * [GET] /app/ootd/s3-authentication
+ */
 exports.getPreSignUrl = async function (req,res) {
     const userIdx = req.verifiedToken.userIdx;
 
