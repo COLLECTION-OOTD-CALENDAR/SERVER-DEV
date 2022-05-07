@@ -11,7 +11,6 @@ module.exports = function(app){
     app.post('/app/ootd/upload-photo', upload.single('image'), function(req, res)
     {   
         const Img = req.file;
-        console.log('uploaded iamge : ', Img.location);
         
         res.send(response(baseResponse.SUCCESS_IMAGE_URL, {'s3 imageUrl' : Img.location}));               
     });

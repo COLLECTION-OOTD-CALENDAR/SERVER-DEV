@@ -47,9 +47,6 @@ exports.getSearchResult = async function (req, res) {
         return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE));
     }
 
-    console.log(`PWWC value : `, PWWC, `PWWC type : `, typeof(PWWC) );
-
-
     /**
      * Query String: keyword1, keyword2, color1, color2             //startAt, endAt 
      */

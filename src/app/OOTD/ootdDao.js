@@ -290,7 +290,6 @@ async function deleteOotdData(connection, userIdx, ootdIdx){  //
       WHERE OOTD.userIdx = ? AND OOTD.ootdIdx = ?;
       `;
     const updateOotdRow = await connection.query(updateOotdQuery, deleteOotdParams);
-    console.log(`Dao.ootd deleted :`, ootdIdx);
 
     return updateOotdRow[0];
 }
@@ -303,7 +302,6 @@ async function deleteClothesData(connection, ootdIdx){  //
       WHERE Clothes.ootdIdx = ?;
       `;
   const updateClothesRow = await connection.query(updateClothesQuery, ootdIdx);
-  console.log(`Dao.clothes deleted :`, ootdIdx);
   return updateClothesRow[0];
   
 }
@@ -317,7 +315,6 @@ async function deletePhotoData(connection, ootdIdx){  //
       `;
   const deletePhotoParams = [0, ootdIdx]
   const updatePhotoRow = await connection.query(updatePhotoQuery, deletePhotoParams);
-  console.log(`Dao.photo deleted :`, ootdIdx);
 
   return updatePhotoRow[0];  
 }
@@ -331,7 +328,6 @@ async function deletePlaceData(connection, ootdIdx){  //
       WHERE Place.ootdIdx = ?;
       `;
   const updatePlaceRow = await connection.query(updatePlaceQuery, ootdIdx);
-  console.log(`Dao.place deleted :`, ootdIdx);
   return updatePlaceRow[0];  
 }
 
@@ -343,7 +339,6 @@ async function deleteWeatherData(connection, ootdIdx){  //
       WHERE Weather.ootdIdx = ?;
       `;
   const updateWeatherRow = await connection.query(updateWeatherQuery, ootdIdx);
-  console.log(`Dao.Weather deleted :`, ootdIdx);
   return updateWeatherRow[0];  
 }
 
@@ -355,7 +350,6 @@ async function deleteWhoData(connection, ootdIdx){  //
       WHERE Who.ootdIdx = ?;
       `;
   const updateWhoRow = await connection.query(updateWhoQuery, ootdIdx);
-  console.log(`Dao.Who deleted :`, ootdIdx);
   return updateWhoRow[0];  
 }
 

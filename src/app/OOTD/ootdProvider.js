@@ -36,7 +36,6 @@ exports.tagRedundantCheck = async function(userIdx, Clothes, PWW, Content){
         flag = "Who";
 
 
-      console.log(`providerTRC flag : ${flag}`);
       const pwwRedundantListResult = await ootdDao.selectPwwTag(connection, userIdx, flag, Content);
       connection.release();
 
@@ -72,7 +71,6 @@ exports.tagNumberCheck = async function(userIdx, Clothes, PWW){
       else if(Clothes == 3) 
           flag = "Etc"; 
       
-      console.log(`providerTNC flag : ${flag}`);
       const clothesNumberListResult = await ootdDao.selectClothesNumber(connection, userIdx, flag);
       connection.release();
       
@@ -89,7 +87,6 @@ exports.tagNumberCheck = async function(userIdx, Clothes, PWW){
         flag = "Who";
 
       
-      console.log(`providerTNC flag : ${flag}`);
       const pwwNumberListResult = await ootdDao.selectPwwNumber(connection, userIdx, flag);
       connection.release();
 
@@ -118,7 +115,6 @@ exports.tagExistCheck = async function(userIdx, Clothes, PWW, Content){
         flag = "Etc"; 
     
     
-    console.log(`providerTEC flag : ${flag}`);
     const clothesExistListResult = await ootdDao.selectClothesExist(connection, userIdx, flag, Content);
     connection.release();
 
@@ -135,7 +131,6 @@ exports.tagExistCheck = async function(userIdx, Clothes, PWW, Content){
       flag = "Who";
 
 
-    console.log(`providerTEC flag : ${flag}`);
     const pwwExistListResult = await ootdDao.selectPwwExist(connection, userIdx, flag, Content);
     connection.release();
 
@@ -191,7 +186,6 @@ exports.fixedRedundantCheck = async function(Clothes, PWW, Content){
         pwwflag = "Who";
 
 
-      console.log(`providerFTRC flag : ${pwwflag}`);
       const fixedPwwRedundantListResult = await ootdDao.selectFixedPwwTag(connection, pwwflag, Content);
       connection.release();
 

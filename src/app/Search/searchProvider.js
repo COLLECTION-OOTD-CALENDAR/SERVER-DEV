@@ -43,7 +43,6 @@ exports.historyNumCheck = async function (connection, userIdx, PWWC) {
  // const connection = await pool.getConnection(async (conn) => conn);
   const historyListResult = await searchDao.selectHistory(connection, userIdx, PWWC);
  // connection.release();
-  console.log(`historyNumCheck : `, historyListResult.length);
 
   return historyListResult;
   
@@ -62,7 +61,6 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
     if(PWWC == 0){          //place      
         //검색결과 가져오기
         searchListResult = await searchDao.selectSearchPlaceList(connection, userIdx, keyword1);
-        console.log(`Place searchListResult length : `, searchListResult.length);     
 
     }
 
@@ -70,7 +68,6 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
     else if(PWWC == 1){     //weather
 
       searchListResult = await searchDao.selectSearchWeatherList(connection, userIdx, keyword1);
-      console.log(`Weather searchListResult length : `, searchListResult.length);
 
     }
 
@@ -78,7 +75,6 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
     else if(PWWC == 2){     //who
       
       searchListResult = await searchDao.selectSearchWhoList(connection, userIdx, keyword1);
-      console.log(`Who searchListResult length : `, searchListResult.length);
 
     }
 
@@ -86,7 +82,6 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
     else if (PWWC == 3){    //color
     
       searchListResult = await searchDao.selectSearchColorList(connection, userIdx, keyword1, color1);
-      console.log(`Clothes searchListResult length : `, searchListResult.length);
 
     }
     // connection 해제
@@ -240,7 +235,6 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
 
 
 
-    console.log('[searchProvider] getSearchResult finish');
     return ootds;
 
   }catch(err){
