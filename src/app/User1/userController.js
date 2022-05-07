@@ -16,8 +16,9 @@ var regExpSpecial = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;//�
 
 
 /**
- * API Name : 비밀번호 재설정 
- * [PATCH] /app/user/reset-password/:userIdx
+ * API No. 22
+ * API Name : 비밀번호 재설정 API
+ * [PATCH] /app/user/reset-password 
  * body : newPassword, checkPassword
  */
 

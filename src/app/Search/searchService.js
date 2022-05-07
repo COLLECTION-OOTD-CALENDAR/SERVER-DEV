@@ -13,6 +13,10 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
 
+/**
+ * API No. 17
+ * API Name : 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 API
+ */
 exports.postNewHistory = async function (userIdx, PWWC, keyword1, keyword2, color1, color2) {
     try {
         

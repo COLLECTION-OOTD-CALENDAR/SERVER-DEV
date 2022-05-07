@@ -9,7 +9,9 @@ const {response, errResponse} = require("../../../config/response");
 /**
  * API No. 17
  * API Name : 검색 결과 조회 API
- * [GET] /app/search/:PWWC?keyword1=?&keyword2=?&color1=?&color2=?          //&startAt=?&endAt=?
+ * [GET] /app/search/:PWWC
+ * path variable : PWWC
+ * query string : keyword1, keyword2, color1, color2, startAt, endAt
  */
 exports.getSearchResult = async function (req, res) {
 
