@@ -2,7 +2,7 @@ module.exports = function(app){
     const ootd = require('./ootdController');
     const jwtMiddleware = require('../../../config/jwtMiddleware');
     
-    const {response, errResponse} = require("../../../config/response");    
+    const {response} = require("../../../config/response");    
     const baseResponse = require("../../../config/baseResponseStatus");
     const upload = require('../../../config/Multer');
 

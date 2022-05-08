@@ -1,13 +1,9 @@
-const jwtMiddleware = require("../../../config/jwtMiddleware");
-const ootdProvider = require("./ootdProvider");
 const ootdService = require("./ootdService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
 const {PreSignUrl} = require('../../../config/s3Authentication');
 const {logger} = require("../../../config/winston");
-
-const regexEmail = require("regex-email");
 
 var blank_pattern = /^\s+|\s+$/g;
 
