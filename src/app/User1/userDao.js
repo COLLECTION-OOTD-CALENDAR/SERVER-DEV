@@ -1,6 +1,6 @@
 
 
-//회원정보 수정 (비밀번호) update 함수
+// 22. 비밀번호 재설정 API
 async function updatePwdReset(connection, updatePWParams) {
   const updatePasswordQuery = `
     UPDATE User 

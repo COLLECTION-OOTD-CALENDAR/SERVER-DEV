@@ -1,4 +1,5 @@
 
+// history 추가/삭제 위한 개수 체크 (history의 idx 목록)
 async function selectHistory(connection, userIdx, PWWC) {
 
   const selectHistoryQuery = `
@@ -13,7 +14,7 @@ async function selectHistory(connection, userIdx, PWWC) {
   return historyRows;
 }
 
-
+// history 추가/삭제 위한 중복 체크 (history의 idx반환)
 async function selectOldHistory(connection, userIdx, PWWC, keyword, color) {
   var selectOldHistoryParams = [];
   var selectOldHistoryQuery =``;
@@ -41,7 +42,7 @@ async function selectOldHistory(connection, userIdx, PWWC, keyword, color) {
 
   return oldHistoryRows[0];
 };
-
+// history 처리 - 가장 오래된 history 삭제
 async function deleteOneHistory(connection, userIdx, PWWC, index){
 
   const updateOneHistQuery = `
@@ -56,6 +57,7 @@ async function deleteOneHistory(connection, userIdx, PWWC, index){
   return updateOneHistRow[0]; 
 }
 
+// history 처리 - history 추가
 async function insertHistory(connection, insertNewHistoryParams) {
   //insertNewHistoryParams = [userIdx, PWWC, keyword, color];
   const insertHistoryQuery = `
@@ -192,6 +194,7 @@ async function selectFixedClothesCheck(connection, keyword1) {
 
 
 
+// API 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 API  - Place
 async function selectSearchPlaceList(connection, userIdx, keyword1){
   const selectSearchPlaceQuery = `
     SELECT distinct O.ootdIdx, O.date, O.lookname, O.lookpoint, O.comment,
@@ -259,6 +262,7 @@ async function selectSearchPlaceList(connection, userIdx, keyword1){
 
 
 
+// API 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 API  - Weather
 async function selectSearchWeatherList(connection, userIdx, keyword1){
   const selectSearchWeatherQuery = `
       SELECT distinct O.ootdIdx, O.date, O.lookname, O.lookpoint, O.comment,
@@ -321,6 +325,7 @@ async function selectSearchWeatherList(connection, userIdx, keyword1){
 
 
 
+// API 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 API  - Who
 async function selectSearchWhoList(connection, userIdx, keyword1){
   const selectSearchWhoQuery = `
       SELECT distinct O.ootdIdx, O.date, O.lookname, O.lookpoint, O.comment,
@@ -381,6 +386,8 @@ async function selectSearchWhoList(connection, userIdx, keyword1){
   return searchWhoRows;
 };
 
+
+// API 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 API  - Color
 async function selectSearchColorList(connection, userIdx, keyword1, color1){
   const selectSearchColorQuery = `
       SELECT distinct O.ootdIdx, O.date, O.lookname, O.lookpoint, O.comment,

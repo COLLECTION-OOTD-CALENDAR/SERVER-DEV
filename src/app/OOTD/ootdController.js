@@ -1,5 +1,3 @@
-const jwtMiddleware = require("../../../config/jwtMiddleware");
-const ootdProvider = require("./ootdProvider");
 const ootdService = require("./ootdService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
@@ -7,17 +5,17 @@ const {response, errResponse} = require("../../../config/response");
 const {PreSignUrl} = require('../../../config/s3Authentication');
 const {logger} = require("../../../config/winston");
 
-const regexEmail = require("regex-email");
-
 var blank_pattern = /^\s+|\s+$/g;
 
 
 /**
- * API No. 1
- * API Name : 사용자 추가 블럭 API
- * [POST] /app/ootd/new-block/:userIdx?Clothes=?&PWW=?
+ * API No. 9
+ * API Name : 사용자 추가 블럭 등록 API
+ * [POST] /app/ootd/new-block
+ * query string : Clothes, PWW
+ * body : content
  */
-exports.postNewBlock = async function (req, res) {
+exports.ootdNewBlock = async function (req, res) {
     // 1. jwt token 검증 
 
     const userIdx = req.verifiedToken.userIdx;
@@ -46,7 +44,6 @@ exports.postNewBlock = async function (req, res) {
 
     Content = content.toString().trim();
             
-    console.log(`trimmed content : ${Content}`);
 
     if(Content.length > 6){            
         return res.send(errResponse(baseResponse.TAG_LENGTH));
@@ -56,14 +53,6 @@ exports.postNewBlock = async function (req, res) {
     // 3. Clothes, PWW flag Null number형 형식 체크 - Number():변수가 정의되지 않았거나 숫자로 변환할 수 없는 경우 NaN반환
     var Clothes = req.query.Clothes;  //0: Top, 1: Bottom, 2: Shoes, 3: etc
     var PWW = req.query.PWW;          //0: Place, 1: Weather, 2: Who
-
-    console.log(`Clothes : ${Clothes}`);
-    console.log(`Clothes : ${typeof(Clothes)}`);
-    console.log(`PWW :  ${PWW}`);
-    console.log(`PWW :  ${typeof(PWW)}`);
-
-
-    //if(( (!Clothes) && (Clothes != 0)) || ( (!PWW) && (PWW !=0) ) || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')) {
     
     
     if(Clothes == "" || PWW == "" || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')){
@@ -76,9 +65,6 @@ exports.postNewBlock = async function (req, res) {
     PWW = Number(PWW);
 
     
-    console.log(`Number(Clothes) : ${typeof(Clothes)}`);
-    console.log(`Number(PWW) :  ${typeof(PWW)}`);
-
     if(isNaN(Clothes) || isNaN(PWW) ){ //둘 중 하나가 숫자가 아님            
         return res.send(errResponse(baseResponse.QUERY_STRING_ERROR_TYPE));
     }
@@ -108,8 +94,7 @@ exports.postNewBlock = async function (req, res) {
     }
             
 
-    console.log(`controller Content : ${Content}`);
-    const newBlockResponse = await ootdService.createNewBlock(
+    const newBlockResponse = await ootdService.postNewBlock(
         userIdx,
         Clothes,
         PWW,
@@ -125,8 +110,14 @@ exports.postNewBlock = async function (req, res) {
 };
 
 
-
-exports.patchBlock = async function (req, res) {
+/**
+ * API No. 9-1
+ * API Name : 사용자 추가 블럭 삭제 API 
+ * [PATCH] /app/ootd/delete-block
+ * query string : Clothes, PWW
+ * body : content
+ */
+exports.ootdDeleteBlock = async function (req, res) {
 
     // 1. jwt token 검증 
 
@@ -146,8 +137,6 @@ exports.patchBlock = async function (req, res) {
 
     Content = content.toString().trim();
             
-    console.log(`trimmed content : ${Content}`);
-
     if(Content.length > 6){            
         return res.send(errResponse(baseResponse.TAG_LENGTH));
     }
@@ -156,10 +145,6 @@ exports.patchBlock = async function (req, res) {
     var Clothes = req.query.Clothes;  //0: Top, 1: Bottom, 2: Shoes, 3: etc
     var PWW = req.query.PWW;          //0: Place, 1: Weather, 2: Who
 
-    console.log(`Clothes : ${Clothes}`);
-    console.log(`Clothes : ${typeof(Clothes)}`);
-    console.log(`PWW :  ${PWW}`);
-    console.log(`PWW :  ${typeof(PWW)}`);
 
 
     
@@ -188,9 +173,6 @@ exports.patchBlock = async function (req, res) {
     }
 
 
-    console.log(`controller Content : ${Content}`);
-
-
     const deleteBlockResponse = await ootdService.deleteBlock(
         userIdx,
         Clothes,
@@ -202,8 +184,13 @@ exports.patchBlock = async function (req, res) {
 
 };
 
-
-exports.patchOotd = async function (req, res) {
+/**
+ * API No. 11
+ * API Name : OOTD 삭제하기 API
+ * [PATCH] /app/ootd/deletion
+ * query string : date
+ */
+exports.ootdDeletion = async function (req, res) {
 
     // 1. jwt token 검증 
 
@@ -236,16 +223,21 @@ exports.patchOotd = async function (req, res) {
 
 };
 
-exports.getPreSignUrl = async function (req,res) {
+
+/**
+ * API No : ARCHIVED
+ * API Name : s3 업로드 presignedURL 부여 API
+ * [GET] /app/ootd/s3-authentication
+ */
+exports.ootdS3Authentication = async function (req,res) {
     const userIdx = req.verifiedToken.userIdx;
 
     try{       
         const url = await PreSignUrl();
-        console.log('presignedURL return type :', typeof(url));
         return res.send(response(baseResponse.SUCCESS_S3_PRESIGNEDURL, {'preSignedUrl' : url}));
     }
     catch(err){
-        logger.error(`App - getPreSignUrl Controller error\n: ${err.message}`);
+        logger.error(`App - ootdS3Authentication Controller error\n: ${err.message}`);
         return res.send(errResponse(baseResponse.S3_ERROR));
     }
 };
