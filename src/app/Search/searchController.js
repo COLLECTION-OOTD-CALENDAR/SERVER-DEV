@@ -1,4 +1,3 @@
-const jwtMiddleware = require("../../../config/jwtMiddleware");
 const searchProvider = require("./searchProvider");
 const searchService = require("./searchService");
 const baseResponse = require("../../../config/baseResponseStatus");

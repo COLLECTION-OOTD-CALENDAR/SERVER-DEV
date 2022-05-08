@@ -1,4 +1,3 @@
-const userProvider = require("./userProvider");
 const userService = require("./userService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
