@@ -1,6 +1,5 @@
 const {logger} = require("../../../config/winston");
 const {pool} = require("../../../config/database");
-const secret_config = require("../../../config/secret");
 
 const searchProvider = require("./searchProvider");
 const searchDao = require("./searchDao");
@@ -9,8 +8,6 @@ const baseResponse = require("../../../config/baseResponseStatus");
 const {response} = require("../../../config/response");
 const {errResponse} = require("../../../config/response");
 
-const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
 
 
 /**
@@ -28,7 +25,7 @@ exports.postNewHistory = async function (userIdx, PWWC, keyword1, keyword2, colo
             
             //0. active 한 것중에 keyword1과 같은 history가 있는지 검사 -> 있으면 이전에 검색한것 inactive, 바로 새로 추가
             console.log(`redundant check 직전`);
-            let oldHistory1 = await searchProvider.historyRedudantCheck(connection, userIdx, PWWC, keyword1, color1);
+            let oldHistory1 = await searchProvider.checkHistoryRedundancy(connection, userIdx, PWWC, keyword1, color1);
             console.log(`oldHistory1 검사 - index :`, oldHistory1);
 
             if(oldHistory1){ //존재하는 경우
@@ -39,7 +36,7 @@ exports.postNewHistory = async function (userIdx, PWWC, keyword1, keyword2, colo
                 console.log(`deleted old redundant history - historyIdx `, oldHistory1 );            
             }
             else{
-                const historyRows = await searchProvider.historyNumCheck(connection, userIdx, PWWC);  
+                const historyRows = await searchProvider.checkHistoryNumber(connection, userIdx, PWWC);  
                 if(historyRows.length >= 20){
                     //가장 오래된 것 1개 삭제
                     let oldestIdx = historyRows[0];
@@ -55,7 +52,7 @@ exports.postNewHistory = async function (userIdx, PWWC, keyword1, keyword2, colo
 
             
             if(keyword2) {         //검색어 2개 일 경우 - history 20개 이상이면 1개 삭제, 미만이면 추가
-                let oldHistory2 = await searchProvider.historyRedudantCheck(connection, userIdx, PWWC, keyword2, color2);
+                let oldHistory2 = await searchProvider.checkHistoryRedundancy(connection, userIdx, PWWC, keyword2, color2);
                 console.log(`oldHistory2 검사 - index :`, oldHistory2);
     
                 if(oldHistory2){ //존재하는 경우
@@ -66,7 +63,7 @@ exports.postNewHistory = async function (userIdx, PWWC, keyword1, keyword2, colo
                     console.log(`deleted old redundant history 2 - historyIdx `, oldHistory2 );            
                 }
                 else{
-                    const historyRows2 = await searchProvider.historyNumCheck(connection, userIdx, PWWC);  
+                    const historyRows2 = await searchProvider.checkHistoryNumber(connection, userIdx, PWWC);  
                     if(historyRows2.length >= 20){
                         //가장 오래된 것 1개 삭제
                         let oldestIdx2 = historyRows2[0];

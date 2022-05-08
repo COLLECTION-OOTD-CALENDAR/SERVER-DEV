@@ -12,7 +12,7 @@ const {response, errResponse} = require("../../../config/response");
  * path variable : PWWC
  * query string : keyword1, keyword2, color1, color2, startAt, endAt
  */
-exports.getSearchResult = async function (req, res) {
+exports.searchPWWC = async function (req, res) {
 
     // color 배열
     const colorArr = [ "#d60f0f", "#f59a9a", "#ffb203", "#fde6b1", "#71a238", "#b7de89",
@@ -161,7 +161,7 @@ exports.getSearchResult = async function (req, res) {
 
 
     //2. 검색 결과 보여지기 @searchProvider - keyword1로 가져온 결과에서 keyword2가 null이 아니면 keyword2 포함하지 않는 것 제외하기
-    const searchResultResponse = await searchProvider.getSearchResult(
+    const searchResultResponse = await searchProvider.retrieveSearchResult(
         userIdx, PWWC, keyword1, keyword2, color1, color2, startAt, endAt
     );
 

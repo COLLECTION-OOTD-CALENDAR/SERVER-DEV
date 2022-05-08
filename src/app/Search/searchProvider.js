@@ -30,7 +30,7 @@ pushOotd
 
 
 // history 추가/삭제 위한 중복 체크 (history의 idx반환)
-exports.historyRedudantCheck = async function(connection, userIdx, PWWC, keyword, color){
+exports.checkHistoryRedundancy = async function(connection, userIdx, PWWC, keyword, color){
  // const connection = await pool.getConnection(async (conn) => conn);
   const historyRedundantResult = await searchDao.selectOldHistory(connection, userIdx, PWWC, keyword, color);
 // connection.release();
@@ -38,7 +38,7 @@ exports.historyRedudantCheck = async function(connection, userIdx, PWWC, keyword
 };
 
 // history 추가/삭제 위한 개수 체크 (history의 idx 목록)
-exports.historyNumCheck = async function (connection, userIdx, PWWC) {
+exports.checkHistoryNumber = async function (connection, userIdx, PWWC) {
 
  // const connection = await pool.getConnection(async (conn) => conn);
   const historyListResult = await searchDao.selectHistory(connection, userIdx, PWWC);
@@ -50,7 +50,7 @@ exports.historyNumCheck = async function (connection, userIdx, PWWC) {
 
 
 // API 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 API 
-exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, color1, color2, startAt, endAt){
+exports.retrieveSearchResult = async function (userIdx, PWWC, keyword1, keyword2, color1, color2, startAt, endAt){
   try{
     // connection 은 db와의 연결을 도와줌
     const connection = await pool.getConnection(async (conn) => conn);
