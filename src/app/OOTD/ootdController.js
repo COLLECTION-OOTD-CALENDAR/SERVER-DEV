@@ -15,7 +15,7 @@ var blank_pattern = /^\s+|\s+$/g;
  * query string : Clothes, PWW
  * body : content
  */
-exports.postNewBlock = async function (req, res) {
+exports.ootdNewBlock = async function (req, res) {
     // 1. jwt token 검증 
 
     const userIdx = req.verifiedToken.userIdx;
@@ -94,7 +94,7 @@ exports.postNewBlock = async function (req, res) {
     }
             
 
-    const newBlockResponse = await ootdService.createNewBlock(
+    const newBlockResponse = await ootdService.postNewBlock(
         userIdx,
         Clothes,
         PWW,
@@ -113,11 +113,11 @@ exports.postNewBlock = async function (req, res) {
 /**
  * API No. 9-1
  * API Name : 사용자 추가 블럭 삭제 API 
- * [PATCH] /app/ootd/new-block
+ * [PATCH] /app/ootd/delete-block
  * query string : Clothes, PWW
  * body : content
  */
-exports.patchBlock = async function (req, res) {
+exports.ootdDeleteBlock = async function (req, res) {
 
     // 1. jwt token 검증 
 
@@ -190,7 +190,7 @@ exports.patchBlock = async function (req, res) {
  * [PATCH] /app/ootd/deletion
  * query string : date
  */
-exports.patchOotd = async function (req, res) {
+exports.ootdDeletion = async function (req, res) {
 
     // 1. jwt token 검증 
 
@@ -229,7 +229,7 @@ exports.patchOotd = async function (req, res) {
  * API Name : s3 업로드 presignedURL 부여 API
  * [GET] /app/ootd/s3-authentication
  */
-exports.getPreSignUrl = async function (req,res) {
+exports.ootdS3Authentication = async function (req,res) {
     const userIdx = req.verifiedToken.userIdx;
 
     try{       
@@ -237,7 +237,7 @@ exports.getPreSignUrl = async function (req,res) {
         return res.send(response(baseResponse.SUCCESS_S3_PRESIGNEDURL, {'preSignedUrl' : url}));
     }
     catch(err){
-        logger.error(`App - getPreSignUrl Controller error\n: ${err.message}`);
+        logger.error(`App - ootdS3Authentication Controller error\n: ${err.message}`);
         return res.send(errResponse(baseResponse.S3_ERROR));
     }
 };

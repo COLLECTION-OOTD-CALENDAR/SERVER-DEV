@@ -17,19 +17,19 @@ module.exports = function(app){
 
 
     // 9. 사용자 추가 블럭 등록 API 
-    app.post('/app/ootd/new-block', jwtMiddleware, ootd.postNewBlock); //, jwtMiddleware, ootd.postNewBlock);
+    app.post('/app/ootd/new-block', jwtMiddleware, ootd.ootdNewBlock); 
     
     
     //9-1. 사용자 추가 블럭 삭제 API 
-    app.patch('/app/ootd/delete-block',jwtMiddleware, ootd.patchBlock);
+    app.patch('/app/ootd/delete-block',jwtMiddleware, ootd.ootdDeleteBlock); 
 
 
     //11. 사용자 추가 블럭 등록 API
-    app.patch('/app/ootd/deletion',jwtMiddleware, ootd.patchOotd);
+    app.patch('/app/ootd/deletion',jwtMiddleware, ootd.ootdDeletion); 
 
 
 
     //[archived] s3 업로드 presignedUrl 부여 API
-    app.get('/app/ootd/s3-authentication',jwtMiddleware, ootd.getPreSignUrl); 
+    app.get('/app/ootd/s3-authentication',jwtMiddleware, ootd.ootdS3Authentication); //getPreSignUrl
 
 };
