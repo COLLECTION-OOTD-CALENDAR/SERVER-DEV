@@ -156,7 +156,7 @@ exports.checkOotdExistence = async function(userIdx, date){
 
 
 // 새로운 블럭 추가 전 기본 블럭에 존재하는 블럭인지 체크 (idx 반환)
-exports.fixedRedundantCheck = async function(Clothes, PWW, Content){
+exports.checkFixedRedundancy = async function(Clothes, PWW, Content){
   /*    
 
    1) Clothes일 경우 AddedClothes에서 userId와 flag (bigClass)가 일치하는 열 중
