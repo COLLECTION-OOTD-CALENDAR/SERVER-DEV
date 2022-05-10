@@ -70,7 +70,7 @@ exports.delHistory = async function (req, res) {
         PWWC,
         content,
         type,
-        color,
+        color, 
     );
 
     return res.send(editHistory);
