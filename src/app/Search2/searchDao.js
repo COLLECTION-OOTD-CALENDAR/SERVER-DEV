@@ -36,12 +36,12 @@ async function updateHistoryAll(connection, userIdx, PWWC) {
 }
 
 // History 검색 내역검사 
-async function selectHistory(connection,userIdx,PWWC,content,color) {
+async function selectHistory(connection,userIdx,PWWC,content) {
   const selectHistoryQuery = `
     SELECT content
     FROM History
-    WHERE userIdx = ? AND PWWC = ? AND content = ? AND color = ?;`;
-  const IDRow = await connection.query(selectHistoryQuery, [userIdx,PWWC,content,color]);
+    WHERE userIdx = ? AND PWWC = ? AND content = ?;`;
+  const IDRow = await connection.query(selectHistoryQuery, [userIdx,PWWC,content]);
   console.log('IDRow:',IDRow);
   console.log('IDRow[0]:',IDRow[0]);
   console.log('[IDRow]:',[IDRow]);
