@@ -16,14 +16,14 @@ async function updateHistoryEach(connection, userIdx, PWWC,content) {
 
 // 검색 History 삭제하기 (개별 - COLOR) API
 
-// async function updateHistoryColor(connection, userIdx, PWWC,content,color) {
-//   const updateSearchQuery = `
-//     UPDATE History
-//     SET status = "inactive"
-//     WHERE userIdx= ? AND PWWC = ? AND content = ? AND color = ?;`;
-//   const updateSearchRow = await connection.query(updateSearchQuery, [userIdx, PWWC,content,color]);
-//   return updateSearchRow;
-// }
+async function updateHistoryColor(connection, userIdx, PWWC,content,color) {
+  const updateSearchQuery = `
+    UPDATE History
+    SET status = "inactive"
+    WHERE userIdx= ? AND PWWC = ? AND content = ? AND color = ?;`;
+  const updateSearchRow = await connection.query(updateSearchQuery, [userIdx, PWWC,content,color]);
+  return updateSearchRow;
+}
 
 // 검색 History 삭제하기 (전체) API
 async function updateHistoryAll(connection, userIdx, PWWC) {
@@ -36,12 +36,12 @@ async function updateHistoryAll(connection, userIdx, PWWC) {
 }
 
 // History 검색 내역검사 
-async function selectHistory(connection,userIdx,PWWC,conent) {
+async function selectHistory(connection,userIdx,PWWC,content,color) {
   const selectHistoryQuery = `
     SELECT content
     FROM History
     WHERE userIdx = ? AND PWWC = ? AND content = ? AND color = ?;`;
-  const IDRow = await connection.query(selectHistoryQuery, [userIdx,PWWC,conent]);
+  const IDRow = await connection.query(selectHistoryQuery, [userIdx,PWWC,content,color]);
   console.log('IDRow:',IDRow);
   console.log('IDRow[0]:',IDRow[0]);
   console.log('[IDRow]:',[IDRow]);
