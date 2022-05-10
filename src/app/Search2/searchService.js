@@ -19,12 +19,12 @@ exports.editHistory = async function(userIdx, PWWC, content, type) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
         if(type == 1){//개별삭제
-            // if(PWWC == 3){
-            //     const editHistoryColor = await searchDao.updateHistoryColor(connection, userIdx, PWWC,content,color);
-            // }
-
+            if(PWWC == 3){
+                const editHistoryColor = await searchDao.updateHistoryColor(connection, userIdx, PWWC,content,color);
+            }
+            else{
                 const editHistoryEach = await searchDao.updateHistoryEach(connection, userIdx, PWWC,content);
-
+            }
         } 
 
         if(type == 2){//전체삭제
@@ -32,7 +32,7 @@ exports.editHistory = async function(userIdx, PWWC, content, type) {
         }
 
         connection.release();
-        return response(baseResponse.SUCCESS_SEARCH_DELETION,{'PWWC': PWWC, 'content': content});
+        return response(baseResponse.SUCCESS_SEARCH_DELETION,{'PWWC': PWWC, 'content': content, 'color' : color});
 
     } catch (err) {
         logger.error(`App - editHistory Service error\n: ${err.message}`);
