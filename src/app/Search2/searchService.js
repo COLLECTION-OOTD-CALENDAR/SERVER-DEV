@@ -15,7 +15,7 @@ const crypto = require("crypto");
 
 // Service: Create, Update, Delete 비즈니스 로직 처리 
 // [PWWC] 검색 History 삭제하기(개별,전체) API
-exports.editHistory = async function(userIdx, PWWC, content, type) {
+exports.editHistory = async function(userIdx, PWWC, content, type, color) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
         if(type == 1){//개별삭제
