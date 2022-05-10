@@ -15,16 +15,16 @@ const crypto = require("crypto");
 
 // Service: Create, Update, Delete 비즈니스 로직 처리 
 // [PWWC] 검색 History 삭제하기(개별,전체) API
-exports.editHistory = async function(userIdx, PWWC, content, type,color) {
+exports.editHistory = async function(userIdx, PWWC, content, type) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
         if(type == 1){//개별삭제
-            if(PWWC == 3){
-                const editHistoryColor = await searchDao.updateHistoryColor(connection, userIdx, PWWC,content,color);
-            }
-            else{
+            // if(PWWC == 3){
+            //     const editHistoryColor = await searchDao.updateHistoryColor(connection, userIdx, PWWC,content,color);
+            // }
+
                 const editHistoryEach = await searchDao.updateHistoryEach(connection, userIdx, PWWC,content);
-            }
+
         } 
 
         if(type == 2){//전체삭제
@@ -32,7 +32,7 @@ exports.editHistory = async function(userIdx, PWWC, content, type,color) {
         }
 
         connection.release();
-        return response(baseResponse.SUCCESS_SEARCH_DELETION,{'PWWC': PWWC, 'content': content, 'color' : color});
+        return response(baseResponse.SUCCESS_SEARCH_DELETION,{'PWWC': PWWC, 'content': content});
 
     } catch (err) {
         logger.error(`App - editHistory Service error\n: ${err.message}`);
