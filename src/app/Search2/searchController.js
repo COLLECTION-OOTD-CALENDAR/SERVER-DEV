@@ -15,7 +15,7 @@ exports.delHistory = async function (req, res) {
     const PWWC = req.params.PWWC;
     const content = req.body.content;
     const type = req.query.type;
-    const color = req.body.color;
+    //const color = req.body.color;
 
     //삭제할 블럭이 지정되지 않았습니다.
     if(type == 1 && content === null){
@@ -56,22 +56,22 @@ exports.delHistory = async function (req, res) {
         return res.send(errResponse(baseResponse.QUERY_STRING_INVALID_VALUE));
     }
     //존재하지 않는 검색 내역입니다.
-    const historyRows = await searchProvider.historyCheck(
-        userIdx,
-        PWWC,
-        content,
-        color,
-    );
-    if (!historyRows){
-        return res.send(errResponse(baseResponse.SEARCH_NOT_EXIST));
-    }
+    // const historyRows = await searchProvider.historyCheck(
+    //     userIdx,
+    //     PWWC,
+    //     content,
+    //     color,
+    // );
+    // if (!historyRows){
+    //     return res.send(errResponse(baseResponse.SEARCH_NOT_EXIST));
+    // }
 
     const editHistory = await searchService.editHistory(
         userIdx,
         PWWC,
         content,
         type,
-        color, 
+        //color, 
     );
 
     return res.send(editHistory);
