@@ -55,8 +55,9 @@ exports.postLogIn = async function (ID, password) {
     try {
         // ID 여부 확인
         const IDRows = await userProvider.IDCheck(ID);
-         if (IDRows.length < 1) return errResponse(baseResponse.LOGIN_ID_WRONG);
-
+         if (IDRows.length < 1) {
+            return errResponse(baseResponse.LOGIN_ID_WRONG);
+         }
         const selectID = IDRows[0].ID
 
         // 비밀번호 확인 (입력한 비밀번호를 암호화한 것과 DB에 저장된 비밀번호가 일치하는 지 확인함)
