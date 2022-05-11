@@ -10,7 +10,7 @@ const {response} = require("../../../config/response");
  * [GET] /app/mylook/mainpage/:lookpoint
  * path variable : userIdx , lookpoint
  */
-exports.getMyLookMain = async function (req, res) {
+exports.mylookMain = async function (req, res) {
 
 
     const userIdx = req.verifiedToken.userIdx;
@@ -25,7 +25,7 @@ exports.getMyLookMain = async function (req, res) {
         return res.send(response(baseResponse.LOOKPOINT_INVALID_VALUE));
     }
 
-    const getMyLook = await mylookProvider.getMyLookMain(lookpoint, userIdx);
+    const getMyLook = await mylookProvider.retrieveMylookMain(lookpoint, userIdx);
     return res.send(getMyLook);
 
 }
@@ -39,7 +39,7 @@ exports.getMyLookMain = async function (req, res) {
  * path variable : userIdx, lookpoint
  */
 
- exports.getMyLookDetail = async function (req, res) {
+ exports.mylookDetail = async function (req, res) {
 
     const userIdx = req.verifiedToken.userIdx;
 
@@ -52,7 +52,7 @@ exports.getMyLookMain = async function (req, res) {
         return res.send(response(baseResponse.LOOKPOINT_INVALID_VALUE));
     }
 
-    const getMyLookD = await mylookProvider.getMyLookDetail(lookpoint, userIdx);
+    const getMyLookD = await mylookProvider.retrieveMylookDetail(lookpoint, userIdx);
     return res.send(getMyLookD);
 }
 
