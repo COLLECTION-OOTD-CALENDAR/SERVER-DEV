@@ -106,7 +106,7 @@ async function updatePhoneInfo(connection, updatePhoneResultParams) {
 }
 
 //5. 회원탈퇴 - (회원탈퇴 함수)
-async function unregisterUser(connection, userIdx) {
+async function updateUnregisterUser(connection, userIdx) {
   const updateUserQuery = `
     UPDATE User 
     SET status = "inactive"
@@ -147,7 +147,7 @@ module.exports = {
   selectUserID,
   selectUsernickname,
   selectUserPW,
-  unregisterUser,
+  updateUnregisterUser,
   selectUserfindID,
   selectUserfindPW,
 

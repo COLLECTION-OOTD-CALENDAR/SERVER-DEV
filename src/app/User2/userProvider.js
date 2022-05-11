@@ -4,7 +4,7 @@ const userDao = require("./userDao");
 
 
 //1. 중복ID 확인 - (ID중복검사 함수)
-exports.IDCheck = async function (ID) {
+exports.CheckID = async function (ID) {
   const connection = await pool.getConnection(async (conn) => conn);
   const IDCheckResult = await userDao.selectUserID(connection, ID);
   connection.release();
@@ -13,7 +13,8 @@ exports.IDCheck = async function (ID) {
 };
  
 //2. 닉네임 확인 - (닉네임중복검사 함수)
-exports.nicknameCheck = async function (nickname) {
+//4-1. 회원정보 수정 (닉네임) - (닉네임 수정 함수)
+exports.CheckNickname = async function (nickname) {
   const connection = await pool.getConnection(async (conn) => conn);
   const nicknameCheckResult = await userDao.selectUsernickname(connection, nickname);
   connection.release();
@@ -22,7 +23,7 @@ exports.nicknameCheck = async function (nickname) {
 };
 
 //3. 로그인 - (PW확인 함수(WITH ID))
-exports.passwordCheck = async function (selectID) {
+exports.CheckPassword = async function (selectID) {
   const connection = await pool.getConnection(async (conn) => conn);
   // 쿼리문에 여러개의 인자를 전달할 때 selectUserPasswordParams와 같이 사용합니다.
   const passwordCheckResult = await userDao.selectUserPassword(connection, selectID);
@@ -30,8 +31,9 @@ exports.passwordCheck = async function (selectID) {
   return passwordCheckResult;
 };
 
-//4-2. 회원정보 수정(비밀번호) - PW확인 함수(WITH USERIDX)
-exports.passwordCheckUserIdx = async function(userIdx) {
+//4-2. 회원정보 수정(비밀번호) - (PW확인 함수(WITH USERIDX))
+//5. 회원탈퇴 - (비밀번호 확인 이후 탈퇴)
+exports.CheckPasswordUserIdx = async function(userIdx) {
   const connection = await pool.getConnection(async (conn) => conn); 
   const passwordCheckResult = await userDao.selectUserPW(connection, userIdx);
   connection.release();
@@ -40,7 +42,7 @@ exports.passwordCheckUserIdx = async function(userIdx) {
 
 
 //3. 로그인 - (계정확인 함수)
-exports.accountCheck = async function (ID) {
+exports.CheckAccount = async function (ID) {
   const connection = await pool.getConnection(async (conn) => conn);
   const userAccountResult = await userDao.selectUserAccount(connection, ID);
   connection.release();
