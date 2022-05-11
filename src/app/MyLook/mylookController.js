@@ -1,6 +1,6 @@
 const mylookProvider = require("./mylookProvider");
 const baseResponse = require("../../../config/baseResponseStatus");
-const {response, errResponse} = require("../../../config/response");
+const {response} = require("../../../config/response");
 
 
 
@@ -19,10 +19,10 @@ exports.getMyLookMain = async function (req, res) {
 
   
     if(!lookpoint){
-        return res.send(errResponse(baseResponse.LOOKPOTNT_EMPTY));
+        return res.send(response(baseResponse.LOOKPOTNT_EMPTY));
     }
     else if(lookpoint < 0 || lookpoint > 5){
-        return res.send(errResponse(baseResponse.LOOKPOINT_INVALID_VALUE));
+        return res.send(response(baseResponse.LOOKPOINT_INVALID_VALUE));
     }
 
     const getMyLook = await mylookProvider.getMyLookMain(lookpoint, userIdx);
@@ -46,10 +46,10 @@ exports.getMyLookMain = async function (req, res) {
     const lookpoint = req.params.lookpoint;
 
     if(!lookpoint){
-        return res.send(errResponse(baseResponse.LOOKPOTNT_EMPTY));
+        return res.send(response(baseResponse.LOOKPOTNT_EMPTY));
     }
     if(lookpoint < 0 || lookpoint > 5){
-        return res.send(errResponse(baseResponse.LOOKPOINT_INVALID_VALUE));
+        return res.send(response(baseResponse.LOOKPOINT_INVALID_VALUE));
     }
 
     const getMyLookD = await mylookProvider.getMyLookDetail(lookpoint, userIdx);
