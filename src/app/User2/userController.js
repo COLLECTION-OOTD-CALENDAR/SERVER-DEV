@@ -167,7 +167,7 @@ exports.userDuplicateID = async function (req, res) {
  * API No. 20
  * API Name : 아이디 찾기 
  * [GET] /app/user/find-id
- * query string : name
+ * query string : name, phoneNumber
  */
 
 exports.userFindID = async function(req, res) {
@@ -435,7 +435,7 @@ exports.userModiNickname = async function (req, res) {
  * API Name : 회원정보 수정(비밀번호)
  * [PATCH] /app/user/modi-password/:userIdx
  * path variable : userIdx
- * body : password
+ * body : originPassword, newPassword, checkPassword
  */
 
 exports.userModiPW = async function (req, res) {

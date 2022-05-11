@@ -13,20 +13,17 @@ const {errResponse} = require("../../../config/response");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
-// Service: Create, Update, Delete 비즈니스 로직 처리 
+
 
 // 0. 회원가입 - (ID 중복 확인, 닉네임 중복 확인, 비밀번호 암호화)
 exports.postRegister = async function (name,nickname,ID,password,phoneNumber) {
     try {
-        // ID 중복 확인
-        // UserProvider에서 해당 ID와 같은 User 목록을 받아서 IDRows에 저장한 후, 배열의 길이를 검사한다.
-        // -> 길이가 0 이상이면 이미 해당 ID를 갖고 있는 User가 조회된다는 의미
+        //ID 중복 확인
         const IDRows = await userProvider.IDCheck(ID);
         if (IDRows.length > 0)
             return errResponse(baseResponse.REGISTER_ID_REDUNDANT);
 
         // 닉네임 중복 확인 
-        // ID 중복 확인 방법과 동일하게 진행 
         const nicknameRows = await userProvider.nicknameCheck(nickname);
             if (nicknameRows.length > 0)
                 return errResponse(baseResponse.REGISTER_NICKNAME_REDUNDANT);
@@ -37,7 +34,6 @@ exports.postRegister = async function (name,nickname,ID,password,phoneNumber) {
             .update(password)
             .digest("hex");
 
-        // 쿼리문에 사용할 변수 값을 배열 형태로 전달
         const insertUserInfoParams = [name,nickname,ID,hashedPassword,phoneNumber];
 
         const connection = await pool.getConnection(async (conn) => conn);
