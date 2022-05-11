@@ -5,11 +5,9 @@ const baseResponse = require("../../../config/baseResponseStatus");
 const mylookDao = require("./mylookDao");
 const {errResponse} = require("../../../config/response");
 
-// Provider: Read 비즈니스 로직 처리
 
-//if가 만드는 로직 ~ 
 
-//myLook 메인페이지 API
+//13. MY LOOK 메인페이지 불러오기 - (lookpoint별로 각 10장씩 불러오기)
 exports.getMyLookMain = async function (lookpoint, userIdx){
   const connection = await pool.getConnection(async (conn) => conn);
   try {
@@ -40,7 +38,7 @@ exports.getMyLookMain = async function (lookpoint, userIdx){
 }
 
 
-//myLook 상세페이지 API
+//14. MY LOOK 상세페이지 - (lookpoint 내에 날짜별로 ootd 불러오기)
 exports.getMyLookDetail = async function (lookpoint, userIdx){
   const connection = await pool.getConnection(async (conn) => conn);
   try {
