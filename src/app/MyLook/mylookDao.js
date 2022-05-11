@@ -1,8 +1,5 @@
-
-// 새롭게 추가한 함수를 아래 부분에서 export 해줘야 외부의 Provider, Service 등에서 사용가능합니다.
-
-
-//if가 만드는 로직 ~
+// 13. MY LOOK 메인 페이지 불러오기 - (OOTD 와 Photo DB를 JOIN해서 해당하는 ootdIdx와 photoIs등을 불러오기)
+// 14. MY LOOK 상세 페이지 - (OOTD 와 Photo DB를 JOIN해서 해당하는 ootdIdx와 photoIs등을 불러오기)
 async function getOOTD(connection,getOOTDResultParams) {
   const getOOTDQuery = `
   SELECT distinct O.ootdIdx, O.date, O.photoIs, P.imageUrl, P.thumbnail

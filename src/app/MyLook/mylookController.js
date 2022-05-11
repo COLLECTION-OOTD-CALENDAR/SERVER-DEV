@@ -8,7 +8,7 @@ const {response, errResponse} = require("../../../config/response");
 
 /**
  * API No. 13
- * API Name : myLook 메인페이지 불러오기
+ * API Name : MY LOOK 메인페이지 불러오기
  * [GET] /app/mylook/mainpage/:lookpoint
  * path variable : userIdx , lookpoint
  */
@@ -36,7 +36,7 @@ exports.getMyLookMain = async function (req, res) {
 
 /**
  * API No.14 
- * API Name : myLook 상세페이지 
+ * API Name : MY LOOK 상세페이지 
  * [GET] /app/mylook/detail/:lookpoint
  * path variable : userIdx, lookpoint
  */
