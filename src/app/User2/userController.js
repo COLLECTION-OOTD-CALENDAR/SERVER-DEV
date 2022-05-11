@@ -1,7 +1,7 @@
 const userProvider = require("./userProvider");
 const userService = require("./userService");
 const baseResponse = require("../../../config/baseResponseStatus");
-const {response, errResponse} = require("../../../config/response");
+const {response} = require("../../../config/response");
 
 var regExp = /^[0-9]{3}-[0-9]{3,4}-[0-9]{4}/; //전화번호 양식
 var regExpcheck = /^01([0|1|6|7|8|9])([0-9]{3,4})?([0-9]{4})$/; //전화번호 값
@@ -410,7 +410,7 @@ exports.userModiNickname = async function (req, res) {
 
     //빈 값 체크
     else if (!nickname) 
-        return res.send(errResponse(baseResponse.MODI_NEW_NICKNAME_EMPTY));
+        return res.send(response(baseResponse.MODI_NEW_NICKNAME_EMPTY));
 
     //정규식 체크 - 닉네임에 특수문자 불가능
     else if(regExpSpecial.test(nickname)){
@@ -452,13 +452,13 @@ exports.userModiPW = async function (req, res) {
 
     //빈 값 체크
     if (!originPassword){
-        return res.send(errResponse(baseResponse.MODI_OLD_PW_EMPTY));
+        return res.send(response(baseResponse.MODI_OLD_PW_EMPTY));
     }
     else if (!newPassword){
-        return res.send(errResponse(baseResponse.MODI_NEW_PW_EMPTY));
+        return res.send(response(baseResponse.MODI_NEW_PW_EMPTY));
     }
     else if(!checkPassword){
-        return res.send(errResponse(baseResponse.MODI_CHECK_PW_EMPTY));
+        return res.send(response(baseResponse.MODI_CHECK_PW_EMPTY));
     }
             
     //길이 체크
@@ -504,7 +504,7 @@ exports.userModiPhone = async function (req, res) {
 
 //빈 값 체크
     if (!phoneNumber){
-        return res.send(errResponse(baseResponse.MODI_NEW_PHONE_EMPTY));
+        return res.send(response(baseResponse.MODI_NEW_PHONE_EMPTY));
     }
 
 //정규식 체크 -하이픈 사용금지
@@ -536,7 +536,7 @@ exports.userUnregister = async function (req, res) {
     const password = req.body.password;
 
     if (!password)
-            res.send(errResponse(baseResponse.UNREGISTER_PW_EMPTY));
+            res.send(response(baseResponse.UNREGISTER_PW_EMPTY));
 
     const patchUnregister = await userService.patchUnregister(password, userIdx);
     return res.send(patchUnregister);
