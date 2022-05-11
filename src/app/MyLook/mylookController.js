@@ -1,6 +1,4 @@
-const jwtMiddleware = require("../../../config/jwtMiddleware");
 const mylookProvider = require("./mylookProvider");
-const mylookService = require("./mylookService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
