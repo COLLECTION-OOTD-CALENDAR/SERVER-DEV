@@ -147,7 +147,7 @@ exports.userDuplicateID = async function (req, res) {
         }
 
         //중복 체크
-        const IDRows = await userProvider.IDCheck(ID);
+        const IDRows = await userProvider.CheckID(ID);
         if (IDRows.length > 0){
             return res.send(response(baseResponse.REGISTER_ID_REDUNDANT));
         }
@@ -329,7 +329,7 @@ exports.userNickname = async function(req, res) {
             return res.send(response(baseResponse.REGISTER_NICKNAME_REGEXP));
 
         //중복 체크
-        const nicknameRows = await userProvider.nicknameCheck(nickname);
+        const nicknameRows = await userProvider.CheckNickname(nickname);
         if (nicknameRows.length > 0){
             return res.send(response(baseResponse.REGISTER_NICKNAME_REDUNDANT));
         }
@@ -399,7 +399,7 @@ exports.userModiNickname = async function (req, res) {
     
     const nickname = req.body.nickname;
 
-    const nicknameRows = await userProvider.nicknameCheck(nickname);
+    const nicknameRows = await userProvider.CheckNickname(nickname);
 
 
     

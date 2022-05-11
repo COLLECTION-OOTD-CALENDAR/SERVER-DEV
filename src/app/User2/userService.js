@@ -18,12 +18,12 @@ const crypto = require("crypto");
 exports.postRegister = async function (name,nickname,ID,password,phoneNumber) {
     try {
         //ID 중복 확인
-        const IDRows = await userProvider.IDCheck(ID);
+        const IDRows = await userProvider.CheckID(ID);
         if (IDRows.length > 0)
             return errResponse(baseResponse.REGISTER_ID_REDUNDANT);
 
         // 닉네임 중복 확인 
-        const nicknameRows = await userProvider.nicknameCheck(nickname);
+        const nicknameRows = await userProvider.CheckNickname(nickname);
             if (nicknameRows.length > 0)
                 return errResponse(baseResponse.REGISTER_NICKNAME_REDUNDANT);
 
@@ -54,7 +54,7 @@ exports.postRegister = async function (name,nickname,ID,password,phoneNumber) {
 exports.postLogIn = async function (ID, password) {
     try {
         // ID 여부 확인
-        const IDRows = await userProvider.IDCheck(ID);
+        const IDRows = await userProvider.CheckID(ID);
          if (IDRows.length < 1) {
             return errResponse(baseResponse.LOGIN_ID_WRONG);
          }
@@ -67,7 +67,7 @@ exports.postLogIn = async function (ID, password) {
             .digest("hex");
 
         
-        const passwordRows = await userProvider.passwordCheck(selectID);
+        const passwordRows = await userProvider.CheckPassword(selectID);
 
         if (passwordRows[0].password !== hashedPassword) {
             return errResponse(baseResponse.LOGIN_PW_WRONG);
@@ -75,7 +75,7 @@ exports.postLogIn = async function (ID, password) {
 
         // 계정 상태 확인 
 
-        const userInfoRows = await userProvider.accountCheck(ID);
+        const userInfoRows = await userProvider.CheckAccount(ID);
 
         if (userInfoRows[0].status === "inactive") {
             return errResponse(baseResponse.LOGIN_UNREGISTER_USER); //탈퇴한 USER
@@ -130,7 +130,7 @@ exports.patchPW = async function (userIdx,originPassword,newPassword) {
             .update(originPassword)
             .digest("hex");
 
-        const passwordRows = await userProvider.passwordCheckUserIdx(userIdx);
+        const passwordRows = await userProvider.CheckPasswordUserIdx(userIdx);
 
         if(passwordRows[0].password !== hashedPassword) {
             return errResponse(baseResponse.LOGIN_PW_WRONG);
@@ -186,13 +186,13 @@ exports.patchUnregister = async function (password, userIdx) {
             .update(password)
             .digest("hex");
 
-        const passwordRows = await userProvider.passwordCheckUserIdx(userIdx); 
+        const passwordRows = await userProvider.CheckPasswordUserIdx(userIdx); 
 
         if(passwordRows[0].password !== hashedPassword) {
             return errResponse(baseResponse.UNREGISTER_PW_WRONG);
         }
  
-        const unregisterUser = await userDao.unregisterUser(connection, userIdx)
+        const unregisterUser = await userDao.updateUnregisterUser(connection, userIdx)
         connection.release();
 
         return response(baseResponse.SUCCESS_UNREGISTER);
