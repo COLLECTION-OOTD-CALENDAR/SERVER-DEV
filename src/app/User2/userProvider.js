@@ -2,9 +2,6 @@ const { pool } = require("../../../config/database");
 
 const userDao = require("./userDao");
 
-// Provider: Read 비즈니스 로직 처리 -> GET 처리
-
-//if가만드는 로직~
 
 //1. 중복ID 확인 - (ID중복검사 함수)
 exports.IDCheck = async function (ID) {
