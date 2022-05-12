@@ -1,4 +1,3 @@
-const e = require("express");
 const { pool } = require("../../../config/database");
 const { logger } = require("../../../config/winston");
 const baseResponse = require("../../../config/baseResponseStatus");
@@ -9,8 +8,8 @@ const ootdDao = require("./ootdDao");
 
 // Provider: Read 비즈니스 로직 처리
 
-// 입력한 날짜에 OOTD 존재 여부 체크
-exports.ootdDateCheck = async function (userIdx, date) {
+// 8. OOTD 최종 등록하기 - 입력한 날짜에 OOTD 존재 여부 체크
+exports.checkOotdDate = async function (userIdx, date) {
 
   //console.log('[ootdProvider] ootdDateCheck start');
 
@@ -19,7 +18,7 @@ exports.ootdDateCheck = async function (userIdx, date) {
     // DB에 연결
     const connection = await pool.getConnection(async (conn) => conn);
 
-    const ootdDateCheckResult = await ootdDao.checkDateOotd(connection, userIdx, date);
+    const ootdDateCheckResult = await ootdDao.selectDateOotd(connection, userIdx, date);
     connection.release();
 
     //console.log('[ootdProvider] ootdDateCheck finish');
@@ -27,14 +26,14 @@ exports.ootdDateCheck = async function (userIdx, date) {
     return ootdDateCheckResult;
 
   }catch(err) {
-    logger.error(`App - ootdDateCheck Provider error\n: ${err.message}`);
+    logger.error(`App - checkOotdDate Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 
 };
 
-// 등록할 수 없는 옷 (fClothes->index, aClothes->smallClass)
-exports.clothesCheck = async function (userIdx, data) {
+// 8. OOTD 최종 등록하기 - 등록할 수 없는 옷 (fClothes->index, aClothes->smallClass) 체크
+exports.checkClothes = async function (userIdx, data) {
 
   //console.log('[ootdProvider] clothesCheck start');
 
@@ -45,7 +44,7 @@ exports.clothesCheck = async function (userIdx, data) {
     
     // data가 정수일 경우 (fClothes->index)
     if(Number.isInteger(data) && typeof data == 'number'){ 
-      const clothesCheckResult = await ootdDao.checkClothesIdxIs(connection, data);
+      const clothesCheckResult = await ootdDao.selectClothesIdxIs(connection, data);
       connection.release();
 
       //console.log('[ootdProvider] clothesCheck finish');
@@ -53,7 +52,7 @@ exports.clothesCheck = async function (userIdx, data) {
       return clothesCheckResult;
     }
     else { // data가 string일 경우 (aClothes->smallClass)
-      const clothesCheckResult = await ootdDao.checkClothesIs(connection, userIdx, data);
+      const clothesCheckResult = await ootdDao.selectClothesIs(connection, userIdx, data);
       connection.release();
 
       //console.log('[ootdProvider] clothesCheck finish');
@@ -62,15 +61,15 @@ exports.clothesCheck = async function (userIdx, data) {
     
     }
   }catch(err) {
-    logger.error(`App - clothesCheck Provider error\n: ${err.message}`);
+    logger.error(`App - checkClothes Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 
 };
 
 
-// 등록할 수 없는 Place (fPlace->index, aPlace->place)
-exports.placeCheck = async function (userIdx, data) {
+// 8. OOTD 최종 등록하기 - 등록할 수 없는 Place (fPlace->index, aPlace->place) 체크
+exports.checkPlace = async function (userIdx, data) {
 
   //console.log('[ootdProvider] placeCheck start');
   
@@ -81,7 +80,7 @@ exports.placeCheck = async function (userIdx, data) {
 
     // data가 정수일 경우 (fPlace->index)
     if(Number.isInteger(data) && typeof data == 'number'){ 
-      const placeCheckResult = await ootdDao.checkPlaceIdxIs(connection, data);
+      const placeCheckResult = await ootdDao.selectPlaceIdxIs(connection, data);
       connection.release();
 
       //console.log('[ootdProvider] placeCheck finish');
@@ -89,7 +88,7 @@ exports.placeCheck = async function (userIdx, data) {
       return placeCheckResult;
     }
     else { // data가 string일 경우 (aPlace->place)
-      const placeCheckResult = await ootdDao.checkPlaceIs(connection, userIdx, data);
+      const placeCheckResult = await ootdDao.selectPlaceIs(connection, userIdx, data);
       connection.release();
 
       //console.log('[ootdProvider] placeCheck finish');
@@ -98,15 +97,15 @@ exports.placeCheck = async function (userIdx, data) {
     
     }
   }catch(err) {
-    logger.error(`App - placeCheck Provider error\n: ${err.message}`);
+    logger.error(`App - checkPlace Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 
 };
 
 
-// 등록할 수 없는 Weather (fWeather->index, aWeather->weather)
-exports.weatherCheck = async function (userIdx, data) {
+// 8. OOTD 최종 등록하기 - 등록할 수 없는 Weather (fWeather->index, aWeather->weather) 체크
+exports.checkWeather = async function (userIdx, data) {
 
   //console.log('[ootdProvider] weatherCheck start');
 
@@ -117,7 +116,7 @@ exports.weatherCheck = async function (userIdx, data) {
     
     // data가 정수일 경우 (fWeather->index)
     if(Number.isInteger(data) && typeof data == 'number'){ 
-      const weatherCheckResult = await ootdDao.checkWeatherIdxIs(connection, data);
+      const weatherCheckResult = await ootdDao.selectWeatherIdxIs(connection, data);
       connection.release();
 
       //console.log('[ootdProvider] weatherCheck finish');
@@ -125,7 +124,7 @@ exports.weatherCheck = async function (userIdx, data) {
       return weatherCheckResult;
     }
     else { // data가 string일 경우 (aWeather->weather)
-      const weatherCheckResult = await ootdDao.checkWeatherIs(connection, userIdx, data);
+      const weatherCheckResult = await ootdDao.selectWeatherIs(connection, userIdx, data);
       connection.release();
       
       //console.log('[ootdProvider] weatherCheck finish');
@@ -134,15 +133,15 @@ exports.weatherCheck = async function (userIdx, data) {
     
     }
   }catch(err) {
-    logger.error(`App - weatherCheck Provider error\n: ${err.message}`);
+    logger.error(`App - checkWeather Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 
 };
 
 
-// 등록할 수 없는 Who (fWho->index, aWho->who)
-exports.whoCheck = async function (userIdx, data) {
+// 8. OOTD 최종 등록하기 - 등록할 수 없는 Who (fWho->index, aWho->who) 체크
+exports.checkWho = async function (userIdx, data) {
 
   //console.log('[ootdProvider] whoCheck start');
 
@@ -153,7 +152,7 @@ exports.whoCheck = async function (userIdx, data) {
     
     // data가 정수일 경우 (fWho->index)
     if(Number.isInteger(data) && typeof data == 'number'){
-      const whoCheckResult = await ootdDao.checkWhoIdxIs(connection, data);
+      const whoCheckResult = await ootdDao.selectWhoIdxIs(connection, data);
       connection.release();
       
       //console.log('[ootdProvider] whoCheck finish');
@@ -161,7 +160,7 @@ exports.whoCheck = async function (userIdx, data) {
       return whoCheckResult;
     }
     else { // data가 string일 경우 (aWho->who)
-      const whoCheckResult = await ootdDao.checkWhoIs(connection, userIdx, data);
+      const whoCheckResult = await ootdDao.selectWhoIs(connection, userIdx, data);
       connection.release();
       
       //console.log('[ootdProvider] whoCheck finish');
@@ -170,53 +169,42 @@ exports.whoCheck = async function (userIdx, data) {
     
     }
   }catch(err) {
-    logger.error(`App - whoCheck Provider error\n: ${err.message}`);
+    logger.error(`App - checkWho Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 
 };
 
+// 8. OOTD 최종 등록하기 - userIdx와 aClothes의 bigClass, smallClass를 이용한 index 추출하기
+exports.checkAddedClothesIdx = async function (connection, userIdx, aClothes){
 
-// userIdx와 date를 이용하여 ootdIdx 추출하기
-/*
-exports.newOotdIdx = async function (connection, userIdx, date) {
-
-  const newOotdIdxResult = await ootdDao.checkNewOotd(connection, userIdx, date);
-  return newOotdIdxResult[0];
-  
-};
-*/
-
-// userIdx와 aClothes의 bigClass, smallClass를 이용한 index 추출하기
-exports.addedClothesIdx = async function (connection, userIdx, aClothes){
-
-  const addedClothesIdxResult = await ootdDao.getAddedClothesIdx(connection, userIdx, aClothes);
+  const addedClothesIdxResult = await ootdDao.selectAddedClothesIdx(connection, userIdx, aClothes);
   return addedClothesIdxResult;
 };
 
-// userIdx와 aPlace의 place를 이용한 index 추출하기
-exports.addedPlaceIdx = async function (connection, userIdx, aPlace){
+// 8. OOTD 최종 등록하기 - userIdx와 aPlace의 place를 이용한 index 추출하기
+exports.checkAddedPlaceIdx = async function (connection, userIdx, aPlace){
   
-  const addedPlaceIdxResult = await ootdDao.getAddedPlaceIdx(connection, userIdx, aPlace);
+  const addedPlaceIdxResult = await ootdDao.selectAddedPlaceIdx(connection, userIdx, aPlace);
   return addedPlaceIdxResult;
 };
 
-// userIdx와 aWeather의 weather를 이용한 index 추출하기
-exports.addedWeatherIdx = async function (connection, userIdx, aWeather){
+// 8. OOTD 최종 등록하기 - userIdx와 aWeather의 weather를 이용한 index 추출하기
+exports.checkAddedWeatherIdx = async function (connection, userIdx, aWeather){
 
-  const addedWeatherIdxResult = await ootdDao.getAddedWeatherIdx(connection, userIdx, aWeather);
+  const addedWeatherIdxResult = await ootdDao.selectAddedWeatherIdx(connection, userIdx, aWeather);
   return addedWeatherIdxResult;
 };
 
-// userIdx와 aWho의 who를 이용한 index 추출하기
-exports.addedWhoIdx = async function (connection, userIdx, aWho){
+// 8. OOTD 최종 등록하기 - userIdx와 aWho의 who를 이용한 index 추출하기
+exports.checkAddedWhoIdx = async function (connection, userIdx, aWho){
 
-  const addedWhoIdxResult = await ootdDao.getAddedWhoIdx(connection, userIdx, aWho);
+  const addedWhoIdxResult = await ootdDao.selectAddedWhoIdx(connection, userIdx, aWho);
   return addedWhoIdxResult;
 };
 
 
-// OOTD 수정하기 - 지난 작성 화면 보여주기
+// 10. OOTD 수정하기 - 지난 작성 화면 보여주기
 exports.retrieveAddedOotd = async function (userIdx){
 
   //console.log('[ootdProvider] retrieveAddedOotd start');
@@ -275,7 +263,7 @@ exports.retrieveAddedOotd = async function (userIdx){
 
 };
 
-// Added place list를 채우는 함수
+// 10. OOTD 수정하기 - 지난 작성 화면 보여주기 - Added place list를 채우는 함수
 function getPlaceList(row, tmp){
   let tags;
 
@@ -292,7 +280,7 @@ function getPlaceList(row, tmp){
   return tags;
 };
 
-// Added weather list를 채우는 함수
+// 10. OOTD 수정하기 - 지난 작성 화면 보여주기 - Added weather list를 채우는 함수
 function getWeatherList(row, tmp){
   let tags;
 
@@ -309,7 +297,7 @@ function getWeatherList(row, tmp){
   return tags;
 };
 
-// Added who list를 채우는 함수
+// 10. OOTD 수정하기 - 지난 작성 화면 보여주기 -Added who list를 채우는 함수
 function getWhoList(row, tmp){
   let tags;
 
@@ -326,7 +314,7 @@ function getWhoList(row, tmp){
   return tags;
 };
 
-// Added big Class key 및 배열 생성
+// 10. OOTD 수정하기 - 지난 작성 화면 보여주기 -Added big Class key 및 배열 생성
 function getAddedBigClass(added){
   if(!added["aTop"] && !added["aBottom"] && !added["aShoes"] && !added["aEtc"]){
     added["aTop"] = [];
@@ -339,7 +327,7 @@ function getAddedBigClass(added){
 
 };
 
-// Added list 내 주어진 data가 존재하는 지 체크
+// 10. OOTD 수정하기 - 지난 작성 화면 보여주기 -Added list 내 주어진 data가 존재하는 지 체크
 function hasAdded(list, data){
   if(data == null) return true;
   for(let each of list){
@@ -350,7 +338,7 @@ function hasAdded(list, data){
 };
 
 
-// OOTD 완료 페이지 불러오기
+// 12. OOTD 완료 페이지 불러오기
 exports.retrieveCompleteOotd = async function (userIdx, date){
 
   //console.log('[ootdProvider] retrieveCompleteOotd start');
@@ -423,7 +411,7 @@ exports.retrieveCompleteOotd = async function (userIdx, date){
 };
 
 
-// Image value를 채우는 함수
+// 12. OOTD 완료 페이지 불러오기 - Image value를 채우는 함수
 function getImages(row, tmp){
   let tags;
 
@@ -446,7 +434,7 @@ function getImages(row, tmp){
   return tags;
 };
 
-// Place value를 채우는 함수
+// 12. OOTD 완료 페이지 불러오기 - Place value를 채우는 함수
 function getPlaces(row, tmp){
   let tags;
 
@@ -466,7 +454,7 @@ function getPlaces(row, tmp){
   return tags;
 };
 
-// Weather value를 채우는 함수
+// 12. OOTD 완료 페이지 불러오기 - Weather value를 채우는 함수
 function getWeathers(row, tmp){
   let tags;
 
@@ -486,7 +474,7 @@ function getWeathers(row, tmp){
   return tags;
 };
 
-// Who value를 채우는 함수
+// 12. OOTD 완료 페이지 불러오기 - Who value를 채우는 함수
 function getWhos(row, tmp){
   let tags;
 
@@ -506,7 +494,7 @@ function getWhos(row, tmp){
   return tags;
 };
 
-// BigClass에 해당하는 key를 모두 만드는 함수
+// 12. OOTD 완료 페이지 불러오기 - BigClass에 해당하는 key를 모두 만드는 함수
 function getBigClass(ootd){
   if(!ootd["Top"] && !ootd["Bottom"] && !ootd["Shoes"] && !ootd["Etc"]){
     ootd["Top"] = [];
@@ -518,7 +506,7 @@ function getBigClass(ootd){
   return ootd;
 };
 
-// list(BigClass)에 data가 존재하는지 확인하는 함수
+// 12. OOTD 완료 페이지 불러오기 - list(BigClass)에 data가 존재하는지 확인하는 함수
 function hasClothes(list, data){
   for(let each of list){
     if(each.smallClass == data.smallClass && each.color == data.color) return true;

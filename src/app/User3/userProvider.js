@@ -8,7 +8,7 @@ const userDao = require("./userDao");
 //if가만드는 로직~
 
 //ID중복검사 함수 
-exports.IDCheck = async function (ID) {
+exports.checkID = async function (ID) {
   const connection = await pool.getConnection(async (conn) => conn);
   const IDCheckResult = await userDao.selectUserID(connection, ID);
   connection.release();
@@ -17,7 +17,7 @@ exports.IDCheck = async function (ID) {
 };
  
 //닉네임중복검사 함수
-exports.nicknameCheck = async function (nickname) {
+exports.checkNickname = async function (nickname) {
   const connection = await pool.getConnection(async (conn) => conn);
   const nicknameCheckResult = await userDao.selectUsernickname(connection, nickname);
   connection.release();

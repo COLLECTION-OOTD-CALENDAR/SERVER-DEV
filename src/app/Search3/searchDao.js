@@ -1,7 +1,7 @@
 
 // 새롭게 추가한 함수를 아래 부분에서 export 해줘야 외부의 Provider, Service 등에서 사용가능합니다.
 
-// API 15 : [PWWC] 검색 초기화면 보여주기 - Color 탭
+// 15. [PWWC] 검색 초기화면 보여주기 - Color 탭
 async function selectColorHistory(connection, userIdx, PWWC) {
   const selectColorHistoryQuery = `
                 SELECT History.index, content, color
@@ -13,7 +13,7 @@ async function selectColorHistory(connection, userIdx, PWWC) {
   return historyRows;
 };
 
-// API 15 : [PWWC] 검색 초기화면 보여주기 - Place, Weather, Who 탭
+// 15. [PWWC] 검색 초기화면 보여주기 - Place, Weather, Who 탭
 async function selectPWWHistory(connection, userIdx, PWWC) {
   const selectPWWHistoryQuery = `
                 SELECT History.index, content
@@ -25,7 +25,7 @@ async function selectPWWHistory(connection, userIdx, PWWC) {
   return historyRows;
 };
 
-// API 19 : [PWWC] 매칭 페이지 검색 키워드 제안 - Place
+// 19. [PWWC] 매칭 페이지 검색 키워드 제안 - Place
 async function selectPlaceSuggestion(connection, suggestionKeywordParams) {
   const placeSuggestionQuery = `
                 SELECT place
@@ -42,7 +42,7 @@ async function selectPlaceSuggestion(connection, suggestionKeywordParams) {
   return suggestRows;
 };
 
-// API 19 : [PWWC] 매칭 페이지 검색 키워드 제안 - Weather
+// 19. [PWWC] 매칭 페이지 검색 키워드 제안 - Weather
 async function selectWeatherSuggestion(connection, suggestionKeywordParams) {
   const weatherSuggestionQuery = `
                 SELECT weather
@@ -59,7 +59,7 @@ async function selectWeatherSuggestion(connection, suggestionKeywordParams) {
   return suggestRows;
 };
 
-// API 19 : [PWWC] 매칭 페이지 검색 키워드 제안 - Who
+// 19. [PWWC] 매칭 페이지 검색 키워드 제안 - Who
 async function selectWhoSuggestion(connection, suggestionKeywordParams) {
   const whoSuggestionQuery = `
                 SELECT who
@@ -76,7 +76,7 @@ async function selectWhoSuggestion(connection, suggestionKeywordParams) {
   return suggestRows;
 };
 
-// API 19 : [PWWC] 매칭 페이지 검색 키워드 제안 - Color
+// 19. [PWWC] 매칭 페이지 검색 키워드 제안 - Color
 async function selectColorSuggestion(connection, suggestionKeywordParams) {
   const colorSuggestionQuery = `
                 SELECT smallClass

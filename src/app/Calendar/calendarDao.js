@@ -1,7 +1,7 @@
 
 // 새롭게 추가한 함수를 아래 부분에서 export 해줘야 외부의 Provider, Service 등에서 사용가능합니다.
 
-// Monthly 달력 OOTD 부르기
+// 6. Monthly 달력 OOTD 부르기
 async function selectMonthly(connection, userIdx) {
   const selectMonthlyListQuery = `
                 SELECT date, lookpoint
@@ -13,7 +13,7 @@ async function selectMonthly(connection, userIdx) {
   return monthlyRows;
 };
 
-// Weekly 달력 OOTD 부르기
+// 7. Weekly 달력 OOTD 부르기
 async function selectWeeklyOotdList(connection, userIdx){
   const selectWeeklyOotdListQuery = `
                   SELECT distinct O.ootdIdx, O.date, O.lookpoint, 

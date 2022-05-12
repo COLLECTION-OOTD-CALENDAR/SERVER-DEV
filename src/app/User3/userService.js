@@ -15,18 +15,18 @@ const crypto = require("crypto");
 
 // Service: Create, Update, Delete 비즈니스 로직 처리 
 // 회원가입 API
-exports.register = async function (name, nickname, ID, password, birthday, gender, phoneNumber) {
+exports.postUser = async function (name, nickname, ID, password, birthday, gender, phoneNumber) {
     try {
         // ID 중복 확인
         // UserProvider에서 해당 ID와 같은 User 목록을 받아서 IDRows에 저장한 후, 배열의 길이를 검사한다.
         // -> 길이가 0 이상이면 이미 해당 ID를 갖고 있는 User가 조회된다는 의미
-        const IDRows = await userProvider.IDCheck(ID);
+        const IDRows = await userProvider.checkID(ID);
         if (IDRows.length > 0)
             return errResponse(baseResponse.REGISTER_ID_REDUNDANT);
 
         // 닉네임 중복 확인 
         // ID 중복 확인 방법과 동일하게 진행 
-        const nicknameRows = await userProvider.nicknameCheck(nickname);
+        const nicknameRows = await userProvider.checkNickname(nickname);
             if (nicknameRows.length > 0)
                 return errResponse(baseResponse.REGISTER_NICKNAME_REDUNDANT);
 

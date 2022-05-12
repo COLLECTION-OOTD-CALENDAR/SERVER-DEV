@@ -1,6 +1,4 @@
-const jwtMiddleware = require("../../../config/jwtMiddleware");
 const searchProvider = require("./searchProvider");
-//const searchService = require("./searchService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
@@ -8,9 +6,9 @@ var blankPattern = /^\s+|\s+$/g;
 
 /**
  * API No. 15
- * API Name : [PWWC] 검색 초기화면 보여주기 API
+ * API Name : [PWWC] 검색 초기화면 보여주기
  * [GET] /app/search/mainpage/:PWWC
- * Path variable : PWWC
+ * Path Variable : PWWC
  */
 exports.searchMain = async function (req, res) {
 
@@ -48,14 +46,14 @@ exports.searchMain = async function (req, res) {
 
 /**
  * API No. 19
- * API Name : [PWWC] 매칭 페이지 검색 키워드 제안 API
+ * API Name : [PWWC] 매칭 페이지 검색 키워드 제안
  * [GET] /app/search/suggestion/:PWWC
- * Path variable : PWWC
- * Query string : keyword1
+ * Path Variable : PWWC
+ * Query String : keyword1
  */
-exports.suggestSearchKeyword = async function (req, res) {
+exports.searchSuggestKeyword = async function (req, res) {
 
-    console.log('[searchController] suggestSearchKeyword start');
+    //console.log('[searchController] searchSuggestKeyword start');
 
     const userIdx = req.verifiedToken.userIdx;
     const PWWC = req.params.PWWC;
@@ -103,7 +101,7 @@ exports.suggestSearchKeyword = async function (req, res) {
     const suggestFinalResult = {};
     suggestFinalResult["suggestion"] = suggestKeywordResult;
 
-    console.log('[searchController] suggestSearchKeyword finish');
+    //console.log('[searchController] suggestSearchKeyword finish');
 
     return res.send(response(baseResponse.SUCCESS_SEARCH_SUGGEST, suggestFinalResult));
 };

@@ -5,6 +5,7 @@ const searchDao = require("./searchDao");
 
 // Provider: Read 비즈니스 로직 처리
 
+// 15. [PWWC] 검색 초기화면 보여주기
 exports.retrieveSearchHistory = async function (userIdx, PWWC) {
 
   console.log('[searchProvider] retrieveSearchHistory start');
@@ -42,6 +43,7 @@ exports.retrieveSearchHistory = async function (userIdx, PWWC) {
 
 };
 
+// 19. [PWWC] 매칭 페이지 검색 키워드 제안
 exports.retrieveSuggestKeyword = async function (userIdx, PWWC, keyword1) {
   
   console.log('[searchProvider] retrieveSuggestKeyword start');
