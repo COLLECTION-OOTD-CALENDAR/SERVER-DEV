@@ -1,5 +1,3 @@
-const jwtMiddleware = require("../../../config/jwtMiddleware");
-const userProvider = require("./userProvider");
 const userService = require("./userService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
@@ -10,8 +8,6 @@ var blank_pattern = /^\s+|\s+$/g; //공백문자만
 var blank_all = /[\s]/g; //공백도 입력
 var regExpName = /^[가-힣]{2,5}|[a-zA-Z]{2,10}\s[a-zA-Z]{2,10}$/; //이름
 var regExpSpecial = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;//특수문자 사용
-// var regExpID = /^[a-z]+[a-z0-9]{5,14}$/g; //ID는 영문자로 시작하는 6~15자 영문자 또는 숫자
-// var regExpPW = /^[a-z]+[a-z0-9]{5,14}$/g; //PW는 영문자로 시작하는 6~15자 영문자 또는 숫자
 var datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/; 
 
 
@@ -20,7 +16,7 @@ var datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
  * API Name : 회원가입 API
  * [POST] /app/user/register
  */
-exports.postUsers = async function (req, res) {
+exports.userRegister = async function (req, res) {
 
     /**
      * Body: name,nickname,ID,password,phoneNumber
@@ -138,7 +134,7 @@ exports.postUsers = async function (req, res) {
 
 
     // register 함수 실행을 통한 결과 값을 registerResponse에 저장
-    const registerResponse = await userService.register(
+    const registerResponse = await userService.postUser(
         name,
         nickname,
         ID,

@@ -1,10 +1,7 @@
-const jwtMiddleware = require("../../../config/jwtMiddleware");
 const ootdProvider = require("./ootdProvider");
 const ootdService = require("./ootdService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
-
-const { TAG_NEVER_EXISTED } = require("../../../config/baseResponseStatus");
 
 var datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/; 
 var blankPattern = /^\s+|\s+$/g;
@@ -14,7 +11,7 @@ var lookpointPattern = /^[1-5]$/;
  * API No. 8
  * API Name : OOTD 최종 등록하기
  * [POST] /app/ootd/last-register/:userIdx
- * path variable : userIdx
+ * Path Variable : userIdx
  * Query String : mode (1 : register 2 : modi)
  * Body : date, lookname, photoIs, image[{imageUrl, thumbnail}],
  * fClothes[{index, color}], aClothes[{bigClass, smallClass, color}], 
@@ -23,7 +20,7 @@ var lookpointPattern = /^[1-5]$/;
  * (FixedPlace.index 값은 받을 수 있지만 AddedPlace.index 는 받을 수 없어서 Place.addedPlace -1 여부 체크하고 AddedPlace.place 값과 비교) 
  */
 
-exports.registerOotd = async function (req, res) {
+exports.ootdRegister = async function (req, res) {
 
     // jwt - userId, path variable :userId
     //console.log('[ootdController] registerOotd start');
@@ -379,7 +376,7 @@ exports.registerOotd = async function (req, res) {
     // 특정 테이블에만 값이 삽입될 경우 방지를 위해 따로 뺌
 
     // 입력한 날짜에 OOTD 존재 여부 체크
-    const ootdRow = await ootdProvider.ootdDateCheck(userIdx, n_date);
+    const ootdRow = await ootdProvider.checkOotdDate(userIdx, n_date);
 
     // ootdRow의 결과와 mode가 잘 맞지 않는 경우
     // ootdRow가 없는데 수정모드일 경우, ootdRow가 있는데 등록모드일 경우 error
@@ -392,12 +389,12 @@ exports.registerOotd = async function (req, res) {
 
     // 수정모드일 때, status : active -> inactive이므로 OOTD 삭제 코드 활용 예정
     if(mode == 2){
-        const modiOriginResult = await ootdService.modiOriginStatus(userIdx, ootdRow.ootdIdx);
+        const modiOriginResult = await ootdService.patchOriginStatus(userIdx, ootdRow.ootdIdx);
     }
 
     // 등록할 수 없는 옷(fClothes->index, aClothes->smallClass)
     for (item of fClothes){
-        const fclothesRow = await ootdProvider.clothesCheck(userIdx, item["index"]);
+        const fclothesRow = await ootdProvider.checkClothes(userIdx, item["index"]);
 
         // 존재하는 고정 옷이 아닐 때
         if(fclothesRow.length == 0){
@@ -417,7 +414,7 @@ exports.registerOotd = async function (req, res) {
 
     // 등록할 수 없는 Place (fPlace->index, aPlace->place)
     for (item of fPlace){
-        const fplaceRow = await ootdProvider.placeCheck(userIdx, item);
+        const fplaceRow = await ootdProvider.checkPlace(userIdx, item);
 
         // 존재하는 고정 장소가 아닐 때
         if(fplaceRow.length == 0){
@@ -425,7 +422,7 @@ exports.registerOotd = async function (req, res) {
         }
     }
     for (item of aPlace){
-        const aplaceRow = await ootdProvider.placeCheck(userIdx, item);
+        const aplaceRow = await ootdProvider.checkPlace(userIdx, item);
 
         // 사용자가 추가한 장소가 아닐 때
         if(aplaceRow.length == 0){
@@ -435,7 +432,7 @@ exports.registerOotd = async function (req, res) {
 
     // 등록할 수 없는 Weather (fWeather->index, aWeather->weather)
     for (item of fWeather){
-        const fweatherRow = await ootdProvider.weatherCheck(userIdx, item);
+        const fweatherRow = await ootdProvider.checkWeather(userIdx, item);
 
         // 존재하는 고정 날씨가 아닐 때
         if(fweatherRow.length == 0){
@@ -443,7 +440,7 @@ exports.registerOotd = async function (req, res) {
         }
     }
     for (item of aWeather){
-        const aweatherRow = await ootdProvider.weatherCheck(userIdx, item);
+        const aweatherRow = await ootdProvider.checkWeather(userIdx, item);
 
         // 사용자가 추가한 날씨가 아닐 때
         if(aweatherRow.length == 0){
@@ -454,7 +451,7 @@ exports.registerOotd = async function (req, res) {
 
     // 등록할 수 없는 Who (fWho->index, aWho->who)
     for (item of fWho){
-        const fwhoRow = await ootdProvider.whoCheck(userIdx, item);
+        const fwhoRow = await ootdProvider.checkWho(userIdx, item);
         
         // 존재하는 고정 누구가 아닐 때
         if(fwhoRow.length == 0){
@@ -462,7 +459,7 @@ exports.registerOotd = async function (req, res) {
         }
     }
     for (item of aWho){
-        const awhoRow = await ootdProvider.whoCheck(userIdx, item);
+        const awhoRow = await ootdProvider.checkWho(userIdx, item);
         
         // 사용자가 추가한 누구가 아닐 때
         if(awhoRow.length == 0){
@@ -471,7 +468,7 @@ exports.registerOotd = async function (req, res) {
     }
 
     // 최종 등록 API 
-    const registerUserOotd = await ootdService.lastRegisterOotd(userIdx, date, lookname, photoIs, image, fClothes, aClothes,
+    const registerUserOotd = await ootdService.postOotd(userIdx, date, lookname, photoIs, image, fClothes, aClothes,
         fPlace, aPlace, fWeather, aWeather, fWho, aWho, n_lookpoint, comment);
     
     //console.log('[ootdController] registerOotd finish');
@@ -490,7 +487,7 @@ function isInt(lookpoint){
  * [GET] /app/ootd/default-block
  */
 
-exports.defaultOotd = async function (req, res){
+exports.ootdDefaultBlock = async function (req, res){
 
     //console.log('[ootdController] defaultOotd start');
 
@@ -509,10 +506,10 @@ exports.defaultOotd = async function (req, res){
  * API No. 10
  * API Name : OOTD 수정하기 - 지난 작성 화면 보여주기
  * [GET] /app/ootd/modi
- * Query string : date
+ * Query String : date
  */
 
-exports.modiOotd = async function (req, res){
+exports.ootdModi = async function (req, res){
 
     //console.log('[ootdController] modiOotd start');
 
@@ -563,9 +560,9 @@ exports.modiOotd = async function (req, res){
  * API No. 12
  * API Name : OOTD 완료 페이지 불러오기
  * [GET] /app/ootd/complete
- * Query string : date
+ * Query String : date
  */
-exports.completeOotd = async function (req, res){
+exports.ootdComplete = async function (req, res){
 
     //console.log('[ootdController] completeOotd start');
 
