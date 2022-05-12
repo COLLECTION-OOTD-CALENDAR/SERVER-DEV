@@ -3,6 +3,124 @@ const searchService = require("./searchService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
+var blankPattern = /^\s+|\s+$/g;
+
+/**
+ * API No. 15
+ * API Name : [PWWC] 검색 초기화면 보여주기
+ * [GET] /app/search/mainpage/:PWWC
+ * Path Variable : PWWC
+ */
+ exports.searchMain = async function (req, res) {
+
+    console.log('[searchController] searchMain start');
+    const userIdx = req.verifiedToken.userIdx;
+    const PWWC = req.params.PWWC;
+
+    // PWWC Path variable이 입력되지 않았을 때
+    if(PWWC === '' || PWWC === null || PWWC === undefined || PWWC === NaN){
+        return res.send(errResponse(baseResponse.PWWC_EMPTY));
+    }
+
+    // PWWC Path variable이 숫자가 아닌 경우(약한 검사)
+    if(isNaN(PWWC)){
+        return res.send(errResponse(baseResponse.PWWC_ERROR_TYPE));
+    }
+
+    // PWWC Path variable이 0,1,2,3 값이 아닌 경우
+    if(PWWC < 0 || PWWC > 3){
+        return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE));
+    }
+
+    const searchHistoryResult = await searchProvider.retrieveSearchHistory(userIdx, PWWC);
+
+    // 객체 형태로 변경
+    const historyFinalResult = {};
+    historyFinalResult["history"] = searchHistoryResult;
+
+    console.log('[searchController] searchMain finish');
+
+    return res.send(response(baseResponse.SUCCESS_SEARCH_MAIN, historyFinalResult));
+
+};
+
+/**
+ * API No. 16
+ * API Name : [PWWC] 검색 History 삭제하기(개별,전체) 
+ * [PATCH] /app/search/deletion/:PWWC?type=
+ * parameters : PWWC ,userIdx
+ * body : content, color
+ * query string : type
+ */
+ exports.searchDeletion = async function (req, res) {
+
+    const userIdx = req.verifiedToken.userIdx;
+    const PWWC = req.params.PWWC;
+    const content = req.body.content;
+    const type = req.query.type;
+    const color = req.body.color;
+
+    //삭제할 블럭이 지정되지 않았습니다.
+    if(type == 1 && content === null){
+        return res.send(response(baseResponse.HISTORY_CONTENT_UNDEFINED));
+    }
+    //전체삭제에 알맞지 않은 조건입니다. 
+    if(type == 2 && content){
+        return res.send(response(baseResponse.UNNECESSARY_CONTENT));
+    }
+
+    // PWWC flag 값이 입력되어야합니다.
+    if(PWWC === '' || PWWC === null || PWWC === undefined || PWWC === NaN){
+        return res.send(response(baseResponse.PWWC_EMPTY));
+    }
+
+    // 올바르지 않은 PWWC flag형식이 입력되었습니다. 
+    if(isNaN(PWWC)){
+        return res.send(response(baseResponse.PWWC_ERROR_TYPE));
+    }
+
+    // 유효하지 않은 PWWC flag(0,1,2,3) 값이 입력되었습니다.
+    if(PWWC < 0 || PWWC > 3){
+        return res.send(response(baseResponse.PWWC_INVALID_VALUE));
+    }
+
+    //Query String을 입력해야 합니다. (type이 아예 없는경우 || type이 비어있는경우)
+    if(!type){
+        return res.send(response(baseResponse.QUERY_STRING_EMPTY));
+    }
+
+    //올바르지 않은 Query String 형식입니다. (숫자가 아닌경우)
+    if(isNaN(type)){
+        return res.send(response(baseResponse.QUERY_STRING_ERROR_TYPE));
+    }
+
+    //유효하지 않은 Query String 값이 입력되었습니다. (1,2 가 아닌경우)
+    if(type < 0 || type > 3){
+        return res.send(response(baseResponse.QUERY_STRING_INVALID_VALUE));
+    }
+    //존재하지 않는 검색 내역입니다.
+    const historyRows = await searchProvider.checkHistory(
+        userIdx,
+        PWWC,
+        content,
+    );
+    if (historyRows.length == 0){
+        return res.send(response(baseResponse.SEARCH_NOT_EXIST));
+    }
+
+    const editHistory = await searchService.patchHistory(
+        userIdx,
+        PWWC,
+        content,
+        type,
+        color, 
+    );
+
+    return res.send(editHistory);
+
+
+};
+
 
 
 /**
@@ -202,4 +320,67 @@ exports.searchPWWC = async function (req, res) {
         return res.send(response(baseResponse.SUCCESS_MATCH, searchFinalResult));
     }
 
+};
+
+
+/**
+ * API No. 19
+ * API Name : [PWWC] 매칭 페이지 검색 키워드 제안
+ * [GET] /app/search/suggestion/:PWWC
+ * Path Variable : PWWC
+ * Query String : keyword1
+ */
+ exports.searchSuggestKeyword = async function (req, res) {
+
+    //console.log('[searchController] searchSuggestKeyword start');
+
+    const userIdx = req.verifiedToken.userIdx;
+    const PWWC = req.params.PWWC;
+    var keyword1 = req.query.keyword1;
+
+    // PWWC Path variable이 입력되지 않았을 때
+    if(PWWC === '' || PWWC === null || PWWC === undefined || PWWC === NaN){
+        return res.send(errResponse(baseResponse.PWWC_EMPTY));
+    }
+
+    // PWWC Path variable이 숫자가 아닌 경우(약한 검사)
+    if(isNaN(PWWC)){
+        return res.send(errResponse(baseResponse.PWWC_ERROR_TYPE));
+    }
+
+    // PWWC Path variable이 0,1,2,3 값이 아닌 경우
+    if(PWWC < 0 || PWWC > 3){
+        return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE));
+    }
+
+    // Keyword1 Query string이 없는 경우 (key / value)
+    if(!keyword1){
+        return res.send(errResponse(baseResponse.KEYWORD1_EMPTY));
+    }
+    
+    // Keyword1 Query String에 공백만 입력된 경우
+    keyword1 = keyword1.toString();
+    if(keyword1.replace(blankPattern, '') == ""){
+        return res.send(errResponse(baseResponse.REGISTER_BLANK_ALL));
+    }
+
+    // Keyword1의 길이가 6글자를 넘을 경우
+    if(keyword1.length > 6){
+        return res.send(errResponse(baseResponse.SEARCH_KEYWORD_LENGTH));
+    }
+
+    const suggestKeywordResult = await searchProvider.retrieveSuggestKeyword(userIdx, PWWC, keyword1);
+
+    // Response error : 존재하는 검색 키워드 존재 X
+    if(!suggestKeywordResult[0]){
+        return res.send(errResponse(baseResponse.SEARCH_TAG_NOT_EXIST));
+    }
+
+    // 객체 형태로 변경
+    const suggestFinalResult = {};
+    suggestFinalResult["suggestion"] = suggestKeywordResult;
+
+    //console.log('[searchController] suggestSearchKeyword finish');
+
+    return res.send(response(baseResponse.SUCCESS_SEARCH_SUGGEST, suggestFinalResult));
 };
