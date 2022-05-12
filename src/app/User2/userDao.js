@@ -2,8 +2,8 @@
 // 0. 회원가입 - (유저 생성)
 async function insertUserInfo(connection, insertUserInfoParams) {
   const insertUserInfoQuery = `
-        INSERT INTO User(name,nickname,ID,password,phoneNumber)
-        VALUES (?, ?, ?, ?, ?);
+    INSERT INTO User(name, nickname, ID, password, birthday, gender, phoneNumber)
+    VALUES (?, ?, ?, ?, ?, ?, ?);
     `;
   const insertUserInfoRow = await connection.query(
     insertUserInfoQuery,
