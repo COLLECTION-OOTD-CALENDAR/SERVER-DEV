@@ -1,4 +1,5 @@
 // 16. [PWWC] 검색 History 삭제하기(개별,전체) - (개별 API)
+
 async function updateHistoryEach(connection, userIdx, PWWC,content) {
   const updateSearchQuery = `
     UPDATE History
@@ -9,6 +10,7 @@ async function updateHistoryEach(connection, userIdx, PWWC,content) {
 }
 
 // 16. [PWWC] 검색 History 삭제하기(개별,전체) - (개별 중 COLOR API)
+
 async function updateHistoryColor(connection, userIdx, PWWC,content,color) {
   const updateSearchQuery = `
     UPDATE History
