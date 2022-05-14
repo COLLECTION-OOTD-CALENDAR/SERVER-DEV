@@ -2,7 +2,6 @@ const {logger} = require("../../../config/winston");
 const {pool} = require("../../../config/database");
 const secret_config = require("../../../config/secret");
 
-// user 뿐만 아니라 다른 도메인의 Provider와 Dao도 아래처럼 require하여 사용할 수 있습니다.
 const userProvider = require("./userProvider");
 const userDao = require("./userDao");
 
@@ -13,21 +12,16 @@ const {errResponse} = require("../../../config/response");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
-// Service: Create, Update, Delete 비즈니스 로직 처리 
-// 회원가입 API
-/*
-exports.register = async function (name,nickname,ID,password,phoneNumber) {
+// 0. 회원가입 - (ID 중복 확인, 닉네임 중복 확인, 비밀번호 암호화)
+exports.postRegister = async function (name, nickname, ID, password, birthday, gender, phoneNumber) {
     try {
-        // ID 중복 확인
-        // UserProvider에서 해당 ID와 같은 User 목록을 받아서 IDRows에 저장한 후, 배열의 길이를 검사한다.
-        // -> 길이가 0 이상이면 이미 해당 ID를 갖고 있는 User가 조회된다는 의미
-        const IDRows = await userProvider.IDCheck(ID);
+        //ID 중복 확인
+        const IDRows = await userProvider.checkID(ID);
         if (IDRows.length > 0)
             return errResponse(baseResponse.REGISTER_ID_REDUNDANT);
 
         // 닉네임 중복 확인 
-        // ID 중복 확인 방법과 동일하게 진행 
-        const nicknameRows = await userProvider.nicknameCheck(nickname);
+        const nicknameRows = await userProvider.checkNickname(nickname);
             if (nicknameRows.length > 0)
                 return errResponse(baseResponse.REGISTER_NICKNAME_REDUNDANT);
 
@@ -37,8 +31,7 @@ exports.register = async function (name,nickname,ID,password,phoneNumber) {
             .update(password)
             .digest("hex");
 
-        // 쿼리문에 사용할 변수 값을 배열 형태로 전달
-        const insertUserInfoParams = [name,nickname,ID,hashedPassword,phoneNumber];
+        const insertUserInfoParams = [name, nickname, ID, hashedPassword, birthday, gender, phoneNumber];
 
         const connection = await pool.getConnection(async (conn) => conn);
 
@@ -46,22 +39,22 @@ exports.register = async function (name,nickname,ID,password,phoneNumber) {
         connection.release();
 
         return response(baseResponse.SUCCESS_REGISTER,
-            {'name': name, 'nickname' : nickname ,'ID' : ID, 'password' : hashedPassword, 'phoneNumber' : phoneNumber});
+            {'name': name, 'nickname' : nickname ,'ID' : ID, 'password' : hashedPassword, 'birthday' : birthday, 'gender' : gender, 'phoneNumber' : phoneNumber});
 
     } catch (err) {
         logger.error(`App - register Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 };
-*/
 
-// 로그인 API
+// 3. 로그인 - (ID 여부 확인, 비밀번호 확인, 토큰 생성 Service)
 exports.postLogIn = async function (ID, password) {
     try {
         // ID 여부 확인
-        const IDRows = await userProvider.IDCheck(ID);
-        if (IDRows.length < 1) return errResponse(baseResponse.LOGIN_ID_WRONG);
-
+        const IDRows = await userProvider.checkID(ID);
+         if (IDRows.length < 1) {
+            return errResponse(baseResponse.LOGIN_ID_WRONG);
+         }
         const selectID = IDRows[0].ID
 
         // 비밀번호 확인 (입력한 비밀번호를 암호화한 것과 DB에 저장된 비밀번호가 일치하는 지 확인함)
@@ -71,7 +64,7 @@ exports.postLogIn = async function (ID, password) {
             .digest("hex");
 
         
-        const passwordRows = await userProvider.passwordCheck(selectID);
+        const passwordRows = await userProvider.checkPassword(selectID);
 
         if (passwordRows[0].password !== hashedPassword) {
             return errResponse(baseResponse.LOGIN_PW_WRONG);
@@ -79,7 +72,7 @@ exports.postLogIn = async function (ID, password) {
 
         // 계정 상태 확인 
 
-        const userInfoRows = await userProvider.accountCheck(ID);
+        const userInfoRows = await userProvider.checkAccount(ID);
 
         if (userInfoRows[0].status === "inactive") {
             return errResponse(baseResponse.LOGIN_UNREGISTER_USER); //탈퇴한 USER
@@ -106,11 +99,8 @@ exports.postLogIn = async function (ID, password) {
     }
 };
 
-
-
-//회원정보 수정(닉네임) API
-
-exports.editNickname = async function (nickname, userIdx) {
+//4-1. 회원정보 수정 (닉네임) - (닉네임 변경) 
+exports.patchNickname = async function (nickname, userIdx) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
         const editUserResult = await userDao.updateNicknameInfo(connection, nickname, userIdx)
@@ -123,9 +113,8 @@ exports.editNickname = async function (nickname, userIdx) {
     }
 }
 
-//회원정보 수정(비밀번호) API
-
-exports.editPW = async function (userIdx,originPassword,newPassword) {
+//4-2 . 회원정보 수정(비밀번호) - (비밀번호 HASHED 처리 -> 변경)
+exports.patchPW = async function (userIdx,originPassword,newPassword) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
         
@@ -134,7 +123,7 @@ exports.editPW = async function (userIdx,originPassword,newPassword) {
             .update(originPassword)
             .digest("hex");
 
-        const passwordRows = await userProvider.passwordCheckUserIdx(userIdx);
+        const passwordRows = await userProvider.checkPasswordUserIdx(userIdx);
 
         if(passwordRows[0].password !== hashedPassword) {
             return errResponse(baseResponse.LOGIN_PW_WRONG);
@@ -158,9 +147,8 @@ exports.editPW = async function (userIdx,originPassword,newPassword) {
     }
 }
 
-//회원정보 수정(전화번호) API
-
-exports.editPhone = async function (phoneNumber, userIdx) {
+//4-3. 회원정보 수정(전화번호) - (전화번호 변경)
+exports.patchPhone = async function (phoneNumber, userIdx) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
         
@@ -178,9 +166,8 @@ exports.editPhone = async function (phoneNumber, userIdx) {
     }
 }
 
-//회원탈퇴 API
-
-exports.unregister = async function (password, userIdx) {
+//5. 회원탈퇴 - (비밀번호 확인 이후 탈퇴)
+exports.patchUnregister = async function (password, userIdx) {
     try{
         const connection = await pool.getConnection(async (conn) => conn);
 
@@ -190,13 +177,13 @@ exports.unregister = async function (password, userIdx) {
             .update(password)
             .digest("hex");
 
-        const passwordRows = await userProvider.passwordCheckUserIdx(userIdx); 
+        const passwordRows = await userProvider.checkPasswordUserIdx(userIdx); 
 
         if(passwordRows[0].password !== hashedPassword) {
             return errResponse(baseResponse.UNREGISTER_PW_WRONG);
         }
  
-        const unregisterUser = await userDao.unregisterUser(connection, userIdx)
+        const unregisterUser = await userDao.updateUnregisterUser(connection, userIdx)
         connection.release();
 
         return response(baseResponse.SUCCESS_UNREGISTER);
@@ -207,5 +194,33 @@ exports.unregister = async function (password, userIdx) {
     }
 }
 
+
+
+/**
+ * API No. 22
+ * API Name : 비밀번호 재설정 API
+ **/
+ exports.updatePw = async function (userIdx,newPassword) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        
+
+        const hashedNewPassword = await crypto
+            .createHash("sha512")
+            .update(newPassword)
+            .digest("hex");
+
+        const updatePWParams = [hashedNewPassword, userIdx]
+
+        const updatePwdResult = await userDao.updatePwdReset(connection, updatePWParams)
+        connection.release();
+
+        return response(baseResponse.SUCCESS_RESET_PW);
+
+    } catch (err) {
+        logger.error(`App - updatePw Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
 
 

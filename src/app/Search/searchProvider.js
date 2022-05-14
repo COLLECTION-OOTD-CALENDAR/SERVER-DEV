@@ -9,24 +9,55 @@ const baseResponse = require("../../../config/baseResponseStatus");
 const searchDao = require("./searchDao");
 const calendarProvider = require("../Calendar/calendarProvider"); //
 
-/* 
-getSearchResult : calendarProvider 내 retrieveWeeklyList 함수 로직 이용 및 함수 이용 (credits to 녜) 
 
-changeBlankClothes
-getImageUrlKey
-getImageUrl
-getImageCntKey
-hasImageUrl
-getImageCnt
-getOotd
-getBigClass
-getPlaces
-getWeathers
-getWhos
-hasClothes
-pushOotd
+// 15. [PWWC] 검색 초기화면 보여주기
+exports.retrieveSearchHistory = async function (userIdx, PWWC) {
 
-*/
+  console.log('[searchProvider] retrieveSearchHistory start');
+
+  try {
+    // connection 은 db와의 연결을 도와줌
+    const connection = await pool.getConnection(async (conn) => conn);
+    
+    // color도 함께 출력 (Color)
+    if (PWWC == 3){
+      // Dao 쿼리문의 결과를 호출
+      const colorHistoryResult = await searchDao.selectColorHistory(connection, userIdx, PWWC);
+      // connection 해제
+      connection.release();
+
+      console.log('[searchProvider] retrieveSearchHistory finish');
+
+      return colorHistoryResult;
+
+    } else { // color는 출력하지 않음 (Place, Weather, Who)
+      // Dao 쿼리문의 결과를 호출
+      const PWWHistoryResult = await searchDao.selectPWWHistory(connection, userIdx, PWWC);
+      // connection 해제
+      connection.release();
+
+      console.log('[searchProvider] retrieveSearchHistory finish');
+      
+      return PWWHistoryResult;
+    }
+
+  } catch (err){
+    logger.error(`App - retrieveSearchHistory Provider error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
+  }
+
+};
+
+
+
+// 16. [PWWC] 검색 History 삭제하기(개별,전체) 
+exports.checkHistory = async function (userIdx,PWWC,content) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const historyCheckResult = await searchDao.selectHistory(connection, userIdx,PWWC,content);
+  connection.release();
+
+  return historyCheckResult;
+};
 
 
 // history 추가/삭제 위한 중복 체크 (history의 idx반환)
@@ -41,7 +72,7 @@ exports.checkHistoryRedundancy = async function(connection, userIdx, PWWC, keywo
 exports.checkHistoryNumber = async function (connection, userIdx, PWWC) {
 
  // const connection = await pool.getConnection(async (conn) => conn);
-  const historyListResult = await searchDao.selectHistory(connection, userIdx, PWWC);
+  const historyListResult = await searchDao.selectHistoryCnt(connection, userIdx, PWWC);
  // connection.release();
 
   return historyListResult;
@@ -243,3 +274,58 @@ exports.retrieveSearchResult = async function (userIdx, PWWC, keyword1, keyword2
   }
 
 };
+
+// 19. [PWWC] 매칭 페이지 검색 키워드 제안
+exports.retrieveSuggestKeyword = async function (userIdx, PWWC, keyword1) {
+  
+  console.log('[searchProvider] retrieveSuggestKeyword start');
+
+  const suggestionKeywordParams = [userIdx, keyword1];
+  
+  try {
+    // connection 은 db와의 연결을 도와줌
+    const connection = await pool.getConnection(async (conn) => conn);
+    
+    // Place 값들 출력
+    if (PWWC == 0){
+      // Dao 쿼리문의 결과를 호출
+      const placeSuggestResult = await searchDao.selectPlaceSuggestion(connection, suggestionKeywordParams);
+      // connection 해제
+      connection.release();
+
+      console.log('[searchProvider] retrieveSuggestKeyword finish');
+      return placeSuggestResult;
+
+    } else if (PWWC == 1) { // Weather 값들 출력
+
+      const weatherSuggestResult = await searchDao.selectWeatherSuggestion(connection, suggestionKeywordParams);
+      connection.release();
+
+      console.log('[searchProvider] retrieveSuggestKeyword finish');
+      return weatherSuggestResult;
+
+    } else if (PWWC == 2){ // Who 값들 출력
+
+      const whoSuggestResult = await searchDao.selectWhoSuggestion(connection, suggestionKeywordParams);
+      connection.release();
+
+      console.log('[searchProvider] retrieveSuggestKeyword finish');
+      return whoSuggestResult;
+
+
+    } else if (PWWC == 3){ // color도 함께 출력 (Color)
+
+      const colorSuggestResult = await searchDao.selectColorSuggestion(connection, suggestionKeywordParams);
+      connection.release();
+
+      console.log('[searchProvider] retrieveSuggestKeyword finish');
+      return colorSuggestResult;
+    } 
+
+  } catch (err) {
+    logger.error(`App - retrieveSuggestKeyword Provider error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
+  }
+
+};
+

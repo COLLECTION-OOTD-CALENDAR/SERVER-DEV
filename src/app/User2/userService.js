@@ -15,7 +15,7 @@ const crypto = require("crypto");
 
 
 // 0. 회원가입 - (ID 중복 확인, 닉네임 중복 확인, 비밀번호 암호화)
-exports.postRegister = async function (name,nickname,ID,password,phoneNumber) {
+exports.postRegister = async function (name, nickname, ID, password, birthday, gender, phoneNumber) {
     try {
         //ID 중복 확인
         const IDRows = await userProvider.CheckID(ID);
@@ -33,7 +33,7 @@ exports.postRegister = async function (name,nickname,ID,password,phoneNumber) {
             .update(password)
             .digest("hex");
 
-        const insertUserInfoParams = [name,nickname,ID,hashedPassword,phoneNumber];
+        const insertUserInfoParams = [name, nickname, ID, hashedPassword, birthday, gender, phoneNumber];
 
         const connection = await pool.getConnection(async (conn) => conn);
 
@@ -41,7 +41,7 @@ exports.postRegister = async function (name,nickname,ID,password,phoneNumber) {
         connection.release();
 
         return response(baseResponse.SUCCESS_REGISTER,
-            {'name': name, 'nickname' : nickname ,'ID' : ID, 'password' : hashedPassword, 'phoneNumber' : phoneNumber});
+            {'name': name, 'nickname' : nickname ,'ID' : ID, 'password' : hashedPassword, 'birthday' : birthday, 'gender' : gender, 'phoneNumber' : phoneNumber});
 
     } catch (err) {
         logger.error(`App - register Service error\n: ${err.message}`);

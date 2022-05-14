@@ -1,6 +1,72 @@
+// 15. [PWWC] 검색 초기화면 보여주기 - Color 탭
+async function selectColorHistory(connection, userIdx, PWWC) {
+  const selectColorHistoryQuery = `
+                SELECT History.index, content, color
+                FROM History
+                WHERE userIdx = ? AND PWWC = ? AND status = 'active'
+                ORDER BY createAt DESC;
+                `;
+  const [historyRows] = await connection.query(selectColorHistoryQuery, [userIdx, PWWC]);
+  return historyRows;
+};
+
+// 15. [PWWC] 검색 초기화면 보여주기 - Place, Weather, Who 탭
+async function selectPWWHistory(connection, userIdx, PWWC) {
+  const selectPWWHistoryQuery = `
+                SELECT History.index, content
+                FROM History
+                WHERE userIdx = ? AND PWWC = ? AND status = 'active'
+                ORDER BY createAt DESC;
+                `;
+  const [historyRows] = await connection.query(selectPWWHistoryQuery, [userIdx, PWWC]);
+  return historyRows;
+};
+
+
+
+
+// 16. [PWWC] 검색 History 삭제하기(개별,전체) - (개별 API)
+async function updateHistoryEach(connection, userIdx, PWWC,content) {
+  const updateSearchQuery = `
+    UPDATE History
+    SET status = "inactive"
+    WHERE userIdx = ? AND PWWC = ? AND content = ?;`;
+  const updateSearchRow = await connection.query(updateSearchQuery, [userIdx, PWWC,content]);
+  return updateSearchRow;
+}
+
+// 16. [PWWC] 검색 History 삭제하기(개별,전체) - (개별 중 COLOR API)
+async function updateHistoryColor(connection, userIdx, PWWC,content,color) {
+  const updateSearchQuery = `
+    UPDATE History
+    SET status = "inactive"
+    WHERE userIdx= ? AND PWWC = ? AND content = ? AND color = ?;`;
+  const updateSearchRow = await connection.query(updateSearchQuery, [userIdx, PWWC,content,color]);
+  return updateSearchRow;
+}
+
+// 16. [PWWC] 검색 History 삭제하기(개별,전체) - (전체 삭제 API)
+async function updateHistoryAll(connection, userIdx, PWWC) {
+  const updateSearchQuery = `
+    UPDATE History
+    SET status = "inactive"
+    WHERE userIdx = ? AND PWWC = ?;`;
+  const updateSearchRow = await connection.query(updateSearchQuery, [userIdx, PWWC]);
+  return updateSearchRow;
+}
+
+// 16. [PWWC] 검색 History 삭제하기(개별,전체) - (History 검색 내역검사) 
+async function selectHistory(connection,userIdx,PWWC,content) {
+  const selectHistoryQuery = `
+    SELECT content
+    FROM History
+    WHERE userIdx = ? AND PWWC = ? AND content = ?;`;
+  const IDRow = await connection.query(selectHistoryQuery, [userIdx,PWWC,content]);
+  return IDRow[0];
+}
 
 // history 추가/삭제 위한 개수 체크 (history의 idx 목록)
-async function selectHistory(connection, userIdx, PWWC) {
+async function selectHistoryCnt(connection, userIdx, PWWC) {
 
   const selectHistoryQuery = `
                 SELECT History.index 
@@ -257,11 +323,6 @@ async function selectSearchPlaceList(connection, userIdx, keyword1){
 
 
 
-
-
-
-
-
 // API 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 API  - Weather
 async function selectSearchWeatherList(connection, userIdx, keyword1){
   const selectSearchWeatherQuery = `
@@ -448,6 +509,74 @@ async function selectSearchColorList(connection, userIdx, keyword1, color1){
   return searchColorRows;
 };
 
+// 19. [PWWC] 매칭 페이지 검색 키워드 제안 - Place
+async function selectPlaceSuggestion(connection, suggestionKeywordParams) {
+  const placeSuggestionQuery = `
+                SELECT place
+                FROM (SELECT place, createAt
+                  FROM FixedPlace fixed
+                  UNION
+                  SELECT place, createAt
+                  FROM AddedPlace added
+                  WHERE added.userIdx = ?) AS UP
+                WHERE INSTR(place, ?) > 0
+                ORDER BY createAt;
+                `;
+  const [suggestRows] = await connection.query(placeSuggestionQuery, suggestionKeywordParams);
+  return suggestRows;
+};
+
+// 19. [PWWC] 매칭 페이지 검색 키워드 제안 - Weather
+async function selectWeatherSuggestion(connection, suggestionKeywordParams) {
+  const weatherSuggestionQuery = `
+                SELECT weather
+                FROM (SELECT weather, createAt
+                  FROM FixedWeather fixed
+                  UNION
+                  SELECT weather, createAt
+                  FROM AddedWeather added
+                  WHERE added.userIdx = ?) AS UW
+                WHERE INSTR(weather, ?) > 0
+                ORDER BY createAt;
+                `;
+  const [suggestRows] = await connection.query(weatherSuggestionQuery, suggestionKeywordParams);
+  return suggestRows;
+};
+
+// 19. [PWWC] 매칭 페이지 검색 키워드 제안 - Who
+async function selectWhoSuggestion(connection, suggestionKeywordParams) {
+  const whoSuggestionQuery = `
+                SELECT who
+                FROM (SELECT who, createAt
+                  FROM FixedWho fixed
+                  UNION
+                  SELECT who, createAt
+                  FROM AddedWho added
+                  WHERE added.userIdx = ?) AS UWH
+                WHERE INSTR(who, ?) > 0
+                ORDER BY createAt;
+                `;
+  const [suggestRows] = await connection.query(whoSuggestionQuery, suggestionKeywordParams);
+  return suggestRows;
+};
+
+// 19. [PWWC] 매칭 페이지 검색 키워드 제안 - Color
+async function selectColorSuggestion(connection, suggestionKeywordParams) {
+  const colorSuggestionQuery = `
+                SELECT smallClass
+                FROM (SELECT smallClass, createAt
+                  FROM FixedClothes fixed
+                  UNION
+                  SELECT smallClass, createAt
+                  FROM AddedClothes added
+                  WHERE added.userIdx = ?) AS UC
+                WHERE INSTR(smallClass, ?) > 0
+                ORDER BY createAt;
+                `;
+  const [suggestRows] = await connection.query(colorSuggestionQuery, suggestionKeywordParams);
+  return suggestRows;
+};
+
 
 
 
@@ -457,7 +586,19 @@ async function selectSearchColorList(connection, userIdx, keyword1, color1){
 
 
 module.exports = {
+
+  //15. [PWWC] 검색 초기화면 보여주기 
+  selectColorHistory,
+  selectPWWHistory,
+
+  //16. [PWWC] 검색 History 삭제하기(개별,전체)
+  updateHistoryEach,
+  updateHistoryColor,
+  updateHistoryAll,
   selectHistory,
+
+  //17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 API
+  selectHistoryCnt,
   selectOldHistory,
   deleteOneHistory,
   insertHistory,  
@@ -479,4 +620,11 @@ module.exports = {
   selectSearchWeatherList,
   selectSearchWhoList,
   selectSearchColorList,
+
+
+  //19. [PWWC] 매칭 페이지 검색 키워드 제안
+  selectPlaceSuggestion,
+  selectWeatherSuggestion,
+  selectWhoSuggestion,
+  selectColorSuggestion
 };

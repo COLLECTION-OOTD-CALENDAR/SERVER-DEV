@@ -12,15 +12,14 @@ var datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
 
 
 /**
- * API No. 1
+ * API No. 0
  * API Name : 회원가입 API
  * [POST] /app/user/register
+ * Body: name,nickname,ID,password,phoneNumber
  */
 exports.userRegister = async function (req, res) {
 
-    /**
-     * Body: name,nickname,ID,password,phoneNumber
-     */
+
     const {name, nickname, ID, password, birthday, gender, phoneNumber} = req.body;
 
     // 빈 값 체크
