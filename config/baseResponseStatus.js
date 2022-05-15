@@ -102,7 +102,7 @@ module.exports = {
 
 
     //New added
-    REGISTER_NAME_EMPTY : { "isSuccess": false, "code": 3041, "message":"성함을 입력해주세요." },
+    REGISTER_NAME_EMPTY : { "isSuccess": false, "code": 3041, "message":"이름을 입력해주세요." },
     QUERY_STRING_OVERFLOW : { "isSuccess": false, "code": 3042, "message": "너무 많은 Query String이 입력되었습니다." },
     QUERY_STRING_ERROR_TYPE : { "isSuccess": false, "code": 3043, "message": "올바르지 않은 Query String 형식이 입력되었습니다." },
     DATE_ERROR_TYPE : { "isSuccess": false, "code": 3044, "message": "올바르지 않는 날짜형식입니다." }, //형식
