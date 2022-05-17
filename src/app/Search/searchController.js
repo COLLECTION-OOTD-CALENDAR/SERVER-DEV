@@ -11,9 +11,8 @@ var blankPattern = /^\s+|\s+$/g;
  * [GET] /app/search/mainpage/:PWWC
  * Path Variable : PWWC
  */
- exports.searchMain = async function (req, res) {
+exports.searchMain = async function (req, res) {
 
-    console.log('[searchController] searchMain start');
     const userIdx = req.verifiedToken.userIdx;
     const PWWC = req.params.PWWC;
 
@@ -37,8 +36,6 @@ var blankPattern = /^\s+|\s+$/g;
     // 객체 형태로 변경
     const historyFinalResult = {};
     historyFinalResult["history"] = searchHistoryResult;
-
-    console.log('[searchController] searchMain finish');
 
     return res.send(response(baseResponse.SUCCESS_SEARCH_MAIN, historyFinalResult));
 
@@ -330,9 +327,7 @@ exports.searchPWWC = async function (req, res) {
  * Path Variable : PWWC
  * Query String : keyword1
  */
- exports.searchSuggestKeyword = async function (req, res) {
-
-    //console.log('[searchController] searchSuggestKeyword start');
+exports.searchSuggestKeyword = async function (req, res) {
 
     const userIdx = req.verifiedToken.userIdx;
     const PWWC = req.params.PWWC;
@@ -379,8 +374,6 @@ exports.searchPWWC = async function (req, res) {
     // 객체 형태로 변경
     const suggestFinalResult = {};
     suggestFinalResult["suggestion"] = suggestKeywordResult;
-
-    //console.log('[searchController] suggestSearchKeyword finish');
 
     return res.send(response(baseResponse.SUCCESS_SEARCH_SUGGEST, suggestFinalResult));
 };
