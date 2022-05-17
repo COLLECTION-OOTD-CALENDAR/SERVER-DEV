@@ -3,30 +3,28 @@ const { logger } = require("../../../config/winston");
 
 const calendarDao = require("./calendarDao");
 
-// Provider: Read 비즈니스 로직 처리
-
 // 6. Monthly 달력 OOTD 부르기
 const retrieveMonthlyList = async function (userIdx) {
 
   try {
-    //console.log('[calendarProvider] retrieveMonthlyList start');
 
     // connection 은 db와의 연결을 도와줌
     const connection = await pool.getConnection(async (conn) => conn);
     // Dao 쿼리문의 결과를 호출
     const monthlyListResult = await calendarDao.selectMonthly(connection, userIdx);
+    
     for ( i in monthlyListResult ) {
       var moment = require('moment');
       monthlyListResult[i].date = moment(monthlyListResult[i].date).format('YYYY-MM-DD');
     }
+
     // connection 해제
     connection.release();
-    //console.log('[calendarProvider] retrieveMonthlyList finish');
 
     return monthlyListResult;
 
   } catch(err) {
-    logger.error(`App - getMonthly Provider error\n: ${err.message}`);
+    logger.error(`App - retrieveMonthlyList Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 
@@ -34,8 +32,6 @@ const retrieveMonthlyList = async function (userIdx) {
 
 // 7. Weekly 달력 OOTD 부르기
 const retrieveWeeklyList = async function (userIdx) {
-
-  //console.log('[calendarProvider] retrieveWeeklyList start');
 
   try{
     // connection 은 db와의 연결을 도와줌
@@ -50,8 +46,8 @@ const retrieveWeeklyList = async function (userIdx) {
     let img_cnt = 0;
     let imgUrlArr = [];
 
+    // 가져온 Weekly OOTD 리스트를 하나씩 분석하여 정리
     for (let row of ootdWeeklyListResult) {
-      
       // ootds 배열에 새로운 ootd row 추가 여부 결정
       let ootd = getOotd(row.ootdIdx, ootds);
       // img_cnt와 distinct한 imgUrl을 저장하는 배열 초기화
@@ -115,11 +111,10 @@ const retrieveWeeklyList = async function (userIdx) {
     // 빈 배열을 갖는 Top, Bottom, Shoes, Etc 값 변경 함수
     ootds = changeBlankClothes(ootds);
 
-    //console.log('[calendarProvider] retrieveWeeklyList finish');
     return ootds;
 
   }catch(err){
-    logger.error(`App - getWeekly Provider error\n: ${err.message}`);
+    logger.error(`App - retrieveWeeklyList Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 
