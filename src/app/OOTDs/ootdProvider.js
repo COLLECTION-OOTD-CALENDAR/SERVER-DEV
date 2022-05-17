@@ -6,22 +6,15 @@ const {errResponse} = require("../../../config/response");
 
 const ootdDao = require("./ootdDao");
 
-// Provider: Read 비즈니스 로직 처리
-
 // 8. OOTD 최종 등록하기 - 입력한 날짜에 OOTD 존재 여부 체크
 exports.checkOotdDate = async function (userIdx, date) {
-
-  //console.log('[ootdProvider] ootdDateCheck start');
 
   try {
 
     // DB에 연결
     const connection = await pool.getConnection(async (conn) => conn);
-
     const ootdDateCheckResult = await ootdDao.selectDateOotd(connection, userIdx, date);
     connection.release();
-
-    //console.log('[ootdProvider] ootdDateCheck finish');
 
     return ootdDateCheckResult;
 
@@ -35,8 +28,6 @@ exports.checkOotdDate = async function (userIdx, date) {
 // 8. OOTD 최종 등록하기 - 등록할 수 없는 옷 (fClothes->index, aClothes->smallClass) 체크
 exports.checkClothes = async function (userIdx, data) {
 
-  //console.log('[ootdProvider] clothesCheck start');
-
   try {
 
     // DB에 연결
@@ -47,18 +38,13 @@ exports.checkClothes = async function (userIdx, data) {
       const clothesCheckResult = await ootdDao.selectClothesIdxIs(connection, data);
       connection.release();
 
-      //console.log('[ootdProvider] clothesCheck finish');
-
       return clothesCheckResult;
     }
     else { // data가 string일 경우 (aClothes->smallClass)
       const clothesCheckResult = await ootdDao.selectClothesIs(connection, userIdx, data);
       connection.release();
 
-      //console.log('[ootdProvider] clothesCheck finish');
-
       return clothesCheckResult;
-    
     }
   }catch(err) {
     logger.error(`App - checkClothes Provider error\n: ${err.message}`);
@@ -71,8 +57,6 @@ exports.checkClothes = async function (userIdx, data) {
 // 8. OOTD 최종 등록하기 - 등록할 수 없는 Place (fPlace->index, aPlace->place) 체크
 exports.checkPlace = async function (userIdx, data) {
 
-  //console.log('[ootdProvider] placeCheck start');
-  
   try {
 
     // DB에 연결
@@ -83,18 +67,13 @@ exports.checkPlace = async function (userIdx, data) {
       const placeCheckResult = await ootdDao.selectPlaceIdxIs(connection, data);
       connection.release();
 
-      //console.log('[ootdProvider] placeCheck finish');
-
       return placeCheckResult;
     }
     else { // data가 string일 경우 (aPlace->place)
       const placeCheckResult = await ootdDao.selectPlaceIs(connection, userIdx, data);
       connection.release();
 
-      //console.log('[ootdProvider] placeCheck finish');
-
       return placeCheckResult;
-    
     }
   }catch(err) {
     logger.error(`App - checkPlace Provider error\n: ${err.message}`);
@@ -107,8 +86,6 @@ exports.checkPlace = async function (userIdx, data) {
 // 8. OOTD 최종 등록하기 - 등록할 수 없는 Weather (fWeather->index, aWeather->weather) 체크
 exports.checkWeather = async function (userIdx, data) {
 
-  //console.log('[ootdProvider] weatherCheck start');
-
   try {
 
     // DB에 연결
@@ -119,18 +96,13 @@ exports.checkWeather = async function (userIdx, data) {
       const weatherCheckResult = await ootdDao.selectWeatherIdxIs(connection, data);
       connection.release();
 
-      //console.log('[ootdProvider] weatherCheck finish');
-
       return weatherCheckResult;
     }
     else { // data가 string일 경우 (aWeather->weather)
       const weatherCheckResult = await ootdDao.selectWeatherIs(connection, userIdx, data);
       connection.release();
       
-      //console.log('[ootdProvider] weatherCheck finish');
-      
       return weatherCheckResult;
-    
     }
   }catch(err) {
     logger.error(`App - checkWeather Provider error\n: ${err.message}`);
@@ -143,8 +115,6 @@ exports.checkWeather = async function (userIdx, data) {
 // 8. OOTD 최종 등록하기 - 등록할 수 없는 Who (fWho->index, aWho->who) 체크
 exports.checkWho = async function (userIdx, data) {
 
-  //console.log('[ootdProvider] whoCheck start');
-
   try {
 
     // DB에 연결
@@ -155,15 +125,11 @@ exports.checkWho = async function (userIdx, data) {
       const whoCheckResult = await ootdDao.selectWhoIdxIs(connection, data);
       connection.release();
       
-      //console.log('[ootdProvider] whoCheck finish');
-      
       return whoCheckResult;
     }
     else { // data가 string일 경우 (aWho->who)
       const whoCheckResult = await ootdDao.selectWhoIs(connection, userIdx, data);
       connection.release();
-      
-      //console.log('[ootdProvider] whoCheck finish');
       
       return whoCheckResult;
     
@@ -207,8 +173,6 @@ exports.checkAddedWhoIdx = async function (connection, userIdx, aWho){
 // 10. OOTD 수정하기 - 지난 작성 화면 보여주기
 exports.retrieveAddedOotd = async function (userIdx){
 
-  //console.log('[ootdProvider] retrieveAddedOotd start');
-
   try {
     // connection 은 db와의 연결을 도와줌
     const connection = await pool.getConnection(async (conn) => conn);
@@ -228,9 +192,7 @@ exports.retrieveAddedOotd = async function (userIdx){
         added["aWeather"] = [];
         added["aWho"] = [];
         added = getAddedBigClass(added);
-      
-        //console.log('[ootdProvider] retrieveAddedOotd finish');
-      
+            
         return added;
     }
 
@@ -252,12 +214,10 @@ exports.retrieveAddedOotd = async function (userIdx){
 
     }
 
-    //console.log('[ootdProvider] retrieveAddedOotd finish');
-
     return added;
 
   } catch(err) {
-    logger.error(`App - modiOotd Provider error\n: ${err.message}`);
+    logger.error(`App - retrieveAddedOotd Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 
@@ -341,12 +301,9 @@ function hasAdded(list, data){
 // 12. OOTD 완료 페이지 불러오기
 exports.retrieveCompleteOotd = async function (userIdx, date){
 
-  //console.log('[ootdProvider] retrieveCompleteOotd start');
-
   try {
     // connection 은 db와의 연결을 도와줌
     const connection = await pool.getConnection(async (conn) => conn);
-
     // Dao 쿼리문의 결과를 호출
     const completeOotdListResult = await ootdDao.selectDateOotd(connection, userIdx, date);
     // connection 해제
@@ -354,7 +311,6 @@ exports.retrieveCompleteOotd = async function (userIdx, date){
 
     // 입력된 날짜의 ootd가 존재하는지 체크
     if(!completeOotdListResult[0]){
-      //console.log('[ootdProvider] retrieveCompleteOotd finish');
       return completeOotdListResult[0];
     }
 
@@ -399,12 +355,10 @@ exports.retrieveCompleteOotd = async function (userIdx, date){
       
     }
 
-    //console.log('[ootdProvider] retrieveCompleteOotd finish');
-
     return ootd;
 
   } catch(err) {
-    logger.error(`App - retrieveOotd Provider error\n: ${err.message}`);
+    logger.error(`App - retrieveCompleteOotd Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 

@@ -8,14 +8,10 @@ const baseResponse = require("../../../config/baseResponseStatus");
 const {response} = require("../../../config/response");
 const {errResponse} = require("../../../config/response");
 
-// Service: Create, Update, Delete 비즈니스 로직 처리
-
-// 8. OOTD 최종 등록하기 - (Query String인 mode = 2)
-// 기존에 존재한 ootd의 status 를 inactive로 변경 즉, OOTD 삭제
+// 8. OOTD 최종 등록하기 - (Query String인 mode = 2, 수정하기)
+// 수정 전, 기존에 존재한 ootd의 status 를 inactive로 변경 즉, OOTD 삭제
 exports.patchOriginStatus = async function (userIdx, ootdIdx){
 
-    //console.log('[ootdService] modiOriginStatus start');
-    
     try {
 
         const connection = await pool.getConnection(async (conn) => conn);
@@ -28,27 +24,22 @@ exports.patchOriginStatus = async function (userIdx, ootdIdx){
 
         connection.release();
 
-        //console.log('[ootdService] modiOriginStatus finish');
-
         return ootdIdx;
 
     } catch(err){
-        logger.error(`App - lastRegisterOotd Service error\n: ${err.message}`);
+        logger.error(`App - patchOriginStatus Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 
 };
 
-// 8. OOTD 최종 등록하기 - (Query String인 mode = 1)
+// 8. OOTD 최종 등록하기 - (Query String인 mode = 1, 등록하기)
 exports.postOotd = async function (userIdx, date, lookname, photoIs, image,
     fClothes, aClothes, fPlace, aPlace, fWeather, aWeather,
     fWho, aWho, lookpoint, comment) {
     
-    //console.log('[ootdService] lastRegisterOotd start');
-    
     try {
         const connection = await pool.getConnection(async (conn) => conn);
-
             
         /*********************************************** */
         /****************OOTD 테이블 등록**************** */
@@ -62,12 +53,6 @@ exports.postOotd = async function (userIdx, date, lookname, photoIs, image,
 
         // 새로 테이블에 등록하면서 생긴 ootdIdx
         const ootdIdxParam = lastRegisterResult[0].insertId;
-
-        // OOTD 테이블 등록 후 생성된 ootdIdx 가져오기
-        // 위에서 insertId를 가지고 온다면 굳이 필요하진 않음 -> 일단 남겨놓은 코드
-        //const lastRegisterOotdIdx = await ootdProvider.newOotdIdx(connection, userIdx, date);
-        //console.log('새로 추가된 ootdIdx : ', lastRegisterOotdIdx["ootdIdx"]);
-        //const ootdIdxParam = lastRegisterOotdIdx["ootdIdx"];
 
         /*********************************************** */
         /****************Photo 테이블 등록*************** */
@@ -174,12 +159,10 @@ exports.postOotd = async function (userIdx, date, lookname, photoIs, image,
 
         connection.release();
 
-        //console.log('[ootdService] lastRegisterOotd finish');
-
         return response(baseResponse.SUCCESS_LAST_REGISTER);
 
     } catch (err) {
-        logger.error(`App - lastRegisterOotd Service error\n: ${err.message}`);
+        logger.error(`App - postOotd Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 };
