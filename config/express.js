@@ -27,12 +27,12 @@ module.exports = function () {
     require('../src/app/Calendar/calendarRoute')(app);
     require('../src/app/MyLook/mylookRoute')(app);
     require('../src/app/OOTDs/ootdRoute')(app);
-    require('../src/app/Search3/searchRoute')(app);
-    require('../src/app/Search2/searchRoute')(app);
+    //require('../src/app/Search3/searchRoute')(app);
+    //require('../src/app/Search2/searchRoute')(app);
     require('../src/app/Search/searchRoute')(app);
-    require('../src/app/User2/userRoute')(app);
-    require('../src/app/User3/userRoute')(app);
-    require('../src/app/User1/userRoute')(app);
+    //require('../src/app/User2/userRoute')(app);
+    //require('../src/app/User3/userRoute')(app);
+    //require('../src/app/User1/userRoute')(app);
 
     //require('../src/app/Search/searchRoute')(app);
 
