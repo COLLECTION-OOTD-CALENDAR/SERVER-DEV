@@ -11,19 +11,17 @@ var lookpointPattern = /^[1-5]$/;
  * API No. 8
  * API Name : OOTD 최종 등록하기
  * [POST] /app/ootd/last-register/:userIdx
- * Path Variable : userIdx
  * Query String : mode (1 : register 2 : modi)
  * Body : date, lookname, photoIs, image[{imageUrl, thumbnail}],
  * fClothes[{index, color}], aClothes[{bigClass, smallClass, color}], 
  * fPlace[placeIdx], aPlace[place], fWeather[weatherIdx], aWeather[weather],
  * fWho[whoIdx], aWho[who], lookpoint, comment
  * (FixedPlace.index 값은 받을 수 있지만 AddedPlace.index 는 받을 수 없어서 Place.addedPlace -1 여부 체크하고 AddedPlace.place 값과 비교) 
+ * jwt : userIdx
  */
 
 exports.ootdRegister = async function (req, res) {
 
-    // jwt - userId, path variable :userId
-    //console.log('[ootdController] registerOotd start');
     const userIdx = req.verifiedToken.userIdx;
     const mode = req.query.mode;
 
@@ -374,6 +372,7 @@ exports.ootdRegister = async function (req, res) {
 
     // 나중에 ootdService 내부 코드들과 합치는 게 좋긴 했으나,
     // 특정 테이블에만 값이 삽입될 경우 방지를 위해 따로 뺌
+    // 추후 코드 리팩토링 기간 내 transaction 처리 가능 여부 열어놓기
 
     // 입력한 날짜에 OOTD 존재 여부 체크
     const ootdRow = await ootdProvider.checkOotdDate(userIdx, n_date);
@@ -471,8 +470,7 @@ exports.ootdRegister = async function (req, res) {
     const registerUserOotd = await ootdService.postOotd(userIdx, date, lookname, photoIs, image, fClothes, aClothes,
         fPlace, aPlace, fWeather, aWeather, fWho, aWho, n_lookpoint, comment);
     
-    //console.log('[ootdController] registerOotd finish');
-    return res.send(registerUserOotd);
+    return res.send(response(baseResponse.SUCCESS_LAST_REGISTER, registerUserOotd));
 
 };
 
@@ -485,17 +483,14 @@ function isInt(lookpoint){
  * API No. 8-2
  * API Name : 추가한 블록 내역 불러오기
  * [GET] /app/ootd/default-block
+ * jwt : userIdx
  */
 
 exports.ootdDefaultBlock = async function (req, res){
 
-    //console.log('[ootdController] defaultOotd start');
-
     const userIdx = req.verifiedToken.userIdx;
 
     const callDefaultOotd = await ootdProvider.retrieveAddedOotd(userIdx);
-
-    //console.log('[ootdController] defaultOotd finish');
 
     return res.send(response(baseResponse.SUCCESS_OOTD_DEFAULT, callDefaultOotd));
 
@@ -507,11 +502,10 @@ exports.ootdDefaultBlock = async function (req, res){
  * API Name : OOTD 수정하기 - 지난 작성 화면 보여주기
  * [GET] /app/ootd/modi
  * Query String : date
+ * jwt : userIdx
  */
 
-exports.ootdModi = async function (req, res){
-
-    //console.log('[ootdController] modiOotd start');
+ exports.ootdModi = async function (req, res){
 
     const userIdx = req.verifiedToken.userIdx;
     const date = req.query.date;
@@ -550,10 +544,9 @@ exports.ootdModi = async function (req, res){
     const callModiOotd = await ootdProvider.retrieveAddedOotd(userIdx);
     result["added"] = callModiOotd;
 
-    //console.log('[ootdController] modiOotd finish');
-
     return res.send(response(baseResponse.SUCCESS_OOTD_MODI, result));
 };
+
 
 
 /**
@@ -561,10 +554,9 @@ exports.ootdModi = async function (req, res){
  * API Name : OOTD 완료 페이지 불러오기
  * [GET] /app/ootd/complete
  * Query String : date
+ * jwt : userIdx
  */
-exports.ootdComplete = async function (req, res){
-
-    //console.log('[ootdController] completeOotd start');
+ exports.ootdComplete = async function (req, res){
 
     const userIdx = req.verifiedToken.userIdx;
     const date = req.query.date;
@@ -573,8 +565,6 @@ exports.ootdComplete = async function (req, res){
     if(!date){
         return res.send(errResponse(baseResponse.DATE_EMPTY));
     }
-
-    console.log('date 형식 : ', typeof(date));
     
     // date 형식 체크 
     if(!datePattern.test(date)){
@@ -595,8 +585,6 @@ exports.ootdComplete = async function (req, res){
     if(!callCompleteOotd){
         return res.send(errResponse(baseResponse.DATE_OOTD_EMPTY));
     }
-
-    //console.log('[ootdController] completeOotd finish');
 
     return res.send(response(baseResponse.SUCCESS_OOTD_COMPLETE, callCompleteOotd));
 
