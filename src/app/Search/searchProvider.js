@@ -13,8 +13,6 @@ const calendarProvider = require("../Calendar/calendarProvider"); //
 // 15. [PWWC] 검색 초기화면 보여주기
 exports.retrieveSearchHistory = async function (userIdx, PWWC) {
 
-  console.log('[searchProvider] retrieveSearchHistory start');
-
   try {
     // connection 은 db와의 연결을 도와줌
     const connection = await pool.getConnection(async (conn) => conn);
@@ -26,8 +24,6 @@ exports.retrieveSearchHistory = async function (userIdx, PWWC) {
       // connection 해제
       connection.release();
 
-      console.log('[searchProvider] retrieveSearchHistory finish');
-
       return colorHistoryResult;
 
     } else { // color는 출력하지 않음 (Place, Weather, Who)
@@ -35,8 +31,6 @@ exports.retrieveSearchHistory = async function (userIdx, PWWC) {
       const PWWHistoryResult = await searchDao.selectPWWHistory(connection, userIdx, PWWC);
       // connection 해제
       connection.release();
-
-      console.log('[searchProvider] retrieveSearchHistory finish');
       
       return PWWHistoryResult;
     }
@@ -47,7 +41,6 @@ exports.retrieveSearchHistory = async function (userIdx, PWWC) {
   }
 
 };
-
 
 
 // 16. [PWWC] 검색 History 삭제하기(개별,전체) 
@@ -278,8 +271,6 @@ exports.retrieveSearchResult = async function (userIdx, PWWC, keyword1, keyword2
 // 19. [PWWC] 매칭 페이지 검색 키워드 제안
 exports.retrieveSuggestKeyword = async function (userIdx, PWWC, keyword1) {
   
-  console.log('[searchProvider] retrieveSuggestKeyword start');
-
   const suggestionKeywordParams = [userIdx, keyword1];
   
   try {
@@ -293,7 +284,6 @@ exports.retrieveSuggestKeyword = async function (userIdx, PWWC, keyword1) {
       // connection 해제
       connection.release();
 
-      console.log('[searchProvider] retrieveSuggestKeyword finish');
       return placeSuggestResult;
 
     } else if (PWWC == 1) { // Weather 값들 출력
@@ -301,7 +291,6 @@ exports.retrieveSuggestKeyword = async function (userIdx, PWWC, keyword1) {
       const weatherSuggestResult = await searchDao.selectWeatherSuggestion(connection, suggestionKeywordParams);
       connection.release();
 
-      console.log('[searchProvider] retrieveSuggestKeyword finish');
       return weatherSuggestResult;
 
     } else if (PWWC == 2){ // Who 값들 출력
@@ -309,7 +298,6 @@ exports.retrieveSuggestKeyword = async function (userIdx, PWWC, keyword1) {
       const whoSuggestResult = await searchDao.selectWhoSuggestion(connection, suggestionKeywordParams);
       connection.release();
 
-      console.log('[searchProvider] retrieveSuggestKeyword finish');
       return whoSuggestResult;
 
 
@@ -318,7 +306,6 @@ exports.retrieveSuggestKeyword = async function (userIdx, PWWC, keyword1) {
       const colorSuggestResult = await searchDao.selectColorSuggestion(connection, suggestionKeywordParams);
       connection.release();
 
-      console.log('[searchProvider] retrieveSuggestKeyword finish');
       return colorSuggestResult;
     } 
 
@@ -328,4 +315,3 @@ exports.retrieveSuggestKeyword = async function (userIdx, PWWC, keyword1) {
   }
 
 };
-
