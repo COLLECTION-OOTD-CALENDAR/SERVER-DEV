@@ -69,15 +69,15 @@ async function selectHistory(connection,userIdx,PWWC,content) {
 async function selectHistoryCnt(connection, userIdx, PWWC) {
 
   const selectHistoryQuery = `
-                SELECT History.index 
-                FROM History
-                WHERE userIdx = ? AND PWWC = ? AND status = 'active';
+    SELECT count(content) as count
+    FROM History
+    WHERE status = 'active' AND userIdx = ? AND PWWC = ?;
                 `;
 
   const selectHistoryParams = [userIdx, PWWC];
 
   const [historyRows] = await connection.query(selectHistoryQuery, selectHistoryParams);
-  return historyRows;
+  return historyRows[0].count;
 }
 
 // history 추가/삭제 위한 중복 체크 (history의 idx반환)
@@ -108,6 +108,25 @@ async function selectOldHistory(connection, userIdx, PWWC, keyword, color) {
 
   return oldHistoryRows[0];
 };
+
+async function selectOldestHistory(connection, userIdx, PWWC){
+    const selectOldestHistoryQuery = `
+      SELECT History.index
+      FROM History
+      WHERE userIdx = ? AND PWWC = ? AND status = 'active'
+      ORDER BY History.index
+      LIMIT 1
+        `;
+
+  const selectHistoryParams = [userIdx, PWWC];
+
+  const [historyRows] = await connection.query(selectOldestHistoryQuery, selectHistoryParams);
+  return historyRows[0].index;
+
+}
+
+
+
 // history 처리 - 가장 오래된 history 삭제
 async function deleteOneHistory(connection, userIdx, PWWC, index){
 
@@ -600,6 +619,9 @@ module.exports = {
   //17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 API
   selectHistoryCnt,
   selectOldHistory,
+
+  selectOldestHistory,
+
   deleteOneHistory,
   insertHistory,  
   

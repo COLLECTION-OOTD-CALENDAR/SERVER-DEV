@@ -72,6 +72,19 @@ exports.checkHistoryNumber = async function (connection, userIdx, PWWC) {
   
 };
 
+// history 삭제 위한 가장 오래된 history idx 반환
+exports.getOldestHistory = async function (connection, userIdx, PWWC) {
+
+   const OldestHistoryResult = await searchDao.selectOldestHistory(connection, userIdx, PWWC);
+ 
+   return OldestHistoryResult;
+   
+ };
+
+
+
+exports.get
+
 
 // API 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 API 
 exports.retrieveSearchResult = async function (userIdx, PWWC, keyword1, keyword2, color1, color2, startAt, endAt){
@@ -258,7 +271,7 @@ exports.retrieveSearchResult = async function (userIdx, PWWC, keyword1, keyword2
     //date처리 - startAt, endAt
 
 
-
+    console.log('end of retrieveSearchResult')
     return ootds;
 
   }catch(err){
