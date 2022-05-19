@@ -82,13 +82,8 @@ exports.postOotd = async function (userIdx, date, lookname, photoIs, image,
             ootdAddedClothes.push(tmpAClothes);
         }
 
-        // 220519 check
-        console.log('Clothes 테이블에 fixedType 등록 전');
         // Clothes 테이블 - fixedType 등록
         const ootdFClothesResult = await ootdDao.insertOotdFClothes(connection, ootdIdxParam, fClothes);
-        
-        // 220519 check
-        console.log('Clothes 테이블에 fixedType 등록 후');
 
         // Clothes 테이블 - addedType 등록
         const ootdAClothesResult = await ootdDao.insertOotdAClothes(connection, ootdIdxParam, ootdAddedClothes);
@@ -101,8 +96,14 @@ exports.postOotd = async function (userIdx, date, lookname, photoIs, image,
         /****************Place 테이블 등록*************** */
         /*********************************************** */
 
+        // 220519 check
+        console.log('[ootdProvider] AddedPlace Idx 존재 여부 함수 진행 전');
+
         // APlace 테이블 등록을 위한 param (index 이용해야하기 때문)
         const APlaceIdxList = await ootdProvider.checkAddedPlaceIdx(connection, userIdx, aPlace);
+
+        // 220519 check
+        console.log('[ootdProvider] AddedPlace Idx 존재 여부 함수 완료 : ', APlaceIdxList);
 
         // 두 Place 배열이 모두 비어있을 때
         if(!fPlace[0] && !aPlace[0]){
@@ -117,6 +118,9 @@ exports.postOotd = async function (userIdx, date, lookname, photoIs, image,
             // AddedPlace 테이블 - unselected -> selected로 변경
             const aPlaceCondResult = await ootdDao.patchAPlaceCond(connection, APlaceIdxList);
         }
+
+        // 220519 check
+        console.log('[ootdProvider] Place 테이블에 등록 완료');
 
         /*********************************************** */
         /***************Weather 테이블 등록************** */

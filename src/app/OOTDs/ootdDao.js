@@ -189,8 +189,6 @@ async function insertOotdFClothes(connection, ootdIdx, ootdFixedClothes) {
       insertOotdFClothesQuery,
       [ootdIdx, item["index"], item["color"]]);
       insertOotdClothesRows.push(insertOotdClothesEach);
-    //220519
-    console.log('[ootdDao] fixedClothesRows : ', insertOotdClothesRows)
   }
   return insertOotdClothesRows;
 };
