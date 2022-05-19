@@ -292,7 +292,7 @@ exports.searchPWWC = async function (req, res) {
         
     }
 
-    console.log('searchResultResponse length : ',  Object.keys(earchResultResponse).length);
+    console.log('searchResultResponse length : ',  Object.keys(searchResultResponse).length);
    
 
     const searchFinalResult = {};
