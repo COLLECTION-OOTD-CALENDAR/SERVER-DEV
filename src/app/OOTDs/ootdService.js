@@ -50,7 +50,8 @@ exports.postOotd = async function (userIdx, date, lookname, photoIs, image,
         
         // OOTD 테이블 등록
         const lastRegisterResult = await ootdDao.insertNewOotd(connection, lastRegisterOotdParams);
-
+        // 220519 check
+        console.log('insertNewOotd 함수 완료');
         // 새로 테이블에 등록하면서 생긴 ootdIdx
         const ootdIdxParam = lastRegisterResult[0].insertId;
 
@@ -71,7 +72,8 @@ exports.postOotd = async function (userIdx, date, lookname, photoIs, image,
         let ootdAddedClothes = [];
 
         const AClothesIdxList = await ootdProvider.checkAddedClothesIdx(connection, userIdx, aClothes);
-        
+        // 220519 check
+        console.log('ootdProvider.checkAddedClothes 함수 완료');
         // 미리 선언한 테이블에 찾은 AddedClothes의 index 넣기
         for (i in aClothes){
             let tmpAClothes = {};
