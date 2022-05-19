@@ -211,9 +211,14 @@ exports.searchPWWC = async function (req, res) {
         //color1 빈값 검사 
         if(!color1){    
             return res.send(errResponse(baseResponse.COLOR1_EMPTY));
-        }
+        }        
+        
+        color1 = color1.toString().trim();
+        
+        color2 = color2.toString().trim();
+
         //color1 값 유효성 검사                         ㅌ -> color 선택안할시 다른 string으로 보내주시술?
-        else if(colorArr.indexOf(color1) == -1){        //정해진 color 값들 이외의 값이 들어온 경우
+        if(colorArr.indexOf(color1) == -1){        //정해진 color 값들 이외의 값이 들어온 경우
             return res.send(errResponse(baseResponse.COLOR_INVALID_VALUE));
         }
         else if(keyword2){//검색어가 2개인 경우      
@@ -233,9 +238,6 @@ exports.searchPWWC = async function (req, res) {
         
     }
 
-
-
-
     if(startAt && (!endAt)){ //startAt만 입력
         return res.send(errResponse(baseResponse.ENDAT_EMPTY));
     }
@@ -243,8 +245,9 @@ exports.searchPWWC = async function (req, res) {
         return res.send(errResponse(baseResponse.STARTAT_EMPTY));
     }
     else if (startAt && endAt) {
-        startAt = new Date(startAt);
-        endAt = new Date(endAt);
+
+        startAt = new Date(startAt.toString().trim());
+        endAt = new Date(endAt.toString().trim());
         if(datePattern.test(startAt)){     //yyyy-MM-dd 형식 검사
             return res.send(errResponse(baseResponse.STARTAT_ERROR_TYPE));  
         }
@@ -290,20 +293,24 @@ exports.searchPWWC = async function (req, res) {
         
     }
 
-    for(i in searchResultResponse){
-        // lookpoint 값 추출 확인
-        if(!lookpointPattern.test(searchResultResponse[i].lookpoint)){
-            return res.send(errResponse(baseResponse.LOOKPOINT_RESPONSE_ERROR));
-        }
-        //date 값 추출 확인
-        if(!datePattern.test(searchResultResponse[i].date)){
-            return res.send(errResponse(baseResponse.DATE_RESPONSE_ERROR));
-        }
+    console.log('searchResultResponse length : ', searchResultResponse.length);
 
-        if(searchResultResponse[i].imageUrl == null && searchResultResponse[i].imageCnt > 0){
-            return res.send(errResponse(baseResponse.PRINT_IMG_ERROR));
-        }
-    }
+    console.log('searchResultResponse : ', searchResultResponse);
+
+    // for(i in searchResultResponse){
+    //     // lookpoint 값 추출 확인
+    //     if(!lookpointPattern.test(searchResultResponse[i].lookpoint)){
+    //         return res.send(errResponse(baseResponse.LOOKPOINT_RESPONSE_ERROR));
+    //     }
+    //     //date 값 추출 확인
+    //     if(!datePattern.test(searchResultResponse[i].date)){
+    //         return res.send(errResponse(baseResponse.DATE_RESPONSE_ERROR));
+    //     }
+
+    //     if(searchResultResponse[i].imageUrl == null && searchResultResponse[i].imageCnt > 0){
+    //         return res.send(errResponse(baseResponse.PRINT_IMG_ERROR));
+    //     }
+    // }
    
 
     const searchFinalResult = {};

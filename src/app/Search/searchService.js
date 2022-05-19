@@ -61,10 +61,11 @@ exports.postNewHistory = async function (userIdx, PWWC, keyword1, keyword2, colo
                 console.log(`deleted old redundant history - historyIdx `, oldHistory1 );            
             }
             else{
-                const historyRows = await searchProvider.checkHistoryNumber(connection, userIdx, PWWC);  
-                if(historyRows.length >= 20){
+                const historyRows = await searchProvider.checkHistoryNumber(connection, userIdx, PWWC);
+                console.log(`historyRows length : `, historyRows) 
+                if(historyRows >= 20){
                     //가장 오래된 것 1개 삭제
-                    let oldestIdx = historyRows[0];
+                    let oldestIdx = await searchProvider.getOldestHistory(connection, userIdx, PWWC);
                     console.log(`oldestIdx : `, oldestIdx)
                     const deleteOldHistoryResult = await searchDao.deleteOneHistory(connection, userIdx, PWWC, oldestIdx);
                     console.log(`auto-deleted old history - historyIdx `, oldestIdx );                
@@ -89,9 +90,10 @@ exports.postNewHistory = async function (userIdx, PWWC, keyword1, keyword2, colo
                 }
                 else{
                     const historyRows2 = await searchProvider.checkHistoryNumber(connection, userIdx, PWWC);  
-                    if(historyRows2.length >= 20){
+                    console.log(`historyRows2 length : `, historyRows2) 
+                    if(historyRows2 >= 20){
                         //가장 오래된 것 1개 삭제
-                        let oldestIdx2 = historyRows2[0];
+                        let oldestIdx2 = await searchProvider.getOldestHistory(connection, userIdx, PWWC);
                         console.log(`oldestIdx2 : `, oldestIdx2)
                         const deleteOldHistoryResult2 = await searchDao.deleteOneHistory(connection, userIdx, PWWC, oldestIdx2);
                         console.log(`auto-deleted old history - historyIdx `, oldestIdx2 );                
@@ -101,11 +103,10 @@ exports.postNewHistory = async function (userIdx, PWWC, keyword1, keyword2, colo
                 const insertNewHistoryParams2 = [userIdx, PWWC, keyword2, color2];
                 const keyword2Result = await searchDao.insertHistory(connection, insertNewHistoryParams2);
 
-                
             }
             
             await connection.commit();
-            console.log(`searchService - postNewHistory 처리 완료`);
+            console.log(`searchService - History 처리 완료`);
             return response(baseResponse.SUCCESS_SEARCH_ADDITION, {'userId': userIdx, 'keyword1': keyword1, 'keyword2' : keyword2});
             
         } catch (err) {
