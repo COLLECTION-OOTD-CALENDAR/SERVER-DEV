@@ -472,7 +472,7 @@ exports.ootdRegister = async function (req, res) {
     const registerUserOotd = await ootdService.postOotd(userIdx, date, lookname, photoIs, image, fClothes, aClothes,
         fPlace, aPlace, fWeather, aWeather, fWho, aWho, n_lookpoint, comment);
     
-    return res.send(response(baseResponse.SUCCESS_LAST_REGISTER, registerUserOotd));
+    return registerUserOotd;
 
 };
 
