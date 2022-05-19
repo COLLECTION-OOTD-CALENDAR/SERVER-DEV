@@ -82,8 +82,13 @@ exports.postOotd = async function (userIdx, date, lookname, photoIs, image,
             ootdAddedClothes.push(tmpAClothes);
         }
 
+        // 220519 check
+        console.log('Clothes 테이블에 fixedType 등록 전');
         // Clothes 테이블 - fixedType 등록
         const ootdFClothesResult = await ootdDao.insertOotdFClothes(connection, ootdIdxParam, fClothes);
+        
+        // 220519 check
+        console.log('Clothes 테이블에 fixedType 등록 후');
 
         // Clothes 테이블 - addedType 등록
         const ootdAClothesResult = await ootdDao.insertOotdAClothes(connection, ootdIdxParam, ootdAddedClothes);
