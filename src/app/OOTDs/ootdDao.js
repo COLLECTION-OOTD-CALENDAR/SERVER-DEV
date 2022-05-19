@@ -493,8 +493,8 @@ async function selectModiDateOotd(connection, userIdx){
 
 
 // 12. OOTD 완료 페이지 불러오기
-async function selectDateOotd(connection, userIdx, date) {
-  const selectDateOotdQuery = `
+async function selectCompleteDateOotd(connection, userIdx, date) {
+  const selectCompleteDateOotdQuery = `
             SELECT distinct O.ootdIdx, O.date, O.lookname, O.lookpoint, O.comment,
               TMPH.imageUrl, TMPH.thumbnail, TMPL.fpName, TMPL.apName,
               TMWE.fwName, TMWE.awName, TMWH.fwhName, TMWH.awhName,
@@ -544,7 +544,7 @@ async function selectDateOotd(connection, userIdx, date) {
               ON O.ootdIdx = TMCL.ootdIdx
             WHERE O.userIdx = ? AND O.date = ?;
             `;
-  const [completeDateOotd] = await connection.query(selectDateOotdQuery, [userIdx, date]);
+  const [completeDateOotd] = await connection.query(selectCompleteDateOotdQuery, [userIdx, date]);
   return completeDateOotd;
 
 };
@@ -580,6 +580,6 @@ module.exports = {
   insertOotdFWho,
   insertOotdAWho,
   patchAWhoCond,
-  selectDateOotd,
+  selectCompleteDateOotd,
   selectModiDateOotd
 };
