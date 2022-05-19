@@ -214,8 +214,6 @@ exports.searchPWWC = async function (req, res) {
         }        
         
         color1 = color1.toString().trim();
-        
-        color2 = color2.toString().trim();
 
         //color1 값 유효성 검사                         ㅌ -> color 선택안할시 다른 string으로 보내주시술?
         if(colorArr.indexOf(color1) == -1){        //정해진 color 값들 이외의 값이 들어온 경우
@@ -224,7 +222,8 @@ exports.searchPWWC = async function (req, res) {
         else if(keyword2){//검색어가 2개인 경우      
             if(!color2){                                // keyword2에 해당하는 color2가 입력되지 않은 경우
                 return res.send(errResponse(baseResponse.COLOR2_EMPTY));
-            }
+            }        
+            color2 = color2.toString().trim();  
             if(colorArr.indexOf(color2) == -1){          //정해진 color 값들 이외의 값이 들어온 경우
                 return res.send(errResponse(baseResponse.COLOR2_INVALID_VALUE));
             }
@@ -293,24 +292,7 @@ exports.searchPWWC = async function (req, res) {
         
     }
 
-    console.log('searchResultResponse length : ', searchResultResponse.length);
-
-    console.log('searchResultResponse : ', searchResultResponse);
-
-    // for(i in searchResultResponse){
-    //     // lookpoint 값 추출 확인
-    //     if(!lookpointPattern.test(searchResultResponse[i].lookpoint)){
-    //         return res.send(errResponse(baseResponse.LOOKPOINT_RESPONSE_ERROR));
-    //     }
-    //     //date 값 추출 확인
-    //     if(!datePattern.test(searchResultResponse[i].date)){
-    //         return res.send(errResponse(baseResponse.DATE_RESPONSE_ERROR));
-    //     }
-
-    //     if(searchResultResponse[i].imageUrl == null && searchResultResponse[i].imageCnt > 0){
-    //         return res.send(errResponse(baseResponse.PRINT_IMG_ERROR));
-    //     }
-    // }
+    console.log('searchResultResponse length : ',  Object.keys(earchResultResponse).length);
    
 
     const searchFinalResult = {};
