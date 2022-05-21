@@ -271,7 +271,6 @@ exports.retrieveSearchResult = async function (userIdx, PWWC, keyword1, keyword2
   
   
       await connection.commit();
-      console.log('end of retrieveSearchResult')
       return ootds;
         
     }catch (err) {
