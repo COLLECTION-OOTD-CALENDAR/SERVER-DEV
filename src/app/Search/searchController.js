@@ -285,12 +285,26 @@ exports.searchPWWC = async function (req, res) {
     console.log('searchResultResponse length : ',  Object.keys(searchResultResponse).length);
     console.log('searchResultResponse :', searchResultResponse)
 
-    if(!searchResultResponse.isSuccess){
-        return res.send(searchResultResponse);
-    }        
+    if(!searchResultResponse){
+        if(startAt && endAt){
+            return res.send(errResponse(baseResponse.SEARCH_DATE_OOTD_EMPTY));
+        }
+        else{
+            return res.send(errResponse(baseResponse.SEARCH_NOT_FOUND));
+        }
+    }     
+
+    // if(startAt && endAt){
+    //     return errResponse(baseResponse.SEARCH_DATE_OOTD_EMPTY)
+    //   }
+    //   else{
+    //     return errResponse(baseResponse.SEARCH_NOT_FOUND);          
+    //   }   
 
     const searchFinalResult = {};
+
     searchFinalResult["match"] = searchResultResponse;
+       
 
 
     if(startAt && endAt){
