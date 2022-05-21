@@ -285,6 +285,10 @@ exports.searchPWWC = async function (req, res) {
     console.log('searchResultResponse length : ',  Object.keys(searchResultResponse).length);
     console.log('searchResultResponse :', searchResultResponse)
 
+    if(!searchResultResponse.isSuccess){
+        return res.send(searchResultResponse);
+    }        
+
     const searchFinalResult = {};
     searchFinalResult["match"] = searchResultResponse;
 
