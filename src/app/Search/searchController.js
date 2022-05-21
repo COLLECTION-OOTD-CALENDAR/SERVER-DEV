@@ -285,18 +285,6 @@ exports.searchPWWC = async function (req, res) {
     console.log('searchResultResponse length : ',  Object.keys(searchResultResponse).length);
     console.log('searchResultResponse :', searchResultResponse)
 
-
-    if(searchResultResponse.length == 0){
-        if(startAt && endAt){
-            return res.send(errResponse(baseResponse.SEARCH_DATE_OOTD_EMPTY));
-        }
-        else{
-            return res.send(errResponse(baseResponse.SEARCH_NOT_FOUND));
-        }
-        
-    }
-
-
     const searchFinalResult = {};
     searchFinalResult["match"] = searchResultResponse;
 
