@@ -196,10 +196,7 @@ exports.patchUnregister = async function (password, userIdx) {
 
 
 
-/**
- * API No. 22
- * API Name : 비밀번호 재설정 API
- **/
+//22. 비밀번호 재설정 API
  exports.updatePw = async function (userIdx,newPassword) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
