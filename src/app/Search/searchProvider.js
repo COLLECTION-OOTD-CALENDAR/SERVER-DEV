@@ -275,13 +275,14 @@ exports.retrieveSearchResult = async function (userIdx, PWWC, keyword1, keyword2
   
   
       await connection.commit();
-      connection.release();
       console.log('end of retrieveSearchResult')
       return ootds;
         
     }catch (err) {
         logger.error(`App - SearchResult Transaction error @ searchProvider\n: ${err.message} \n${JSON.stringify(err)}`);
         return errResponse(baseResponse.SERVER_ERROR);
+    }finally{      
+      connection.release();
     }
 
   }catch(err){
