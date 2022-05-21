@@ -65,7 +65,7 @@ async function selectHistory(connection,userIdx,PWWC,content) {
   return IDRow[0];
 }
 
-// history 추가/삭제 위한 개수 체크 (history의 idx 목록)
+// 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 - history 처리 -> 개수 체크
 async function selectHistoryCnt(connection, userIdx, PWWC) {
 
   const selectHistoryQuery = `
@@ -80,7 +80,7 @@ async function selectHistoryCnt(connection, userIdx, PWWC) {
   return historyRows[0].count;
 }
 
-// history 추가/삭제 위한 중복 체크 (history의 idx반환)
+// 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 - history 처리 -> 중복 체크 (history의 idx반환)
 async function selectOldHistory(connection, userIdx, PWWC, keyword, color) {
   var selectOldHistoryParams = [];
   var selectOldHistoryQuery =``;
@@ -109,6 +109,7 @@ async function selectOldHistory(connection, userIdx, PWWC, keyword, color) {
   return oldHistoryRows[0];
 };
 
+// 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 - history 처리 -> 가장 오래된 history idx반환
 async function selectOldestHistory(connection, userIdx, PWWC){
     const selectOldestHistoryQuery = `
       SELECT History.index
@@ -127,7 +128,7 @@ async function selectOldestHistory(connection, userIdx, PWWC){
 
 
 
-// history 처리 - 가장 오래된 history 삭제
+// 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 - history 처리 -> 가장 오래된 history 삭제
 async function deleteOneHistory(connection, userIdx, PWWC, index){
 
   const updateOneHistQuery = `
@@ -142,7 +143,7 @@ async function deleteOneHistory(connection, userIdx, PWWC, index){
   return updateOneHistRow[0]; 
 }
 
-// history 처리 - history 추가
+//17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 - history 처리 -> history 추가
 async function insertHistory(connection, insertNewHistoryParams) {
   //insertNewHistoryParams = [userIdx, PWWC, keyword, color];
   const insertHistoryQuery = `
@@ -159,7 +160,7 @@ async function insertHistory(connection, insertNewHistoryParams) {
 
 
 
-//키워드 존재 체크 -  Place (added, fixed) 
+//17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 - Added Place 키워드 존재 체크
 async function selectAddedPlaceCheck(connection, userIdx, keyword1) {
   const selectAddedPlaceQuery = `
         SELECT AddedPlace.index
@@ -174,6 +175,7 @@ async function selectAddedPlaceCheck(connection, userIdx, keyword1) {
   return selectAddedPlaceRows[0];
 }
 
+//17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 - Fixed Place 키워드 존재 체크
 async function selectFixedPlaceCheck(connection, keyword1) {
   const selectFixedPlaceQuery = `
         SELECT FixedPlace.index
@@ -189,7 +191,7 @@ async function selectFixedPlaceCheck(connection, keyword1) {
 
 
 
-//키워드 존재 체크 -  Weather (added, fixed) 
+//17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 - Added Weather 키워드 존재 체크
 async function selectAddedWeatherCheck(connection, userIdx, keyword1) {
   const selectAddedWeatherQuery = `
         SELECT AddedWeather.index
@@ -204,6 +206,7 @@ async function selectAddedWeatherCheck(connection, userIdx, keyword1) {
   return selectAddedWeatherRows[0];
 }
 
+//17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 - Fixed Weather 키워드 존재 체크
 async function selectFixedWeatherCheck(connection, keyword1) {
   const selectFixedWeatherQuery = `
         SELECT FixedWeather.index
@@ -219,7 +222,7 @@ async function selectFixedWeatherCheck(connection, keyword1) {
 
 
 
-//키워드 존재 체크 -  Who (added, fixed) 
+//17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 - Added Who 키워드 존재 체크
 async function selectAddedWhoCheck(connection, userIdx, keyword1) {
   const selectAddedWhoQuery = `
         SELECT AddedWho.index
@@ -234,6 +237,7 @@ async function selectAddedWhoCheck(connection, userIdx, keyword1) {
   return selectAddedWhoRows[0];
 }
 
+//17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 - Fixed Who 키워드 존재 체크
 async function selectFixedWhoCheck(connection, keyword1) {
   const selectFixedWhoQuery = `
         SELECT FixedWho.index
@@ -248,7 +252,7 @@ async function selectFixedWhoCheck(connection, keyword1) {
 }
 
 
-//키워드 존재 체크 -  Clothes (added, fixed) 
+//17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 - Added Clothes 키워드 존재 체크
 async function selectAddedClothesCheck(connection, userIdx, keyword1) {
   const selectAddedClothesQuery = `
         SELECT AddedClothes.index
@@ -263,6 +267,7 @@ async function selectAddedClothesCheck(connection, userIdx, keyword1) {
   return selectAddedClothesRows[0];
 }
 
+//17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 - Fixed Clothes 키워드 존재 체크
 async function selectFixedClothesCheck(connection, keyword1) {
   const selectFixedClothesQuery = `
         SELECT FixedClothes.index
@@ -278,8 +283,7 @@ async function selectFixedClothesCheck(connection, keyword1) {
 
 
 
-
-// API 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 API  - Place
+// 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 - Place
 async function selectSearchPlaceList(connection, userIdx, keyword1){
   const selectSearchPlaceQuery = `
     SELECT distinct O.ootdIdx, O.date, O.lookname, O.lookpoint, O.comment,
@@ -342,7 +346,7 @@ async function selectSearchPlaceList(connection, userIdx, keyword1){
 
 
 
-// API 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 API  - Weather
+// 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 - Weather
 async function selectSearchWeatherList(connection, userIdx, keyword1){
   const selectSearchWeatherQuery = `
       SELECT distinct O.ootdIdx, O.date, O.lookname, O.lookpoint, O.comment,
@@ -405,7 +409,7 @@ async function selectSearchWeatherList(connection, userIdx, keyword1){
 
 
 
-// API 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 API  - Who
+// 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 - Who
 async function selectSearchWhoList(connection, userIdx, keyword1){
   const selectSearchWhoQuery = `
       SELECT distinct O.ootdIdx, O.date, O.lookname, O.lookpoint, O.comment,
@@ -467,7 +471,7 @@ async function selectSearchWhoList(connection, userIdx, keyword1){
 };
 
 
-// API 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 API  - Color
+// 17. 매칭페이지 검색결과 보여주기 + 선택한 날짜의 결과 조회하기 - Color
 async function selectSearchColorList(connection, userIdx, keyword1, color1){
   const selectSearchColorQuery = `
       SELECT distinct O.ootdIdx, O.date, O.lookname, O.lookpoint, O.comment,
