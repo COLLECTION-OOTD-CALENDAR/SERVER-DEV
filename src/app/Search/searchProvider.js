@@ -123,12 +123,8 @@ exports.retrieveSearchResult = async function (userIdx, PWWC, keyword1, keyword2
       }
   
       if(searchListResult.length == 0){
-        if(startAt && endAt){
-          return errResponse(baseResponse.SEARCH_DATE_OOTD_EMPTY)
-        }
-        else{
-          return errResponse(baseResponse.SEARCH_NOT_FOUND);          
-        }
+        return null;
+        
       }
   
   
