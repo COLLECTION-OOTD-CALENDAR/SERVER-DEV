@@ -282,7 +282,6 @@ exports.searchPWWC = async function (req, res) {
         userIdx, PWWC, keyword1, keyword2, color1, color2, startAt, endAt
     );
 
-    console.log('searchResultResponse :', searchResultResponse)
 
     if(!searchResultResponse){
         if(startAt && endAt){
@@ -292,13 +291,6 @@ exports.searchPWWC = async function (req, res) {
             return res.send(errResponse(baseResponse.SEARCH_NOT_FOUND));
         }
     }     
-
-    // if(startAt && endAt){
-    //     return errResponse(baseResponse.SEARCH_DATE_OOTD_EMPTY)
-    //   }
-    //   else{
-    //     return errResponse(baseResponse.SEARCH_NOT_FOUND);          
-    //   }   
 
     const searchFinalResult = {};
 
