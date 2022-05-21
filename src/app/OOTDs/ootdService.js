@@ -50,7 +50,8 @@ exports.postOotd = async function (userIdx, date, lookname, photoIs, image,
         
         // OOTD 테이블 등록
         const lastRegisterResult = await ootdDao.insertNewOotd(connection, lastRegisterOotdParams);
-
+        // 220519 check
+        console.log('insertNewOotd 함수 완료');
         // 새로 테이블에 등록하면서 생긴 ootdIdx
         const ootdIdxParam = lastRegisterResult[0].insertId;
 
@@ -71,7 +72,8 @@ exports.postOotd = async function (userIdx, date, lookname, photoIs, image,
         let ootdAddedClothes = [];
 
         const AClothesIdxList = await ootdProvider.checkAddedClothesIdx(connection, userIdx, aClothes);
-        
+        // 220519 check
+        console.log('ootdProvider.checkAddedClothes 함수 완료');
         // 미리 선언한 테이블에 찾은 AddedClothes의 index 넣기
         for (i in aClothes){
             let tmpAClothes = {};
@@ -94,8 +96,14 @@ exports.postOotd = async function (userIdx, date, lookname, photoIs, image,
         /****************Place 테이블 등록*************** */
         /*********************************************** */
 
+        // 220519 check
+        console.log('[ootdProvider] AddedPlace Idx 존재 여부 함수 진행 전');
+
         // APlace 테이블 등록을 위한 param (index 이용해야하기 때문)
         const APlaceIdxList = await ootdProvider.checkAddedPlaceIdx(connection, userIdx, aPlace);
+
+        // 220519 check
+        console.log('[ootdProvider] AddedPlace Idx 존재 여부 함수 완료 : ', APlaceIdxList);
 
         // 두 Place 배열이 모두 비어있을 때
         if(!fPlace[0] && !aPlace[0]){
@@ -110,6 +118,9 @@ exports.postOotd = async function (userIdx, date, lookname, photoIs, image,
             // AddedPlace 테이블 - unselected -> selected로 변경
             const aPlaceCondResult = await ootdDao.patchAPlaceCond(connection, APlaceIdxList);
         }
+
+        // 220519 check
+        console.log('[ootdProvider] Place 테이블에 등록 완료');
 
         /*********************************************** */
         /***************Weather 테이블 등록************** */

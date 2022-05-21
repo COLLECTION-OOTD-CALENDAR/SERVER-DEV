@@ -377,6 +377,8 @@ exports.ootdRegister = async function (req, res) {
     // 입력한 날짜에 OOTD 존재 여부 체크
     const ootdRow = await ootdProvider.checkOotdDate(userIdx, n_date);
 
+    // 220519 check
+    console.log('ootdRow : ', ootdRow);
     // ootdRow의 결과와 mode가 잘 맞지 않는 경우
     // ootdRow가 없는데 수정모드일 경우, ootdRow가 있는데 등록모드일 경우 error
     if(ootdRow && mode == 1){ // 입력된 date에 이미 OOTD 존재 (새로 등록시 문제)
@@ -470,7 +472,7 @@ exports.ootdRegister = async function (req, res) {
     const registerUserOotd = await ootdService.postOotd(userIdx, date, lookname, photoIs, image, fClothes, aClothes,
         fPlace, aPlace, fWeather, aWeather, fWho, aWho, n_lookpoint, comment);
     
-    return res.send(response(baseResponse.SUCCESS_LAST_REGISTER, registerUserOotd));
+    return registerUserOotd;
 
 };
 
