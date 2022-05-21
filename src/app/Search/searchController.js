@@ -282,7 +282,6 @@ exports.searchPWWC = async function (req, res) {
         userIdx, PWWC, keyword1, keyword2, color1, color2, startAt, endAt
     );
 
-    console.log('searchResultResponse length : ',  Object.keys(searchResultResponse).length);
     console.log('searchResultResponse :', searchResultResponse)
 
     if(!searchResultResponse){
