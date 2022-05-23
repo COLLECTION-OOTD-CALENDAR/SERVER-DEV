@@ -81,6 +81,8 @@ exports.postOotd = async function (userIdx, date, lookname, photoIs, image,
             tmpAClothes["color"] = aClothes[i].color;
             ootdAddedClothes.push(tmpAClothes);
         }
+        
+        console.log('[ootdProvider] ootdAddedClothes : ', ootdAddedClothes);
 
         // Clothes 테이블 - fixedType 등록
         const ootdFClothesResult = await ootdDao.insertOotdFClothes(connection, ootdIdxParam, fClothes);
