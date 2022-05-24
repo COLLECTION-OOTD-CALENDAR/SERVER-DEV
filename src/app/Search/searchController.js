@@ -101,7 +101,7 @@ exports.searchMain = async function (req, res) {
         PWWC,
         content,
     );
-    if (historyRows.length == 0){
+    if (historyRows.length == 0 && content !== null){
         return res.send(response(baseResponse.SEARCH_NOT_EXIST));
     }
 
