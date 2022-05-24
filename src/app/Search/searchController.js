@@ -102,7 +102,6 @@ exports.searchMain = async function (req, res) {
         content,
     );
     if (historyRows.length == 0 && content !== undefined ){ // not null == 비워져있지 않다. == 무언가 존재한다. 
-        console.log("content:", content);
         return res.send(response(baseResponse.SEARCH_NOT_EXIST));
     }
 
