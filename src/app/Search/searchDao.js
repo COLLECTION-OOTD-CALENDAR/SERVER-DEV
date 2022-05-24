@@ -62,9 +62,6 @@ async function selectHistory(connection,userIdx,PWWC,content) {
     FROM History
     WHERE userIdx = ? AND PWWC = ? AND content = ?;`;
   const IDRow = await connection.query(selectHistoryQuery, [userIdx,PWWC,content]);
-  console.log("IDRow:", IDRow);
-  console.log("IDRow[0]:", IDRow[0]);
-  console.log("IDRow[0].length:", IDRow[0].length);
   return IDRow[0];
 }
 
