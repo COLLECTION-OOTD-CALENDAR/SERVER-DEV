@@ -490,7 +490,7 @@ var datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
             return res.send(response(baseResponse.REGISTER_BLANK_TEXT)); 
         }
 
-        //이름, 전화번호를 동일하게 갖고 있는 USER가 없는 경우 
+        //이름을 동일하게 갖고 있는 USER가 없는 경우 
         const findIDResponse = await userProvider.retrieveID(name, phoneNumber);
         
         if(findIDResponse.length < 1)
@@ -498,6 +498,15 @@ var datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
         else{
             return res.send(response(baseResponse.SUCCESS_FIND_ID, {'userId' : findIDResponse[0].ID}))
         }
+
+        //전화번호를 동일하게 갖고 있는 USER가 없는 경우 
+        // const findIDResponse = await userProvider.retrieveID(name, phoneNumber);
+        
+        // if(findIDResponse.length < 1)
+        //     return res.send(response(baseResponse.USER_NOT_EXIST))
+        // else{
+        //     return res.send(response(baseResponse.SUCCESS_FIND_ID, {'userId' : findIDResponse[0].ID}))
+        // }
             
   
     } catch (err) {
