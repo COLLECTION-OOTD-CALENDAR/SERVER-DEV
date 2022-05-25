@@ -234,7 +234,7 @@ async function selectAddedPlaceIdx(connection, userIdx, aPlace) {
   const selectAddedPlaceIdxQuery = `
           SELECT AP.index
           FROM AddedPlace AS AP
-          WHERE userIdx = ? AND place = ? AND status = 'active';
+          WHERE userIdx = ? AND (place = ? AND status = 'active');
           `;
   
   let addedPlaceIdxRows = [];
