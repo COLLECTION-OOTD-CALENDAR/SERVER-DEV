@@ -221,6 +221,7 @@ async function patchAClothesCond(connection, AClothesIdxList){
   `;
 
   for (item of AClothesIdxList){
+    console.log('[ootdDao] patchAClothesCond item : ', item)
     var updateAClothesCondEach = await connection.query(
       updateAClothesCondQuery, item);
   }
