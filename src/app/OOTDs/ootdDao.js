@@ -305,7 +305,7 @@ async function patchAPlaceCond(connection, APlaceIdxList){
     var updateAPlaceCondEach = await connection.query(
       updateAPlaceCondQuery, item);
   }
-  return updateAPlaceCondEach[0];
+  return APlaceIdxList;
 }
 
 // 8. OOTD 최종 등록하기 - AddedWeather 테이블 내 일치하는 index 찾기
@@ -382,7 +382,7 @@ async function patchAWeatherCond(connection, AWeatherIdxList){
     var updateAWeatherCondEach = await connection.query(
       updateAWeatherCondQuery, item);
   }
-  return updateAWeatherCondEach[0];
+  return AWeatherIdxList;
 }
 
 // 8. OOTD 최종 등록하기 = AddedWho 테이블 내 일치하는 index 찾기
@@ -461,7 +461,7 @@ async function patchAWhoCond(connection, AWhoIdxList){
     var updateAWhoCondEach = await connection.query(
       updateAWhoCondQuery, item);
   }
-  return updateAWhoCondEach[0];
+  return AWhoIdxList;
 }
 
 // 10. OOTD 수정하기 - 지난 작성 화면 불러오기
