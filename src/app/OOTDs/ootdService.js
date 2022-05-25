@@ -82,7 +82,7 @@ exports.postOotd = async function (userIdx, date, lookname, photoIs, image,
             ootdAddedClothes.push(tmpAClothes);
         }
         
-        console.log('[ootdProvider] ootdAddedClothes : ', ootdAddedClothes);
+        console.log('[ootdService] ootdAddedClothes : ', ootdAddedClothes);
 
         // Clothes 테이블 - fixedType 등록
         const ootdFClothesResult = await ootdDao.insertOotdFClothes(connection, ootdIdxParam, fClothes);
@@ -90,6 +90,7 @@ exports.postOotd = async function (userIdx, date, lookname, photoIs, image,
         // Clothes 테이블 - addedType 등록
         const ootdAClothesResult = await ootdDao.insertOotdAClothes(connection, ootdIdxParam, ootdAddedClothes);
 
+        console.log('[ootdService] patchAClothesCond 함수 호출 전');
         // AddedClothes 테이블 - unselected -> selected로 변경
         const aClothesCondResult = await ootdDao.patchAClothesCond(connection, AClothesIdxList);
 

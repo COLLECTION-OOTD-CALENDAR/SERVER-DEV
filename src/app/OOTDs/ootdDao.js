@@ -225,7 +225,8 @@ async function patchAClothesCond(connection, AClothesIdxList){
     var updateAClothesCondEach = await connection.query(
       updateAClothesCondQuery, item);
   }
-  return updateAClothesCondEach[0];
+
+  return AClothesIdxList;
 }
 
 // 8. OOTD 최종 등록하기 - AddedPlace 테이블 내 일치하는 index 찾기
