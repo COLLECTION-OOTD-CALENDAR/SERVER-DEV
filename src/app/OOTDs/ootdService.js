@@ -118,8 +118,10 @@ exports.postOotd = async function (userIdx, date, lookname, photoIs, image,
             // Place 테이블 등록 - addedPlace 등록
             const ootdAPlaceResult = await ootdDao.insertOotdAPlace(connection, ootdIdxParam, APlaceIdxList);
         
+            console.log('[ootdService] patchAPlaceCond 함수 접속 전');
             // AddedPlace 테이블 - unselected -> selected로 변경
             const aPlaceCondResult = await ootdDao.patchAPlaceCond(connection, APlaceIdxList);
+            console.log('[ootdService] patchAPlaceCond 함수 완료')
         }
 
         // 220519 check
