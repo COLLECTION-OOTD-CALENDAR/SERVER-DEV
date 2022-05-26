@@ -217,7 +217,7 @@ async function patchAClothesCond(connection, AClothesIdxList){
   const updateAClothesCondQuery =  `
         UPDATE AddedClothes
         SET cond = 'selected'
-        WHERE index = ?
+        WHERE index = ?;
   `;
 
   for (item of AClothesIdxList){
@@ -234,7 +234,7 @@ async function selectAddedPlaceIdx(connection, userIdx, aPlace) {
   const selectAddedPlaceIdxQuery = `
           SELECT AP.index
           FROM AddedPlace AS AP
-          WHERE userIdx = ? AND (place = ? AND status = 'active');
+          WHERE userIdx = ? AND place = ? AND status = 'active';
           `;
   
   let addedPlaceIdxRows = [];
