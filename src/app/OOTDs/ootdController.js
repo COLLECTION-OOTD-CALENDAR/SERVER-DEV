@@ -44,7 +44,6 @@ exports.ootdRegister = async function (req, res) {
     /*****************request error***************** */
     /*********************************************** */
 
-    console.log('[ootdController] userIdx : ', userIdx);
     // mode가 없을 경우 error
     if(!mode){
         return res.send(errResponse(baseResponse.MODE_EMPTY));
