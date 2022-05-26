@@ -241,6 +241,9 @@ async function selectAddedPlaceIdx(connection, userIdx, aPlace) {
   for (place of aPlace){
     let [addedPlaceIdxEach] = await connection.query(
       selectAddedPlaceIdxQuery, [userIdx, place]);
+    console.log('[ootdDao] selectAddedPlaceIdx - [addedPlaceIdxEach] : ', [addedPlaceIdxEach]);
+    console.log('[ootdDao] selectAddedPlaceIdx - addedPlaceIdxEach : ', addedPlaceIdxEach);
+    console.log('[ootdDao] selectAddedPlaceIdx - addedPlaceIdxEach[0] : ', addedPlaceIdxEach[0]);
     addedPlaceIdxRows.push(addedPlaceIdxEach[0].index);
     console.log('[ootdDao] addedPlaceIdxRows : ', addedPlaceIdxRows);
   }
