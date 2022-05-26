@@ -296,9 +296,8 @@ async function insertOotdAPlace (connection, ootdIdx, APlaceIdxList) {
 async function patchAPlaceCond(connection, APlaceIdxList){
   const updateAPlaceCondQuery =  `
         UPDATE AddedPlace
-        SET cond = 'selected'
-        WHERE index = ?;
-  `;
+        SET cond = "selected"
+        WHERE index = ?;`;
 
   for (item of APlaceIdxList){
     var updateAPlaceCondEach = await connection.query(
