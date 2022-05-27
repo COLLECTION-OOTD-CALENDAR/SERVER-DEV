@@ -15,8 +15,6 @@ async function selectDateOotd(connection, userIdx, date) {
                 `;
 
   const [ootdDateRow] = await connection.query(selectDateOotdQuery, [userIdx, date]);
-  console.log('[ootdDao] selectDateOotd - userIdx : ${userIdx}, date : ${date}');
-  console.log('[ootdDao] selectDateOotd - ootdDateRow : ', ootdDateRow);
   return ootdDateRow[0];
 };
 
