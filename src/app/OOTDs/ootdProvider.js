@@ -321,10 +321,10 @@ exports.retrieveCompleteOotd = async function (userIdx, date){
     var moment = require('moment');
 
     // 출력된 row들을 종합하여 출력 JSON 형태 만들기
-    for (let row of completeOotdListResult[0]){
+    for (let row of completeOotdListResult){
       console.log('[ootdProvider] retrieveCompleteOotd - row : ', row);
       // 처음 row를 정리할 때 고정된 값을 결과 JSON에 대입
-      if(row === completeOotdListResult){
+      if(row === completeOotdListResult[0]){
         ootd["ootdIdx"] = row.ootdIdx;
         ootd["date"] = moment(row.date).format('YYYY-MM-DD');
         ootd["lookname"] = row.lookname;
