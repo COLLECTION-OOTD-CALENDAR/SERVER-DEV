@@ -309,9 +309,6 @@ exports.retrieveCompleteOotd = async function (userIdx, date){
     // connection 해제
     connection.release();
 
-    console.log('[ootdProvider] completeOotdListResult : ', completeOotdListResult);
-    console.log('[ootdProvider] completeOotdListResult[0] : ', completeOotdListResult[0]);
-
     // 입력된 날짜의 ootd가 존재하는지 체크
     if(!completeOotdListResult[0]){
       return completeOotdListResult[0];
@@ -322,7 +319,6 @@ exports.retrieveCompleteOotd = async function (userIdx, date){
 
     // 출력된 row들을 종합하여 출력 JSON 형태 만들기
     for (let row of completeOotdListResult){
-      console.log('[ootdProvider] retrieveCompleteOotd - row : ', row);
       // 처음 row를 정리할 때 고정된 값을 결과 JSON에 대입
       if(row === completeOotdListResult[0]){
         ootd["ootdIdx"] = row.ootdIdx;
