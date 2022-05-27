@@ -217,7 +217,7 @@ async function patchAClothesCond(connection, AClothesIdxList){
   const updateAClothesCondQuery =  `
         UPDATE AddedClothes
         SET cond = 'selected'
-        WHERE index = ?;
+        WHERE AddedClothes.index = ?;
   `;
 
   for (item of AClothesIdxList){
@@ -297,7 +297,7 @@ async function patchAPlaceCond(connection, APlaceIdxList){
   const updateAPlaceCondQuery =  `
         UPDATE AddedPlace
         SET cond = "selected"
-        WHERE index = ?;`;
+        WHERE AddedPlace.index = ?;`;
 
   for (item of APlaceIdxList){
     var updateAPlaceCondEach = await connection.query(
@@ -373,7 +373,7 @@ async function patchAWeatherCond(connection, AWeatherIdxList){
   const updateAWeatherCondQuery =  `
         UPDATE AddedWeather
         SET cond = 'selected'
-        WHERE index = ?
+        WHERE AddedWeather.index = ?
   `;
 
   for (item of AWeatherIdxList){
@@ -452,7 +452,7 @@ async function patchAWhoCond(connection, AWhoIdxList){
   const updateAWhoCondQuery =  `
         UPDATE AddedWho
         SET cond = 'selected'
-        WHERE index = ?
+        WHERE AddedWho.index = ?
   `;
 
   for (item of AWhoIdxList){
