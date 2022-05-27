@@ -309,6 +309,9 @@ exports.retrieveCompleteOotd = async function (userIdx, date){
     // connection 해제
     connection.release();
 
+    console.log('[ootdProvider] retrieveCompleteOotd - completeOotdListResult : ', completeOotdListResult);
+    console.log('[ootdProvider] retrieveCompleteOotd - completeOotdListResult[0]')
+
     // 입력된 날짜의 ootd가 존재하는지 체크
     if(!completeOotdListResult[0]){
       return completeOotdListResult[0];
