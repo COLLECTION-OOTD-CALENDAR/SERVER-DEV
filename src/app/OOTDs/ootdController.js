@@ -587,6 +587,6 @@ exports.ootdComplete = async function (req, res){
         return res.send(errResponse(baseResponse.DATE_OOTD_EMPTY));
     }
 
-    return res.send(response(baseResponse.SUCCESS_OOTD_COMPLETE, callCompleteOotd));
+    return res.send(callCompleteOotd);
 
 };
