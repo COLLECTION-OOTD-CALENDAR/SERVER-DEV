@@ -540,7 +540,7 @@ exports.ootdModi = async function (req, res){
     }
     result["selected"] = callCompleteOotd;
 
-    // 사용자가 지금까지 선택한 added~ 부르기
+    // 사용자가 지금까지 추가한 (삭제하지 않은) added~ 부르기
     const callModiOotd = await ootdProvider.retrieveAddedOotd(userIdx);
     result["added"] = callModiOotd;
 
