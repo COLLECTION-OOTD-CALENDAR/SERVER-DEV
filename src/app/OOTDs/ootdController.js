@@ -505,7 +505,7 @@ exports.ootdDefaultBlock = async function (req, res){
  * jwt : userIdx
  */
 
- exports.ootdModi = async function (req, res){
+exports.ootdModi = async function (req, res){
 
     const userIdx = req.verifiedToken.userIdx;
     const date = req.query.date;
@@ -556,7 +556,7 @@ exports.ootdDefaultBlock = async function (req, res){
  * Query String : date
  * jwt : userIdx
  */
- exports.ootdComplete = async function (req, res){
+exports.ootdComplete = async function (req, res){
 
     const userIdx = req.verifiedToken.userIdx;
     const date = req.query.date;

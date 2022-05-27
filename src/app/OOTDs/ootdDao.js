@@ -15,6 +15,8 @@ async function selectDateOotd(connection, userIdx, date) {
                 `;
 
   const [ootdDateRow] = await connection.query(selectDateOotdQuery, [userIdx, date]);
+  console.log('[ootdDao] selectDateOotd - userIdx : ${userIdx}, date : ${date}');
+  console.log('[ootdDao] selectDateOotd - ootdDateRow : ', ootdDateRow);
   return ootdDateRow[0];
 };
 
@@ -221,7 +223,6 @@ async function patchAClothesCond(connection, AClothesIdxList){
   `;
 
   for (item of AClothesIdxList){
-    console.log('[ootdDao] patchAClothesCond item : ', item)
     var updateAClothesCondEach = await connection.query(
       updateAClothesCondQuery, item);
   }
