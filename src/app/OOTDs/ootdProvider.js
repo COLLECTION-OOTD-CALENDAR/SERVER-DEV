@@ -355,7 +355,7 @@ exports.retrieveCompleteOotd = async function (userIdx, date){
       
     }
 
-    return ootd;
+    return response(baseResponse.SUCCESS_OOTD_COMPLETE, ootd);
 
   } catch(err) {
     logger.error(`App - retrieveCompleteOotd Provider error\n: ${err.message}`);
