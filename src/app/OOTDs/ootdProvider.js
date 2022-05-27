@@ -305,20 +305,20 @@ exports.retrieveCompleteOotd = async function (userIdx, date){
     // connection 은 db와의 연결을 도와줌
     const connection = await pool.getConnection(async (conn) => conn);
     // Dao 쿼리문의 결과를 호출
-    const completeOotdListResult = await ootdDao.selectDateOotd(connection, userIdx, date);
+    const completeOotdListResult = await ootdDao.selectCompleteDateOotd(connection, userIdx, date);
     // connection 해제
     connection.release();
 
     // 입력된 날짜의 ootd가 존재하는지 체크
-    if(!completeOotdListResult){
-      return completeOotdListResult;
+    if(!completeOotdListResult[0]){
+      return completeOotdListResult[0];
     }
 
     let ootd = {};
     var moment = require('moment');
 
     // 출력된 row들을 종합하여 출력 JSON 형태 만들기
-    for (let row of completeOotdListResult){
+    for (let row of completeOotdListResult[0]){
       console.log('[ootdProvider] retrieveCompleteOotd - row : ', row);
       // 처음 row를 정리할 때 고정된 값을 결과 JSON에 대입
       if(row === completeOotdListResult){
