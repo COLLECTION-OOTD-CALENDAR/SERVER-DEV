@@ -582,6 +582,7 @@ exports.ootdComplete = async function (req, res){
     }
 
     const callCompleteOotd = await ootdProvider.retrieveCompleteOotd(userIdx, date);
+    console.log('[ootdController] ootdComplete - callCompleteOotd : ', callCompleteOotd);
     if(!callCompleteOotd){
         return res.send(errResponse(baseResponse.DATE_OOTD_EMPTY));
     }
